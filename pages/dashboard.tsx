@@ -4,21 +4,21 @@ import {
   doc, getDoc, collection, getDocs, orderBy, query
 } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
-import ProtectedRoute from '@/components/ProtectedRoute'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 type Purchase = {
-    game: string
-    amount: number
-    image: string
-    time: string
-  }
+  game: string
+  amount: number
+  image: string
+  time: string
+}
+
 export default function Dashboard() {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const [coins, setCoins] = useState<number | null>(null)
   const [purchases, setPurchases] = useState<Purchase[]>([])
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,24 +53,24 @@ export default function Dashboard() {
     fetchData()
   }, [user])
 
-  // 🛑 OVAJ deo je PRAVI return
-  if (!user) {
+  if (loading) {
     return (
-      <ProtectedRoute>
-        <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center">
-          <p className="text-[#1D1D1D] font-semibold text-lg">Loading...</p>
-        </div>
-      </ProtectedRoute>
+      <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center">
+        <p className="text-[#1D1D1D] font-semibold text-lg">Loading...</p>
+      </div>
     )
   }
+
+  if (!user) {
+    return null
+  }
+
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-[#FEFFD2] px-4 py-12">
-
-        {/* Top full-width coins section */}
+        {/* Coin balance */}
         <div className="max-w-6xl mx-auto bg-gradient-to-b from-[#FF7D29] to-[#FFAD29] rounded-2xl p-8 text-white shadow-xl mb-12">
           <div className="flex flex-col md:flex-row items-center justify-between">
-            {/* Left: Ikonica + tekst + broj */}
             <div className="flex items-center gap-4">
               <Image
                 src="/images/coin.png"
@@ -86,8 +86,6 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-
-            {/* Right: Dugme */}
             <div className="mt-6 md:mt-0">
               <button className="bg-[#FEFFD2] hover:bg-white text-[#FF7D29] font-semibold px-12 py-2 rounded-md">
                 Buy coins
@@ -96,9 +94,8 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Bottom 2-column layout */}
+        {/* Recent Purchases */}
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-start">
-          {/* Left: Recent Purchases */}
           <div className="bg-[#FFF8E6] rounded-2xl p-6 shadow-md w-full">
             <h3 className="text-lg font-bold text-[#1D1D1D] mb-4">Recent Purchases</h3>
 
@@ -124,7 +121,6 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Right: Doge image */}
           <div className="w-full flex justify-center">
             <Image
               src="/images/dash.png"
