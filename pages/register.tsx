@@ -1,65 +1,63 @@
 import { useState } from 'react'
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile
+} from 'firebase/auth'
+import { FirebaseError } from 'firebase/app'
 import { useRouter } from 'next/router'
-import { auth } from '@/lib/firebase'
-import { updateProfile } from 'firebase/auth'
+import { auth, db } from '@/lib/firebase'
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import Image from 'next/image'
 import Link from 'next/link'
-import { doc, setDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
-import { serverTimestamp } from 'firebase/firestore'
-
-
 
 export default function Register() {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  
-    
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     setLoading(true)
-  try {
-  console.log('👤 Creating user...')
-  const userCred = await createUserWithEmailAndPassword(auth, email, password)
 
-  console.log('✅ User created:', userCred.user.uid)
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password)
 
-  await updateProfile(userCred.user, {
-    displayName: name,
-  })
-  console.log('📝 Profile updated')
+      await updateProfile(userCred.user, { displayName: name })
 
-  await setDoc(doc(db, 'users', userCred.user.uid), {
-    coins: 100,
-    name: name,
-    email: email,
-    createdAt: serverTimestamp()
+      await setDoc(doc(db, 'users', userCred.user.uid), {
+        coins: 100,
+        name,
+        email,
+        createdAt: serverTimestamp()
+      })
 
-  })
-  console.log('💾 User document created')
+      await sendEmailVerification(userCred.user)
 
-  await userCred.user.reload()
-  await sendEmailVerification(userCred.user)
-  console.log('📧 Verification email sent')
-
-  alert('Verifikacioni email je poslat. Proveri svoj inbox.')
-  router.push('/login')
-} catch (err) {
-  console.error('❌ Error in register flow:', err)
-  if (err instanceof Error) {
-    alert(err.message)
-  } else {
-    alert('Unknown error')
-  }
-} finally {
-  console.log('🧹 Finished. Removing loading state.')
-  setLoading(false)
-}
-
+      alert('Verification email sent! Please check your inbox.')
+      router.push('/login')
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+        const code = err.code
+        if (code === 'auth/email-already-in-use') {
+          setError('This email is already registered.')
+        } else if (code === 'auth/weak-password') {
+          setError('Password should be at least 6 characters.')
+        } else if (code === 'auth/invalid-email') {
+          setError('Invalid email address format.')
+        } else {
+          setError('Something went wrong. Please try again.')
+        }
+      } else {
+        setError('Unexpected error occurred.')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -73,14 +71,13 @@ export default function Register() {
 
           <div className="space-y-4">
             <input
-            type="text"
-            placeholder="👤 Name"
-            className="w-full bg-[#FEFFD2] placeholder:text-black/50 border border-[#FF7D29]/30 p-3 rounded-md"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
+              type="text"
+              placeholder="👤 Name"
+              className="w-full bg-[#FEFFD2] placeholder:text-black/50 border border-[#FF7D29]/30 p-3 rounded-md"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
             />
-
             <input
               type="email"
               placeholder="✉️ E-mail"
@@ -97,12 +94,13 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+            {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+
             <button
               type="submit"
-              className="w-full h-14 bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-semibold py-2 rounded-md font-montserrat"
-              disabled={loading || !email || !password || !name}
-
-
+              className="w-full h-14 bg-[#FF7D29] hover:bg-[#e96e1b] text-white py-2 rounded-md font-bold font-montserrat"
+              disabled={loading}
             >
               {loading ? 'Registering...' : 'Register'}
             </button>
@@ -116,7 +114,6 @@ export default function Register() {
             <Link href="/login" className="text-[#FF7D29] font-semibold">
               Login
             </Link>
-
           </p>
         </form>
 

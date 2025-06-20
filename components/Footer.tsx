@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FEFFD2] border-t border-[#FF7D29]/30 py-10 px-6">
+    <footer className="bg-[#FEFFD2]  py-10 px-6">
 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         {/* Left: Company info */}
         <div className="space-y-4">
@@ -16,7 +16,7 @@ export default function Footer() {
             United States
           </p>
           <p className="text-xs text-[#888]">
-            Made by{' '}
+            🚀 Your next project can look this good –{' '}
             <a href="https://macura-design.com" target="_blank" rel="noopener noreferrer" className="underline font-medium text-[#1D1D1D]">
               Macura Design
             </a>
@@ -27,11 +27,11 @@ export default function Footer() {
 <div className="flex flex-col items-center md:items-end gap-6 text-center md:text-right">
           {/* Nav links */}
 <nav className="hidden md:flex flex-wrap gap-4 items-center justify-end text-[#1D1D1D] font-montserrat text-md">
-            <Link href="/">Home</Link>
-            <Link href="/about">About</Link>
-            <Link href="/games">Games</Link>
-            <Link href="/contact">Contact</Link>
-            <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md font-semibold hover:bg-[#e96e1b]">
+            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/">Home</Link>
+            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/about">About</Link>
+            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/games">Games</Link>
+            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/contact">Contact</Link>
+            <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md  font-bold font-montserrat hover:bg-[#e96e1b]">
               Register
             </Link>
           </nav>

@@ -1,42 +1,45 @@
 import { useState } from 'react'
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { FirebaseError } from 'firebase/app'
 import { useRouter } from 'next/router'
 import { auth } from '@/lib/firebase'
 import Image from 'next/image'
 import Link from 'next/link'
 
-
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
+
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password)
+
       if (!user.emailVerified) {
-        alert('Verifikuj email adresu pre prijave.')
+        setError('Please verify your email address before logging in.')
         return
       }
+
       router.push('/dashboard')
-    } catch (err) {
-      if (err instanceof Error) {
-        alert(err.message)
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+        const code = err.code
+        if (code === 'auth/user-not-found') setError('No account found with this email.')
+        else if (code === 'auth/wrong-password') setError('Incorrect password.')
+        else if (code === 'auth/invalid-email') setError('Invalid email address.')
+        else setError('Something went wrong. Please try again.')
       } else {
-        alert('Unknown error')
+        setError('Unexpected error occurred.')
       }
     } finally {
       setLoading(false)
     }
-  }
-
-  const handleResetPassword = async () => {
-    if (!email) return alert('Unesi email za reset lozinke.')
-    await sendPasswordResetEmail(auth, email)
-    alert('Poslat je email za reset lozinke.')
   }
 
   return (
@@ -65,9 +68,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+
+            {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+
             <button
               type="submit"
-              className="w-full h-14 bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-semibold py-2 rounded-md font-montserrat"
+              className="w-full h-14 bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold font-montserrat py-2 rounded-md"
               disabled={loading}
             >
               {loading ? 'Logging in...' : 'Login'}
@@ -76,9 +82,10 @@ export default function Login() {
 
           <p className="text-sm text-center mt-4 text-[#1D1D1D]/70">
             Forgot your password?{' '}
-            <button type="button" onClick={handleResetPassword} className="text-[#FF7D29] font-semibold underline" >
+            <Link href="/reset" className="text-[#FF7D29] font-semibold">
               Reset
-            </button>
+            </Link>
+
           </p>
           <p className="text-sm text-center mt-2 text-[#1D1D1D]">
             Don’t have an account?{' '}
