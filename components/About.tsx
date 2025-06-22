@@ -8,7 +8,7 @@ export default function About() {
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Tekstualni deo */}
         <div className="flex-1">
-          <h2 className="text-[#FF7D29] text-2xl md:text-3xl font-bold font-montserrat mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-[#FF7D29] drop-shadow-[0_2px_2px_rgba(0,0,0,0.15)] mb-4">
             About Us
           </h2>
           <p className="text-gray-800 text-lg leading-relaxed font-inter max-w-xl">

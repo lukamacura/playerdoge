@@ -35,9 +35,9 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-[#FF7D29]/15 py-16 px-4">
+    <section className="bg-[#FFEFC4] py-16 px-4">
     <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-bold font-montserrat mb-12">How it works?</h2>
+        <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-center text-[#FF7D29] drop-shadow-[0_2px_2px_rgba(0,0,0,0.15)] mb-8">How it works?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {steps.map((step, index) => (
             <div

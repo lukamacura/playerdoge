@@ -18,7 +18,7 @@ const trendingGames = [
 export default function Trending() {
   return (
     <section className="py-12 px-4 max-w-6xl mx-auto">
-      <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-center text-[#FF7D29] mb-8">
+      <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-center text-[#FF7D29] drop-shadow-[0_2px_2px_rgba(0,0,0,0.15)] mb-8">
         Trending
       </h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
