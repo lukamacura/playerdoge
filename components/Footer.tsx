@@ -33,9 +33,9 @@ export default function Footer() {
           {/* Nav links */}
           <nav className="hidden md:flex flex-wrap gap-4 items-center justify-end text-[#1D1D1D] font-montserrat text-md">
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/">Home</Link>
-            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/about">About</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/#about">About</Link>
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/games">Games</Link>
-            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/contact">Contact</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/#contact">Contact</Link>
             <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md font-bold font-montserrat hover:bg-[#e96e1b]">
               Register
             </Link>

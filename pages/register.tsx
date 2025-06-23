@@ -107,7 +107,7 @@ export default function Register() {
           </div>
 
           <p className="text-sm text-center mt-4 text-[#1D1D1D]/70">
-            Get <span className="font-bold text-[#1D1D1D]">100 free coins</span> when you register!
+           🔥Get <span className="font-bold text-[#1D1D1D]">100 free coins</span> when you register!
           </p>
           <p className="text-sm text-center mt-2 text-[#1D1D1D]">
             Have an account?{' '}

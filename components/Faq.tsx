@@ -32,7 +32,7 @@ export default function Faq() {
   };
 
   return (
-    <section className="bg-[#fffdd0] py-16 px-4 md:px-8 xl:px-16">
+    <section className="bg-[radial-gradient(circle_at_center,_rgba(255,125,41,0.7),_transparent_27%)] py-16 px-4 md:px-8 xl:px-16">
       <div className="max-w-3xl mx-auto text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-[#1d1d1d] mb-4">
           You’ve got questions — let’s answer them.
@@ -55,6 +55,8 @@ export default function Faq() {
                 onClick={() => toggle(i)}
               >
                 <span>{faq.question}</span>
+
+
 
                <motion.div
   animate={{ rotate: isOpen ? -90 : 0 }}
@@ -79,13 +81,14 @@ export default function Faq() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
                     className="overflow-hidden px-5 pb-4 text-[#4b4b4b]"
                   >
-                    <p className="text-sm whitespace-pre-line">{faq.answer}</p>
+                    <p className="text-md font-inter whitespace-pre-line">{faq.answer}</p>
                   </motion.div>
                 )}
               </AnimatePresence>
+
             </div>
           );
         })}

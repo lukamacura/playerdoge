@@ -43,7 +43,7 @@ export default function Hero() {
       {/* Content aligned to bottom */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-20">
         <div className="max-w-4xl text-center lg:text-left">
-          <h1 className="text-6xl font-black leading-tight font-montserrat drop-shadow-lg">
+          <h1 className="text-4xl md:text-6xl font-black leading-tight drop-shadow-lg">
             Welcome to <span className="text-[#FF7D29]">PlayerDoge</span>
           </h1>
           <p className="mt-4 text-base md:text-xl font-medium font-inter drop-shadow-lg">
