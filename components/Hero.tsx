@@ -43,29 +43,31 @@ export default function Hero() {
       {/* Content aligned to bottom */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pb-20">
         <div className="max-w-4xl text-center lg:text-left">
-          <h1 className="text-4xl md:text-6xl font-black leading-tight drop-shadow-lg">
-            Welcome to <span className="text-[#FF7D29]">PlayerDoge</span>
-          </h1>
-          <p className="mt-4 text-base md:text-xl font-medium font-inter drop-shadow-lg">
-            Every upgrade counts — <br className="sm:hidden" />
-            buy game packs cheaper with PlayerDoge, your trusted top-up service for secure purchases, no ban risk, and real savings.
-          </p>
+          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight text-[#1d1d1d] drop-shadow-lg max-w-3xl mx-auto lg:mx-0">
+  Welcome to <span className="text-[#FF7D29]">PlayerDoge</span>
+</h1>
+<p className="mt-6 text-lg md:text-2xl text-[#1D1D1D]/90 font-medium font-inter drop-shadow-md max-w-2xl mx-auto lg:mx-0">
+Every upgrade counts — buy game packs cheaper with PlayerDoge, your trusted top-up service for secure purchases, no ban risk, and real savings.
+</p>
 
-          {/* CTA Buttons */}
-          <div className="mt-6 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-            <Link
-              href="/games"
-              className="px-6 py-4 bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold font-montserrat rounded-md shadow-md transition-all"
-            >
-              Browse games
-            </Link>
-            <Link
-              href="/login"
-              className="px-6 py-4 bg-black text-white hover:bg-neutral-800 font-bold font-montserrat rounded-md shadow-md transition-all"
-            >
-              Login
-            </Link>
-          </div>
+{/* CTA Buttons */}
+<div className="mt-8 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
+  <Link
+    href="/games"
+    className="px-8 py-4 bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold font-montserrat rounded-xl shadow-lg text-lg transition-all"
+  >
+    Browse games
+  </Link>
+  <Link
+    href="/login"
+    className="px-8 py-4 bg-black text-white hover:bg-neutral-800 font-bold font-montserrat rounded-xl shadow-lg text-lg transition-all"
+  >
+    Login
+  </Link>
+</div>
+
+
+
         </div>
 
         {/* Carousel indicators */}
