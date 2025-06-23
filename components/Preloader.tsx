@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 const slogans = [
-  "🎮 Did you know? You can save up to 30% with PlayerDoge!",
+  "🎮 Did you know? You can save up to 35% with PlayerDoge!",
   "🕹️ Thousands of gamers already top-up cheaper using PlayerDoge!",
   "⏱️ Most orders are delivered in less than 30 minutes!",
 ]
