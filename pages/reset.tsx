@@ -49,7 +49,7 @@ const handleReset = async (e: React.FormEvent) => {
 
 
   return (
-    <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center px-4 pt-[10vh]">
       <div className="max-w-5xl w-full flex flex-col lg:flex-row items-center justify-between gap-8">
         <form
           onSubmit={handleReset}

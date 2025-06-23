@@ -1,10 +1,10 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#FEFFD2]  py-10 px-6">
-<div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+    <footer className="bg-[#FEFFD2] py-10 px-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         {/* Left: Company info */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-[#FF7D29]">PlayerDoge LLC</h2>
@@ -17,45 +17,54 @@ export default function Footer() {
           </p>
           <p className="text-xs text-[#888]">
             🚀 Your next project can look this good –{' '}
-            <a href="https://macura-design.com" target="_blank" rel="noopener noreferrer" className="underline font-medium text-[#1D1D1D]">
+            <a
+              href="https://macura-design.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline font-medium text-[#1D1D1D]"
+            >
               Macura Design
             </a>
           </p>
         </div>
 
         {/* Right: nav + icons */}
-<div className="flex flex-col items-center md:items-end gap-6 text-center md:text-right">
+        <div className="flex flex-col items-center md:items-end gap-6 text-center md:text-right">
           {/* Nav links */}
-<nav className="hidden md:flex flex-wrap gap-4 items-center justify-end text-[#1D1D1D] font-montserrat text-md">
-            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/">Home</Link>
-            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/about">About</Link>
-            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/games">Games</Link>
-            <Link className='hover:text-[#FF7D29] transition-colors duration-200' href="/contact">Contact</Link>
-            <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md  font-bold font-montserrat hover:bg-[#e96e1b]">
+          <nav className="hidden md:flex flex-wrap gap-4 items-center justify-end text-[#1D1D1D] font-montserrat text-md">
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/">Home</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/about">About</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/games">Games</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/contact">Contact</Link>
+            <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md font-bold font-montserrat hover:bg-[#e96e1b]">
               Register
             </Link>
           </nav>
 
+          {/* Legal links */}
+          <div className="flex gap-4 text-xs md:text-sm text-[#1D1D1D]">
+            <Link href="/terms" className="underline hover:text-[#FF7D29]">Terms of Service</Link>
+            <Link href="/privacy" className="underline hover:text-[#FF7D29]">Privacy Policy</Link>
+          </div>
+
           {/* Payment icons */}
-<div className="flex flex-wrap justify-center md:justify-end gap-4 mt-2">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-2">
             {[
               'paypal', 'wise', 'paysend', 'remitly', 'zelle',
               'visa', 'master', 'moneygram'
             ].map((name) => (
-           <Image
-          key={name}
-          src={`/images/${name}.png`}
-          alt={name}
-          width={60}
-          height={32}
-          className="w-auto h-10 object-contain"
-        />
-
-
+              <Image
+                key={name}
+                src={`/images/${name}.png`}
+                alt={name}
+                width={60}
+                height={32}
+                className="w-auto h-10 object-contain"
+              />
             ))}
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

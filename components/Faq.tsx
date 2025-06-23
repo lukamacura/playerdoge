@@ -48,25 +48,28 @@ export default function Faq() {
           return (
             <div
               key={i}
-              className={`rounded-xl border border-[#e8d8a5] bg-[#FFEFC4] transition-all`}
+              className="rounded-xl border border-[#e8d8a5] bg-[#FFEFC4] transition-all"
             >
               <button
                 className="w-full flex justify-between items-center px-5 py-4 text-left font-bold font-montserrat text-[#1d1d1d] hover:bg-[#fff6d0] transition rounded-xl"
                 onClick={() => toggle(i)}
               >
                 <span>{faq.question}</span>
-                  <motion.div
-                    animate={{ rotate: isOpen ? -90 : 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Image
-                      src="/icons/arrow.png"
-                      alt="Arrow icon"
-                      width={30}
-                      height={30}
-                      className="object-contain"
-                    />
-                  </motion.div>
+
+               <motion.div
+  animate={{ rotate: isOpen ? -90 : 0 }}
+  transition={{ duration: 0.3 }}
+  className="relative w-[18px] h-[18px] flex-shrink-0"
+>
+  <Image
+    src="/icons/arrow.png"
+    alt="Arrow"
+    fill
+    className="object-contain"
+    priority
+  />
+</motion.div>
+
               </button>
 
               <AnimatePresence initial={false}>
