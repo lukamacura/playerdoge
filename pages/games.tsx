@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 
-const allGames = [
+const allGames: Game[] = [ 
   {
     name: 'Frost & Flame: King of Avalon',
     category: 'Strategy & War',
@@ -45,18 +45,132 @@ const allGames = [
     image: '/images/games/lastwar.webp',
   },
   {
-    name: 'Last Z: Final Defense',
+    name: 'Last Z: Survival Shooter',
     category: 'Survival & Zombie',
     image: '/images/games/lastz.webp',
   },
+  {
+    name: 'Misty Continent: Cursed Island',
+    category: 'Naval & Adventure',
+    image: '/images/games/cursedisland.webp',
+  },
+  {
+    name: 'The Grand Mafia',
+    category: 'Strategy & War',
+    image: '/images/games/grandmafia.webp',
+  },
+  {
+    name: 'Mafia City',
+    category: 'Strategy & War',
+    image: '/images/games/mafiacity.webp',
+  },
+  {
+    name: 'Primitive Era: 10000BC',
+    category: 'Survival & Zombie',
+    image: '/images/games/primitiveera.webp',
+  },
+  {
+    name: 'Evony: The Kings Return',
+    category: 'Strategy & War',
+    image: '/images/games/kingsreturn.webp',
+  },
+  {
+    name: 'Dark War Survival',
+    category: 'Survival & Zombie',
+    image: '/images/games/darkwar.webp',
+  },
+  {
+    name: 'Call of Dragons',
+    category: 'Fantasy / RPG',
+    image: '/images/games/callofdragons.webp',
+  },
+  {
+    name: 'Rise of the Kings',
+    category: 'Strategy & War',
+    image: '/images/games/riseofthekings.webp',
+  },
+  {
+    name: 'Total Battle: Strategy Games',
+    category: 'Strategy & War',
+    image: '/images/games/totalbattle.webp',
+  },
+  {
+    name: 'Doomsday: Last Survivors',
+    category: 'Survival & Zombie',
+    image: '/images/games/doomsday.webp',
+  },
+  {
+    name: 'DC: Dark Legion',
+    category: 'Fantasy / RPG',
+    image: '/images/games/darklegion.webp',
+  },
+  {
+    name: 'Rise of Castles: Ice and Fire',
+    category: 'Strategy & War',
+    image: '/images/games/riseofcastles.webp',
+  },
+  {
+    name: 'Vikings Rise: Valhalla',
+    category: 'Strategy & War',
+    image: '/images/games/vikings.webp',
+  },
+  {
+    name: 'Age of Origins',
+    category: 'Survival & Zombie',
+    image: '/images/games/ageoforigins.webp',
+  },
+  {
+    name: 'War and Order',
+    category: 'Strategy & War',
+    image: '/images/games/warandorder.webp',
+  },
+  {
+    name: 'Warpath: Ace Shooter',
+    category: 'Shooter / Military',
+    image: '/images/games/warpath.webp',
+  },
+  {
+    name: 'Last Fortress: Underground',
+    category: 'Survival & Zombie',
+    image: '/images/games/lastfortress.webp',
+  },
+  {
+    name: 'Top War: Battle Game',
+    category: 'Strategy & War',
+    image: '/images/games/topwar.webp',
+  },
+  {
+    name: 'Age of Empires Mobile',
+    category: 'Strategy & War',
+    image: '/images/games/ageofempires.webp',
+  },
+  {
+    name: 'Avatar: Realms Collide',
+    category: 'Fantasy / RPG',
+    image: '/images/games/avatar.webp',
+  },
+  {
+    name: 'Lands of Jail',
+    category: 'Strategy & War',
+    image: '/images/games/landsofjail.webp',
+  }
 ]
 
+
+type Game = {
+  name: string
+  category: string
+  image: string
+}
+
+
 const categories = [
-  'All',
+'All',
   'Strategy & War',
   'Naval & Adventure',
   'Survival & Zombie',
-  'Fantasy / RPG'
+  'Fantasy / RPG',
+  'Shooter / Military'
 ]
 
 const sortOptions = ['A-Z', 'Z-A']

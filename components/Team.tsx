@@ -25,11 +25,7 @@ export default function Team() {
           <h3 className="text-2xl font-bold font-montserrat">Ivan Mladenović</h3>
           <p className="text-sm font-semibold text-[#FF7D29] mb-4">Founder</p>
           <p className="text-gray-800 font-inter text-sm leading-relaxed">
-            Born in 2003, Ivan is a certified computer hardware specialist with three years of
-            hands-on experience in the IT sector. After building a strong reputation in the digital
-            asset trading space, particularly within CS2, he decided to apply that drive and
-            experience to building something of his own. That’s how PlayerDoge was born — a project
-            shaped by his vision, focus, and deep understanding of the gaming world.
+            Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how PlayerDoge was born, a project shaped by his vision, focus, and deep understanding of the gaming world.
           </p>
         </div>
 

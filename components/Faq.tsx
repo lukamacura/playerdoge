@@ -7,19 +7,16 @@ const faqs = [
   {
     question: 'How does the PlayerDoge top-up process work?',
     answer: `Place your order directly through the PlayerDoge site by selecting your game, choosing a pack, and entering your account details securely at checkout. Your info stays private and safe with us, and you won’t need to send it again.
-
 Before each top-up, make sure to upload a screenshot of the item you want. Stay logged out while we process your order — we’ll notify you as soon as it’s done so you can log back in and confirm. Most top-ups are completed within 30 minutes.`,
   },
   {
     question: 'How do I place an order and make a payment?',
     answer: `Buy coins first — that’s your balance for all orders. Each game pack has its coin price, and the amount is deducted when you order.
-
 We support PayPal, Wise, Paysend, Zelle (+3%), crypto (with a discount), and credit/debit cards (+5%), plus local payment options based on your country.`,
   },
   {
     question: 'How safe is PlayerDoge?',
     answer: `Your account’s safety is our top priority. We top up only through official in-game stores, with no third-party tools or risk involved.
-
 Only verified team members handle your login info, stored securely and never shared. With thousands of safe top-ups completed, PlayerDoge is a trusted choice for mobile gamers.`,
   },
 ];
@@ -35,7 +32,7 @@ export default function Faq() {
     <section className="bg-[radial-gradient(circle_at_center,_rgba(255,125,41,0.7),_transparent_27%)] py-16 px-4 md:px-8 xl:px-16">
       <div className="max-w-3xl mx-auto text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-[#1d1d1d] mb-4">
-          You’ve got questions — let’s answer them.
+          You’ve got questions? Let’s answer them.
         </h2>
         <p className="text-[#4b4b4b] text-base font-inter md:text-lg">
           Clear and honest info about how PlayerDoge works, so you always know what to expect.
