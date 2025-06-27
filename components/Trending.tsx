@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+
 
 const trendingGames = [
   { name: "King of Avalon", image: "/images/trending/frostandflame.webp" },
@@ -46,9 +48,12 @@ export default function Trending() {
         ))}
       </div>
       <div className="flex justify-center mt-10">
+        <Link href="/games">
         <button className="border font-bold font-montserrat border-black px-6 py-2 rounded hover:bg-black hover:text-white transition">
           View more
         </button>
+        </Link>
+        
       </div>
     </section>
   );

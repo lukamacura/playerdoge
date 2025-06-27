@@ -27,6 +27,14 @@ export default function Team() {
           <p className="text-gray-800 font-inter text-sm leading-relaxed">
             Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how PlayerDoge was born, a project shaped by his vision, focus, and deep understanding of the gaming world.
           </p>
+           <a
+            href="https://www.instagram.com/packloader"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#FF7D29] font-semibold text-sm mt-2 hover:underline"
+          >
+            @packloader
+          </a>
         </div>
 
         {/* Luka */}
@@ -43,6 +51,14 @@ export default function Team() {
           <p className="text-gray-800 font-inter text-sm leading-relaxed">
             Luka, born in 2006, is currently studying at the Faculty of Technical Sciences in Novi Sad, Serbia. As a certified web developer with extensive full-stack experience, he brings a blend of technical precision and creative problem-solving to the team. Highly dedicated to his work, Luka approaches every project with structure, clarity, and full focus on results. He values discipline, persistence, and continuous learning — and ensures that every line of code reflects those principles.
           </p>
+           <a
+            href="https://www.instagram.com/macuradesign/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#FF7D29] font-semibold text-sm mt-2 hover:underline"
+          >
+            @macuradesign
+          </a>
         </div>
       </div>
     </section>

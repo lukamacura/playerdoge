@@ -15,17 +15,7 @@ export default function Footer() {
             Roswell, GA, 30076<br />
             United States
           </p>
-          <p className="text-xs text-[#888]">
-            🚀 Your next project can look this good –{' '}
-            <a
-              href="https://macura-design.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline font-medium text-[#1D1D1D]"
-            >
-              Macura Design
-            </a>
-          </p>
+         
         </div>
 
         {/* Right: nav + icons */}

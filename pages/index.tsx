@@ -22,8 +22,8 @@ export default function Home() {
       <WhyPlayerDoge />
       <Faq />
       <Reviews />
-      <Contact />
       <Team />
+      <Contact />
 
 
     </main>

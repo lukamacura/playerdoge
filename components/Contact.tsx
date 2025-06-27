@@ -28,15 +28,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <div className="w-full max-w-[300px] md:max-w-[360px]">
-        <Image
-          src="/images/contact.png"
-          alt="doge confused"
-          width={360}
-          height={360}
-          className="w-full h-auto"
-        />
-      </div>
+      
     </section>
   );
 }
