@@ -1,11 +1,13 @@
-"use client";
+'use client'
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { gameData } from "@/lib/gameData";
 import { useState } from "react";
-
+import Link from "next/link";
+import { gameData } from "@/lib/gameData";
 type Country = "us" | "canada" | "europe" | "australia";
+
+
 
 export default function GameDetailPage() {
   const universalPacks = [
@@ -64,7 +66,6 @@ export default function GameDetailPage() {
   {game.name}{" "}
 </span>
             packs
-            <br />
             safely and affordably with PlayerDoge
           </h1>
 
@@ -86,7 +87,7 @@ export default function GameDetailPage() {
               Check the prices of{" "}
               <span className="font-bold">PlayerDoge coins</span>.
             </p>
-        <button className="border font-bold font-montserrat border-black px-6 py-2 rounded hover:bg-black hover:text-white transition">
+        <button className="border font-bold font-montserrat border-black px-6 py-2 rounded-lg hover:bg-black hover:text-white transition">
               Buy coins
             </button>
           </div>
@@ -115,9 +116,10 @@ export default function GameDetailPage() {
                     </strong>{" "}
                     pack
                   </p>
-                  <button
+                  <Link
+                    href="#complete_purchase"
                     onClick={() => setSelectedPackIndex(i)}
-                    className="mt-2 bg-[#FF7D29] hover:bg-[#e96e1b] text-white text-xs font-bold px-6 py-2 rounded-md shadow flex items-center gap-2"
+                    className="mt-2 bg-[#FF7D29] hover:bg-[#e96e1b] text-white text-sm font-bold px-6 py-2 rounded-md shadow flex items-center justify-center gap-2"
                   >
                     Buy for {pack.coins}
                     <Image
@@ -126,7 +128,10 @@ export default function GameDetailPage() {
                       width={25}
                       height={25}
                     />
-                  </button>
+                  </Link>
+
+
+
                 </div>
               </div>
             ))}
@@ -145,7 +150,7 @@ export default function GameDetailPage() {
         </div>
 
         {/* RIGHT - FORM */}
-        <div className="bg-[#FFEFC4] p-6 rounded-xl shadow-2xl flex flex-col justify-between">
+        <div id="complete_purchase" className="bg-[#FFEFC4] p-6 rounded-xl shadow-2xl flex flex-col justify-between">
           <div>
             <h2 className="text-xl font-bold font-montserrat mb-3">
               Purchase information
@@ -174,7 +179,7 @@ export default function GameDetailPage() {
                 className="absolute top-3 left-3"
               />
               <textarea
-                placeholder="Account information / details"
+                placeholder="Account information / login details"
                 className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
                 rows={3}
               />
@@ -257,7 +262,7 @@ export default function GameDetailPage() {
             </div>
           </div>
 
-          <button className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-semibold py-3 rounded font-montserrat mt-4 shadow-md">
+          <button className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-semibold py-3 rounded-lg font-montserrat mt-4 shadow-md">
             Complete purchase
           </button>
         </div>

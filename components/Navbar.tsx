@@ -51,7 +51,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className="text-sm font-semibold border border-[#FF7D29] text-[#FF7D29] px-4 py-1.5 rounded hover:bg-[#fff1e6] transition"
               >
-                Logout
+                Sign out
               </button>
             </div>
           )}
@@ -119,7 +119,7 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className="border border-[#FF7D29] text-[#FF7D29] px-4 py-1.5 rounded hover:bg-[#fff1e6] transition"
               >
-                Logout
+                Sign out
               </button>
             </>
           )}
