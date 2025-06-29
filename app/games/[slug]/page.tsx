@@ -252,7 +252,7 @@ export default function GameDetailPage() {
               <input id="screenshot-upload" type="file" className="hidden" />
               <p className="text-xs mb-2 mt-1 font-montserrat">
                 Screenshot of the{" "}
-                <span className="font-bold">package/s.</span>
+                <span className="font-bold">package(s).</span>
               </p>
             </div>
 
@@ -345,7 +345,7 @@ export default function GameDetailPage() {
     <li><span className="font-semibold">Create or log in to your PlayerDoge account:</span> Start by accessing your account on our platform.</li>
     <li><span className="font-semibold">Purchase coins:</span> Buy the desired amount of PlayerDoge coins using your preferred payment method.</li>
     <li><span className="font-semibold">Select your game and package:</span> Choose {game.name} and the specific pack you wish to purchase.</li>
-    <li><span className="font-semibold">Provide game account details:</span> Enter your {game.name} login credentials securely. This information is necessary for usa to process the TopUp directly into your account.</li>
+    <li><span className="font-semibold">Provide game account details:</span> Enter your {game.name} login credentials securely. This information is necessary for us to process the TopUp directly into your account.</li>
     <li><span className="font-semibold">Confirm and complete the transaction:</span> Before confirming the order, make sure to upload a clear screenshot of the pack from your in-game store. Once the payment is confirmed, our team will process your order promptly.</li>
   </ol>
 
