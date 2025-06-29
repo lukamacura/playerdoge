@@ -5,13 +5,21 @@ import Layout from '@/components/Layout'
 import { Inter, Montserrat } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const montserrat = Montserrat({ subsets: ['latin'], variable: '--font-montserrat' })
+import Script from "next/script";
+
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${inter.variable} ${montserrat.variable}`}>
     <AuthProvider>
       <Layout>
-        <Component {...pageProps} />
+        <>
+          <Script
+            src="https://code.tidio.co/mf6ykieouhpnn2yunnny6rud2q7p40nu.js"
+            strategy="afterInteractive"
+          />
+          <Component {...pageProps} />
+        </>
       </Layout>
     </AuthProvider>
     </div>
