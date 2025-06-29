@@ -1,18 +1,30 @@
-import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+"use client";
 
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth()
-  const router = useRouter()
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+
+export default function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login')
+      router.push("/login");
     }
-  }, [user, loading, router])
+  }, [loading, user, router]);
 
-  if (loading) return <p className="text-center p-8">Loading...</p>
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center">
+        <p className="text-[#1D1D1D] font-semibold text-lg">Loading...</p>
+      </div>
+    );
+  }
 
-  return <>{children}</>
+  return <>{children}</>;
 }

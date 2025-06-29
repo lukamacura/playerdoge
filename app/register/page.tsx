@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react'
 import {
   createUserWithEmailAndPassword,
@@ -5,7 +7,7 @@ import {
   updateProfile
 } from 'firebase/auth'
 import { FirebaseError } from 'firebase/app'
-import { useRouter } from 'next/router'
+import { useRouter } from "next/navigation";
 import { auth, db } from '@/lib/firebase'
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
 import Image from 'next/image'

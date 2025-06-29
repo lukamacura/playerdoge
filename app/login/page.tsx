@@ -1,7 +1,9 @@
+"use client";
+
 import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { FirebaseError } from 'firebase/app'
-import { useRouter } from 'next/router'
+import { useRouter } from "next/navigation";
 import { auth } from '@/lib/firebase'
 import Image from 'next/image'
 import Link from 'next/link'

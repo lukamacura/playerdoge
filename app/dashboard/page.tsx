@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import {
@@ -123,9 +125,10 @@ You need an account to view your coins and purchases. Please log in or register 
             </div>
             <div className="mt-6 md:mt-0">
               <div className="mt-6 md:mt-0 flex flex-col gap-3 items-center ">
-                <button className="bg-white text-[#FF7D29] font-bold px-10 py-2 rounded-md shadow-md hover:bg-[#fff1e6] transition duration-200">
+                <Link href="/buycoins" className='bg-white text-[#FF7D29] font-bold px-10 py-2 rounded-md shadow-md hover:bg-[#fff1e6] transition duration-200"'>
                   Buy coins
-                </button>
+              </Link>
+         
                 <button
                   onClick={() => signOut(auth)}
                   className="text-white hover:text-[#FFE8D1] font-medium underline underline-offset-4 transition duration-200"
