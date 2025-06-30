@@ -15,7 +15,7 @@ export default function Navbar() {
   }
 
   return (
-<header className="fixed top-0 left-0 w-full z-50 bg-[#FEFFD2]/60 backdrop-blur-sm shadow-md">
+<header className="fixed top-0 left-0 w-full z-50 bg-[#FEFFD2] shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-extrabold text-[#1D1D1D] font-montserrat">
@@ -87,7 +87,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden flex flex-col items-center px-4 pb-4 space-y-2 text-[#1D1D1D] bg-[#FEFFD2] font-montserrat animate-fade-in-down">
+<div className="md:hidden flex flex-col items-center px-4 pb-4 space-y-2 text-[#1D1D1D] bg-[#FEFFD2] shadow-md font-montserrat animate-fade-in-down">
           <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link href="/#about" onClick={() => setMenuOpen(false)}>About</Link>
           <Link href="/#contact" onClick={() => setMenuOpen(false)}>Contact</Link>

@@ -265,9 +265,9 @@ export default function GameDetailPage() {
             <div className="mb-4">
             
               <p className="text-xs mb-2 mt-1 font-montserrat">
-                After completing your order, please share a{" "}
-                <span className="font-bold">screenshot(s)</span> of your{" "}
-                <span className="font-bold">desired package(s)</span> in this chat.
+                After placing your order, please share a {" "} 
+                <span className="font-bold">screenshot(s)</span> of the desired {" "} 
+                <span className="font-bold">package(s) </span> with our support team via live chat.
               </p>
             </div>
 
@@ -344,7 +344,7 @@ export default function GameDetailPage() {
                   checked={isScreenshotChecked}
                   onChange={(e) => setIsScreenshotChecked(e.target.checked)}
                 />
-                Clear screenshots of my desired package are attached.
+                Clear screenshot(s) of the desired package(s) will be sent via live chat.
               </label>
             </div>
 
