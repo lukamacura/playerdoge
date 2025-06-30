@@ -256,7 +256,7 @@ export default function GameDetailPage() {
                 placeholder="Account information / login details"
                 value={accountInfo}
                 onChange={(e) => setAccountInfo(e.target.value)}
-                className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
+                className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d]  font-bold rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
                 rows={3}
               />
 
@@ -272,7 +272,7 @@ export default function GameDetailPage() {
             </div>
 
             <div className="mb-4">
-              <div className="flex items-center justify-between bg-[#FEFFD2] border border-[#1d1d1d] rounded-lg px-4 py-2 text-sm text-gray-600 w-48">
+              <div className="flex items-center justify-between bg-[#FEFFD2] border  font-bold border-[#1d1d1d] rounded-lg px-4 py-2 text-sm text-gray-600 w-48">
                 <button
                   className="text-[#FF7D29] text-lg px-2"
                   onClick={() =>
@@ -305,8 +305,8 @@ export default function GameDetailPage() {
                 placeholder="Notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
-                rows={2}
+                className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] font-bold rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
+                rows={6}
               />
 
             </div>
@@ -325,10 +325,10 @@ export default function GameDetailPage() {
             </p>
 
             <div className="text-sm text-[#1d1d1d] mb-4">
-              <p className="text-xs mb-2 font-montserrat font-bold">
+              <p className="text-md mb-2 font-montserrat font-bold">
                 I understand and agree:
               </p>
-              <label className="block mb-2">
+              <label className="block mb-2 text-xs">
                 <input
                   type="checkbox"
                   className="mr-2"
@@ -337,7 +337,7 @@ export default function GameDetailPage() {
                 />
                 Linked email and password is required.
               </label>
-              <label className="block">
+              <label className="block text-xs">
                 <input
                   type="checkbox"
                   className="mr-2"
