@@ -15,7 +15,7 @@ export default function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#FEFFD2] shadow-md">
+<header className="fixed top-0 left-0 w-full z-50 bg-[#FEFFD2]/60 backdrop-blur-sm shadow-md">
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-extrabold text-[#1D1D1D] font-montserrat">

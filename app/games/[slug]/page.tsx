@@ -14,6 +14,7 @@ import { useTidio } from "@/lib/useTidio";
 type Country = "usa" | "canada" | "eu" | "australia";
 
 export default function GameDetailPage() {
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const { user, userData } = useAuth();
   const router = useRouter();
   const countryLabel = (country: Country) => {
@@ -61,10 +62,15 @@ export default function GameDetailPage() {
   const [accountInfo, setAccountInfo] = useState("");
   const [notes, setNotes] = useState("");
   const [selectedPackIndex, setSelectedPackIndex] = useState<number>(0);
+  const [isCredentialsChecked, setIsCredentialsChecked] = useState(false);
+  const [isScreenshotChecked, setIsScreenshotChecked] = useState(false);
+
 
   const slug = (useParams()?.slug ?? "") as string;
   const game = gameData.find((g) => g.slug === slug);
   if (!game) return notFound();
+
+
 
   const currentPrices = countryPrices[selectedCountry];
 
@@ -82,6 +88,10 @@ export default function GameDetailPage() {
     }
 
     setSelectedPackIndex(index);
+
+
+    document.getElementById("complete_purchase")?.scrollIntoView({ behavior: "smooth" });
+
   };
 
   return (
@@ -255,8 +265,9 @@ export default function GameDetailPage() {
             <div className="mb-4">
             
               <p className="text-xs mb-2 mt-1 font-montserrat">
-                Send screenshot of the{" "}
-                <span className="font-bold">package(s)</span> in the chat.
+                After completing your order, please share a{" "}
+                <span className="font-bold">screenshot(s)</span> of your{" "}
+                <span className="font-bold">desired package(s)</span> in this chat.
               </p>
             </div>
 
@@ -318,35 +329,82 @@ export default function GameDetailPage() {
                 I understand and agree:
               </p>
               <label className="block mb-2">
-                <input type="checkbox" className="mr-2" />
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={isCredentialsChecked}
+                  onChange={(e) => setIsCredentialsChecked(e.target.checked)}
+                />
                 Linked email and password is required.
               </label>
               <label className="block">
-                <input type="checkbox" className="mr-2" />
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={isScreenshotChecked}
+                  onChange={(e) => setIsScreenshotChecked(e.target.checked)}
+                />
                 Clear screenshots of my desired package are attached.
               </label>
             </div>
-          </div>
 
+          </div>
+  {errorMessage && (
+        <p className="text-red-600 text-sm mt-2 font-semibold">{errorMessage}</p>
+      )}
           <button
           className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md"
           onClick={() => {
-            const message = `New purchase request:\n
-        Game: ${game.name}
-        Pack: ${universalPacks[selectedPackIndex].coins} coins
-        Quantity: ${quantity}
-        Account Info: ${accountInfo || "N/A"}
-        Notes: ${notes || "N/A"}
-        Country: ${countryLabel(selectedCountry)}
-        Screenshot: Please send the screenshot in this chat.
-        `;
+    setErrorMessage("");
 
-            openChatWithMessage(message);
-            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-          }}
+    // Ako nije ulogovan
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    // Ako nema dovoljno coinsa
+    const neededCoins = universalPacks[selectedPackIndex].coins * quantity;
+    if (!userData || userData.coins < neededCoins) {
+      router.push("/buycoins");
+      return;
+    }
+
+    // Validacija polja
+    if (!accountInfo.trim()) {
+      setErrorMessage("Please enter your account information.");
+      return;
+    }
+
+    if (!isCredentialsChecked || !isScreenshotChecked) {
+      setErrorMessage("Please make sure you checked both boxes.");
+      return;
+    }
+
+    // Ako sve prolazi, nastavi
+    const message = `New purchase request:
+
+  Game: ${game.name}
+  Pack: ${universalPacks[selectedPackIndex].coins} coins
+  Quantity: ${quantity}
+  Account Info: ${accountInfo || "N/A"}
+  Notes: ${notes || "N/A"}
+  Country: ${countryLabel(selectedCountry)}
+  Screenshot: Please send the screenshot in this chat.
+  `;
+
+    openChatWithMessage(message);
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }}
+
+
         >
+          
           Complete purchase
         </button>
+
+      
+
 
         </div>
       </div>
