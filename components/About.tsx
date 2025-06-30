@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import AnimateSection from "@/components/AnimateSection";
+
 
 export default function About() {
   return (
-    <section id="about" className="py-2 px-4 ">
+    <AnimateSection>
+ <section id="about" className="py-2 px-4 ">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
         {/* Tekstualni deo */}
         <div className="flex-1">
@@ -33,5 +36,7 @@ export default function About() {
         </div>
       </div>
     </section>
+    </AnimateSection>
+   
   );
 }

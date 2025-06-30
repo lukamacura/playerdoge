@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import AnimateSection from "@/components/AnimateSection";
 import { gameData } from "@/lib/gameData";
 
 const trendingSlugs = [
@@ -21,7 +22,8 @@ export default function Trending() {
   const trendingGames = gameData.filter(g => trendingSlugs.includes(g.slug));
 
   return (
-    <section className="py-12 px-4 max-w-6xl mx-auto">
+    <AnimateSection>
+<section className="py-12 px-4 max-w-6xl mx-auto">
       <h2 className="text-3xl md:text-4xl font-extrabold font-montserrat text-center text-[#FF7D29] drop-shadow-[0_2px_2px_rgba(0,0,0,0.15)] mb-8">
         Trending
       </h2>
@@ -55,5 +57,7 @@ export default function Trending() {
         </Link>
       </div>
     </section>
+    </AnimateSection>
+    
   );
 }
