@@ -4,6 +4,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { Providers } from "./providers"; // 👈 novi import
 import Preloader from '@/components/Preloader'
+import Script from "next/script";
+
 
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -39,6 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
           <Footer />
         </Providers>
+        <Script
+          src="https://code.tidio.co/mf6ykieouhpnn2yunnny6rud2q7p40nu.js"
+          strategy="afterInteractive"
+        />
+
       </body>
     </html>
   )
