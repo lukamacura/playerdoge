@@ -11,7 +11,7 @@ import { useTidio } from "@/lib/useTidio";
 
 
 
-type Country = "usa" | "canada" | "eu" | "australia";
+type Country = "usa" | "canada" | "eu" | "australia" | "other";
 
 export default function GameDetailPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -27,6 +27,9 @@ export default function GameDetailPage() {
         return "Europe";
       case "australia":
         return "Australia";
+        case "other":
+  return "Other Region";
+
       default:
         return "";
     }
@@ -48,6 +51,9 @@ export default function GameDetailPage() {
     canada: [6.99, 13.99, 26.99, 69.99, 139.99],
     eu: [5.99, 11.99, 22.99, 59.99, 119.99],
     australia: [7.99, 16.99, 33.99, 79.99, 159.99],
+    other: [4.99, 9.99, 19.99, 49.99, 99.99], // isto kao usa
+
+    
   };
 
   const currencyPrefixes: Record<Country, string> = {
@@ -55,6 +61,8 @@ export default function GameDetailPage() {
     canada: "CAD",
     eu: "EUR",
     australia: "AUD",
+    other: "USD", // kao usa
+
   };
 
   const [selectedCountry, setSelectedCountry] = useState<Country>("usa");
@@ -131,7 +139,7 @@ export default function GameDetailPage() {
           </span>
         </Listbox.Button>
         <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          {(["usa", "canada", "eu", "australia"] as Country[]).map((country) => (
+{(["usa", "canada", "eu", "australia", "other"] as Country[]).map((country) => (
             <Listbox.Option
               key={country}
               value={country}
