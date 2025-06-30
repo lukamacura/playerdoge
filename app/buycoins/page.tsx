@@ -4,9 +4,12 @@ import clsx from "clsx";
 import { useState } from "react";
 import { CoinCard } from "@/components/CoinCard";
 import Image from "next/image";
+import { useTidio } from "@/lib/useTidio";
+
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] = useState<"USD" | "EUR">("USD");
+  const { openChatWithMessage } = useTidio();
 
   const priceData = {
     USD: [
@@ -89,8 +92,15 @@ export default function BuyCoinsPage() {
                 price={coin.price}
                 value={coin.value}
                 index={i}
+                onBuy={() => {
+                  const message = `Hello! I want to purchase:\n\n- ${coin.amount.toLocaleString()} coins\n- Price: ${coin.value}`;
+                  openChatWithMessage(message);
+                  // Scroll do chata
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                }}
               />
             ))}
+
           </div>
 
           <h2 className="mt-10 mb-4 text-xl font-extrabold font-montserrat text-[#1D1D1D]">

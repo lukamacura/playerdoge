@@ -5,6 +5,8 @@ import Footer from '@/components/Footer'
 import { Providers } from "./providers"; // 👈 novi import
 import Preloader from '@/components/Preloader'
 import Script from "next/script";
+import TidioSessionManager from "@/components/TidioSessionManager";
+
 
 
 
@@ -37,6 +39,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.variable} ${montserrat.variable} bg-[#FEFFD2] text-[#1D1D1D]`}>
         <Preloader /> {/* Ovde ga ubaci */}
         <Providers>
+          <TidioSessionManager />
           <Navbar />
           {children}
           <Footer />

@@ -7,6 +7,8 @@ import { gameData } from "@/lib/gameData";
 import { useAuth } from "@/context/AuthContext";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
+import { useTidio } from "@/lib/useTidio";
+
 
 
 type Country = "usa" | "canada" | "eu" | "australia";
@@ -28,6 +30,9 @@ export default function GameDetailPage() {
         return "";
     }
   };
+
+  const { openChatWithMessage } = useTidio();
+
 
   const universalPacks = [
     { label: "Any pack", coins: 500 },
@@ -53,6 +58,8 @@ export default function GameDetailPage() {
 
   const [selectedCountry, setSelectedCountry] = useState<Country>("usa");
   const [quantity, setQuantity] = useState<number>(1);
+  const [accountInfo, setAccountInfo] = useState("");
+  const [notes, setNotes] = useState("");
   const [selectedPackIndex, setSelectedPackIndex] = useState<number>(0);
 
   const slug = (useParams()?.slug ?? "") as string;
@@ -237,22 +244,19 @@ export default function GameDetailPage() {
               />
               <textarea
                 placeholder="Account information / login details"
+                value={accountInfo}
+                onChange={(e) => setAccountInfo(e.target.value)}
                 className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
                 rows={3}
               />
+
             </div>
 
             <div className="mb-4">
-              <label
-                htmlFor="screenshot-upload"
-                className="cursor-pointer inline-block bg-[#FEFFD2] text-[#FF7D29] border border-dashed border-[#FF7D29] rounded-lg px-6 py-2 text-sm font-semibold text-center hover:bg-[#ffecd1] transition"
-              >
-                Screenshot
-              </label>
-              <input id="screenshot-upload" type="file" className="hidden" />
+            
               <p className="text-xs mb-2 mt-1 font-montserrat">
-                Screenshot of the{" "}
-                <span className="font-bold">package(s).</span>
+                Send screenshot of the{" "}
+                <span className="font-bold">package(s)</span> in the chat.
               </p>
             </div>
 
@@ -288,9 +292,12 @@ export default function GameDetailPage() {
               />
               <textarea
                 placeholder="Notes"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
                 className="w-full pl-10 border bg-[#FEFFD2] border-[#1d1d1d] rounded px-4 py-2 text-sm outline-none placeholder:text-gray-600"
                 rows={2}
               />
+
             </div>
 
             <p className="text-md mb-4 font-semibold flex items-center gap-1">
@@ -321,9 +328,26 @@ export default function GameDetailPage() {
             </div>
           </div>
 
-          <button className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md">
-            Complete purchase
-          </button>
+          <button
+          className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md"
+          onClick={() => {
+            const message = `New purchase request:\n
+        Game: ${game.name}
+        Pack: ${universalPacks[selectedPackIndex].coins} coins
+        Quantity: ${quantity}
+        Account Info: ${accountInfo || "N/A"}
+        Notes: ${notes || "N/A"}
+        Country: ${countryLabel(selectedCountry)}
+        Screenshot: Please send the screenshot in this chat.
+        `;
+
+            openChatWithMessage(message);
+            window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+          }}
+        >
+          Complete purchase
+        </button>
+
         </div>
       </div>
 
