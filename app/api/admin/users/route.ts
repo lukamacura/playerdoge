@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { adminDb, adminAuth } from "@/lib/firebaseAdmin";
 import { NextResponse } from "next/server";
 
@@ -6,7 +8,7 @@ export async function GET() {
   const users = snapshot.docs.map(doc => ({
     uid: doc.id,
     email: doc.data().email,
-    coins: doc.data().coins
+    coins: doc.data().coins,
   }));
 
   return NextResponse.json(users);
