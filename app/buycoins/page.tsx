@@ -1,11 +1,12 @@
 "use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
-import { useState } from "react";
 import { CoinCard } from "@/components/CoinCard";
-import Image from "next/image";
 import { useTidio } from "@/lib/useTidio";
-
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] = useState<"USD" | "EUR">("USD");
@@ -24,7 +25,6 @@ export default function BuyCoinsPage() {
       { amount: 10000, price: "119.99 EUR", value: "87.99 EUR" },
       { amount: 100000, price: "1199.99 EUR", value: "879.99 EUR" },
     ],
-
   };
 
   const coins = priceData[currency];
@@ -34,104 +34,142 @@ export default function BuyCoinsPage() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
         {/* Left */}
         <div className="flex flex-col justify-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold font-montserrat text-[#1D1D1D] mb-8">
-            Buy coins
-          </h1>
-
-          <div className="mb-4">
-           <Listbox value={currency} onChange={setCurrency}>
-  {({  }) => (
-    <div className="relative mt-1">
-      <Listbox.Button className="relative w-full md:w-auto cursor-pointer rounded-lg border border-black bg-transparent py-2 pl-3 pr-10 text-left text-sm">
-        <span className="flex items-center gap-2">
-          <Image
-            src={`/images/${currency === "USD" ? "usa" : "eu"}.png`}
-            alt={currency}
-            width={20}
-            height={14}
-          />
-          {currency}
-        </span>
-      </Listbox.Button>
-
-      <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-        {["USD", "EUR"].map((curr) => (
-          <Listbox.Option
-            key={curr}
-            value={curr}
-            className={({ active }) =>
-              clsx(
-                "cursor-pointer select-none relative py-2 pl-3 pr-9",
-                active ? "bg-[#FFEFC4]" : ""
-              )
-            }
+          {/* Heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-extrabold font-montserrat text-[#1D1D1D] mb-8"
           >
-            <div className="flex items-center gap-2">
-              <Image
-                src={`/images/${curr === "USD" ? "usa" : "eu"}.png`}
-                alt={curr}
-                width={20}
-                height={14}
-              />
-              {curr}
-            </div>
-          </Listbox.Option>
-        ))}
-      </Listbox.Options>
-    </div>
-  )}
-</Listbox>
+            Buy coins
+          </motion.h1>
 
-          </div>
+          {/* Currency Select */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
+            viewport={{ once: true }}
+            className="mb-4"
+          >
+            <Listbox value={currency} onChange={setCurrency}>
+              {() => (
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full md:w-auto cursor-pointer rounded-lg border border-black bg-transparent py-2 pl-3 pr-10 text-left text-sm">
+                    <span className="flex items-center gap-2">
+                      <Image
+                        src={`/images/${currency === "USD" ? "usa" : "eu"}.png`}
+                        alt={currency}
+                        width={20}
+                        height={14}
+                      />
+                      {currency}
+                    </span>
+                  </Listbox.Button>
+                  <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    {["USD", "EUR"].map((curr) => (
+                      <Listbox.Option
+                        key={curr}
+                        value={curr}
+                        className={({ active }) =>
+                          clsx(
+                            "cursor-pointer select-none relative py-2 pl-3 pr-9",
+                            active ? "bg-[#FFEFC4]" : ""
+                          )
+                        }
+                      >
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src={`/images/${curr === "USD" ? "usa" : "eu"}.png`}
+                            alt={curr}
+                            width={20}
+                            height={14}
+                          />
+                          {curr}
+                        </div>
+                      </Listbox.Option>
+                    ))}
+                  </Listbox.Options>
+                </div>
+              )}
+            </Listbox>
+          </motion.div>
 
+          {/* Coin Cards */}
           <div className="space-y-4">
             {coins.map((coin, i) => (
-              <CoinCard
+              <motion.div
                 key={coin.amount}
-                amount={coin.amount}
-                price={coin.price}
-                value={coin.value}
-                index={i}
-                onBuy={() => {
-                  const message = `Hello! I want to purchase:\n\n- ${coin.amount.toLocaleString()} coins\n- Price: ${coin.value}`;
-                  openChatWithMessage(message);
-                  // Scroll do chata
-                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{
+                  delay: 0.2 + i * 0.1,
+                  duration: 0.5,
+                  ease: "easeOut",
                 }}
-              />
-            ))}
-
-          </div>
-
-          <h2 className="mt-10 mb-4 text-xl font-extrabold font-montserrat text-[#1D1D1D]">
-            Secure payment
-          </h2>
-
-          <div className="bg-[#FFEFC4] rounded-lg p-4 grid grid-cols-4 gap-4 place-items-center">
-            {[
-              "paypal",
-              "wise",
-              "paysend",
-              "remitly",
-              "zelle",
-              "visa",
-              "master",
-              "moneygram",
-            ].map((method) => (
-              <Image
-                key={method}
-                src={`/images/payments/${method}.png`}
-                alt={method}
-                width={100}
-                height={40}
-                className="h-10 md:h-14 w-auto object-contain"
-              />
+                viewport={{ once: true }}
+              >
+                <CoinCard
+                  amount={coin.amount}
+                  price={coin.price}
+                  value={coin.value}
+                  index={i}
+                  onBuy={() => {
+                    const message = `Hello! I want to purchase:\n\n- ${coin.amount.toLocaleString()} coins\n- Price: ${coin.value}`;
+                    openChatWithMessage(message);
+                    window.scrollTo({
+                      top: document.body.scrollHeight,
+                      behavior: "smooth",
+                    });
+                  }}
+                />
+              </motion.div>
             ))}
           </div>
+
+          {/* Payment Methods */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true }}
+          >
+            <h2 className="mt-10 mb-4 text-xl font-extrabold font-montserrat text-[#1D1D1D]">
+              Secure payment
+            </h2>
+            <div className="bg-[#FFEFC4] rounded-lg p-4 grid grid-cols-4 gap-4 place-items-center">
+              {[
+                "paypal",
+                "wise",
+                "paysend",
+                "remitly",
+                "zelle",
+                "visa",
+                "master",
+                "moneygram",
+              ].map((method) => (
+                <Image
+                  key={method}
+                  src={`/images/payments/${method}.png`}
+                  alt={method}
+                  width={100}
+                  height={40}
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
+              ))}
+            </div>
+          </motion.div>
         </div>
 
         {/* Right */}
-        <div className="flex flex-col items-center md:items-start gap-8">
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="flex flex-col items-center md:items-start gap-8"
+        >
           <Image
             src="/images/buycoins.png"
             alt="Treasure chest with coins"
@@ -145,7 +183,7 @@ export default function BuyCoinsPage() {
             offer automatic currency conversion, so you can pay easily in your
             local currency.
           </p>
-        </div>
+        </motion.div>
       </div>
     </main>
   );

@@ -1,75 +1,86 @@
 "use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  updateProfile
-} from 'firebase/auth'
-import { FirebaseError } from 'firebase/app'
+  updateProfile,
+} from "firebase/auth";
+import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/navigation";
-import { auth, db } from '@/lib/firebase'
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore'
-import Image from 'next/image'
-import Link from 'next/link'
+import { auth, db } from "@/lib/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Register() {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password)
+      const userCred = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
-      await updateProfile(userCred.user, { displayName: name })
+      await updateProfile(userCred.user, { displayName: name });
 
-      await setDoc(doc(db, 'users', userCred.user.uid), {
+      await setDoc(doc(db, "users", userCred.user.uid), {
         coins: 100,
         name,
         email,
-        createdAt: serverTimestamp()
-      })
+        createdAt: serverTimestamp(),
+      });
 
-      await sendEmailVerification(userCred.user)
+      await sendEmailVerification(userCred.user);
 
-      alert('Verification email sent! Please check your inbox.')
-      router.push('/login')
+      alert("Verification email sent! Please check your inbox.");
+      router.push("/login");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
-        const code = err.code
-        if (code === 'auth/email-already-in-use') {
-          setError('This email is already registered.')
-        } else if (code === 'auth/weak-password') {
-          setError('Password should be at least 6 characters.')
-        } else if (code === 'auth/invalid-email') {
-          setError('Invalid email address format.')
+        const code = err.code;
+        if (code === "auth/email-already-in-use") {
+          setError("This email is already registered.");
+        } else if (code === "auth/weak-password") {
+          setError("Password should be at least 6 characters.");
+        } else if (code === "auth/invalid-email") {
+          setError("Invalid email address format.");
         } else {
-          setError('Something went wrong. Please try again.')
+          setError("Something went wrong. Please try again.");
         }
       } else {
-        setError('Unexpected error occurred.')
+        setError("Unexpected error occurred.");
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-[#FEFFD2] flex items-center justify-center px-4 pt-[10vh]">
       <div className="max-w-5xl w-full flex flex-col lg:flex-row items-center justify-between gap-8">
-        <form
+        {/* Form */}
+        <motion.form
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-[#FF7D29]/10 rounded-3xl shadow-xl p-8 text-[#1D1D1D]"
         >
-          <h1 className="text-2xl font-bold mb-4 text-center font-montserrat">Registration</h1>
+          <h1 className="text-2xl font-bold mb-4 text-center font-montserrat">
+            Registration
+          </h1>
 
           <div className="space-y-4">
             <input
@@ -97,29 +108,41 @@ export default function Register() {
               required
             />
 
-            {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+            {error && (
+              <p className="text-red-600 text-sm mt-1">{error}</p>
+            )}
 
             <button
               type="submit"
               className="w-full h-14 bg-[#FF7D29] hover:bg-[#e96e1b] text-white py-2 rounded-md font-bold font-montserrat"
               disabled={loading}
             >
-              {loading ? 'Registering...' : 'Register'}
+              {loading ? "Registering..." : "Register"}
             </button>
           </div>
 
           <p className="text-sm text-center mt-4 text-[#1D1D1D]/70">
-           🔥Get <span className="font-bold text-[#1D1D1D]">100 free coins</span> when you register!
+            🔥Get{" "}
+            <span className="font-bold text-[#1D1D1D]">
+              100 free coins
+            </span>{" "}
+            when you register!
           </p>
           <p className="text-sm text-center mt-2 text-[#1D1D1D]">
-            Have an account?{' '}
+            Have an account?{" "}
             <Link href="/login" className="text-[#FF7D29] font-semibold">
               Login
             </Link>
           </p>
-        </form>
+        </motion.form>
 
-        <div className="w-full max-w-md flex justify-center">
+        {/* Illustration */}
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full max-w-md flex justify-center"
+        >
           <Image
             src="/images/register.png"
             alt="Doge registering"
@@ -127,8 +150,8 @@ export default function Register() {
             height={400}
             priority
           />
-        </div>
+        </motion.div>
       </div>
     </div>
-  )
+  );
 }

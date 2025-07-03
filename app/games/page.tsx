@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { gameData } from "@/lib/gameData";
 
 const categories = [
@@ -35,17 +36,30 @@ export default function GamesPage() {
   return (
     <main className="bg-[#FEFFD2] mt-16 min-h-screen py-10 px-4 md:px-8 xl:px-16">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8">
+        {/* Heading */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="text-center mb-8"
+        >
           <h1 className="text-4xl md:text-5xl font-extrabold font-montserrat text-[#1D1D1D] mb-2">
             Games you love. Deals you deserve.
           </h1>
           <p className="text-[#4b4b4b] text-base font-inter md:text-lg">
             Get the best top-up offers and save more every time.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 justify-center items-center mb-10">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true }}
+          className="flex flex-col md:flex-row gap-4 justify-center items-center mb-10"
+        >
           <input
             type="text"
             placeholder="Search Games"
@@ -75,31 +89,43 @@ export default function GamesPage() {
               </option>
             ))}
           </select>
-        </div>
+        </motion.div>
 
         {/* Game Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((game) => (
-            <Link href={`/games/${game.slug}`} key={game.slug}>
-              <div className="bg-transparent border border-[#1d1d1d] p-3 rounded-xl flex gap-4 items-center shadow-lg hover:shadow-2xl transition cursor-pointer">
-                <div className="w-[120px] h-[80px] relative rounded-lg overflow-hidden">
-                  <Image
-                    src={game.image}
-                    alt={game.name}
-                    fill
-                    className="object-cover rounded"
-                  />
+          {filtered.map((game, i) => (
+            <motion.div
+              key={game.slug}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: 0.2 + i * 0.1,
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+              viewport={{ once: true }}
+            >
+              <Link href={`/games/${game.slug}`}>
+                <div className="bg-transparent border border-[#1d1d1d] p-3 rounded-xl flex gap-4 items-center shadow-lg hover:shadow-2xl transition cursor-pointer">
+                  <div className="w-[120px] h-[80px] relative rounded-lg overflow-hidden">
+                    <Image
+                      src={game.image}
+                      alt={game.name}
+                      fill
+                      className="object-cover rounded"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-md md:text-xl font-montserrat text-[#1d1d1d]">
+                      {game.name}
+                    </h3>
+                    <p className="text-sm mt-1 bg-[#FFEFC4] w-fit px-2 py-1 rounded font-inter font-medium">
+                      {game.category}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="font-bold text-md md:text-xl font-montserrat text-[#1d1d1d]">
-                    {game.name}
-                  </h3>
-                  <p className="text-sm mt-1 bg-[#FFEFC4] w-fit px-2 py-1 rounded font-inter font-medium">
-                    {game.category}
-                  </p>
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
