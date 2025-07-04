@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -15,11 +15,10 @@ export default function Footer() {
             Roswell, GA, 30076<br />
             United States
           </p>
-         
         </div>
 
-        {/* Right: nav + icons */}
-        <div className="flex flex-col items-center md:items-end gap-6 text-center md:text-right">
+        {/* Right: nav + contacts + icons */}
+        <div className="flex flex-col items-center md:items-end gap-6 text-center md:text-right w-full">
           {/* Nav links */}
           <nav className="hidden md:flex flex-wrap gap-4 items-center justify-end text-[#1D1D1D] font-montserrat text-md">
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/">Home</Link>
@@ -31,6 +30,43 @@ export default function Footer() {
             </Link>
           </nav>
 
+          {/* Contact items */}
+          <div className="flex flex-col gap-3 w-full max-w-xs">
+            {[
+              {
+                icon: "/icons/email.png",
+                label: "support@playerdoge.com",
+                href: "mailto:support@playerdoge.com",
+              },
+              {
+                icon: "/icons/instagram.png",
+                label: "@packloader",
+                href: "https://www.instagram.com/packloader/",
+              },
+              {
+                icon: "/icons/discord.png",
+                label: "PlayerDoge",
+                href: "https://discord.gg/ntgxjAhtUQ",
+              },
+            ].map((contact) => (
+              <Link
+                key={contact.label}
+                href={contact.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 bg-[#FFEFC4] rounded-lg px-4 py-3 shadow hover:bg-[#ffe4a0] transition-colors duration-200"
+              >
+                <Image
+                  src={contact.icon}
+                  alt={`${contact.label} icon`}
+                  width={24}
+                  height={24}
+                />
+                <span className="font-semibold font-inter">{contact.label}</span>
+              </Link>
+            ))}
+          </div>
+
           {/* Legal links */}
           <div className="flex gap-4 text-xs md:text-sm text-[#1D1D1D]">
             <Link href="/terms" className="underline hover:text-[#FF7D29]">Terms of Service</Link>
@@ -38,29 +74,28 @@ export default function Footer() {
           </div>
 
           {/* Payment icons */}
-        <div className="grid grid-cols-4 md:flex md:flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
-          {[
-            "paypal",
-            "wise",
-            "paysend",
-            "remitly",
-            "zelle",
-            "visa",
-            "master",
-            "moneygram",
-          ].map((name) => (
-            <div key={name} className="flex justify-center md:justify-end">
-              <Image
-                src={`/images/${name}.png`}
-                alt={name}
-                width={60}
-                height={32}
-                className="h-8 md:h-10 w-auto object-contain"
-              />
-            </div>
-          ))}
-        </div>
-
+          <div className="grid grid-cols-4 md:flex md:flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
+            {[
+              "paypal",
+              "wise",
+              "paysend",
+              "remitly",
+              "zelle",
+              "visa",
+              "master",
+              "moneygram",
+            ].map((name) => (
+              <div key={name} className="flex justify-center md:justify-end">
+                <Image
+                  src={`/images/${name}.png`}
+                  alt={name}
+                  width={60}
+                  height={32}
+                  className="h-8 md:h-10 w-auto object-contain"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </footer>

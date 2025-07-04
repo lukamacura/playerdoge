@@ -6,7 +6,6 @@ import HowItWorks from '@/components/HowItWorks';
 import WhyPlayerDoge from '@/components/WhyPlayerDoge'
 import Reviews from "@/components/Reviews";
 import Faq from "@/components/Faq";
-import Contact from "@/components/Contact";
 import Team from "@/components/Team";
 
 
@@ -23,7 +22,6 @@ export default function Home() {
       <Faq />
       <Reviews />
       <Team />
-      <Contact />
 
 
     </main>
