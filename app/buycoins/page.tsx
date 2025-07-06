@@ -9,7 +9,8 @@ import { CoinCard } from "@/components/CoinCard";
 import { useTidio } from "@/lib/useTidio";
 
 export default function BuyCoinsPage() {
-  const [currency, setCurrency] = useState<"USD" | "EUR">("USD");
+  const [currency, setCurrency] =
+    useState<"USD" | "EUR" | "CAD" | "AUD">("USD");
   const { openChatWithMessage } = useTidio();
 
   const priceData = {
@@ -25,6 +26,25 @@ export default function BuyCoinsPage() {
       { amount: 10000, price: "119.99 EUR", value: "87.99 EUR" },
       { amount: 100000, price: "1199.99 EUR", value: "879.99 EUR" },
     ],
+    CAD: [
+      { amount: 2000, price: "26.99 CAD", value: "24.99 CAD" },
+      { amount: 5000, price: "69.99 CAD", value: "60.99 CAD" },
+      { amount: 10000, price: "139.99 CAD", value: "120.99 CAD" },
+      { amount: 100000, price: "1399.99 CAD", value: "1209.99 CAD" },
+    ],
+    AUD: [
+      { amount: 2000, price: "33.99 AUD", value: "27.99 AUD" },
+      { amount: 5000, price: "79.99 AUD", value: "67.99 AUD" },
+      { amount: 10000, price: "159.99 AUD", value: "135.99 AUD" },
+      { amount: 100000, price: "1599.99 AUD", value: "1354.99 AUD" },
+    ],
+  };
+
+  const flagMap: Record<string, string> = {
+    USD: "usa",
+    EUR: "eu",
+    CAD: "canada",
+    AUD: "australia",
   };
 
   const coins = priceData[currency];
@@ -59,7 +79,7 @@ export default function BuyCoinsPage() {
                   <Listbox.Button className="relative w-full md:w-auto cursor-pointer rounded-lg border border-black bg-transparent py-2 pl-3 pr-10 text-left text-sm">
                     <span className="flex items-center gap-2">
                       <Image
-                        src={`/images/${currency === "USD" ? "usa" : "eu"}.png`}
+                        src={`/images/${flagMap[currency]}.png`}
                         alt={currency}
                         width={20}
                         height={14}
@@ -68,7 +88,7 @@ export default function BuyCoinsPage() {
                     </span>
                   </Listbox.Button>
                   <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    {["USD", "EUR"].map((curr) => (
+                    {["USD", "EUR", "CAD", "AUD"].map((curr) => (
                       <Listbox.Option
                         key={curr}
                         value={curr}
@@ -81,7 +101,7 @@ export default function BuyCoinsPage() {
                       >
                         <div className="flex items-center gap-2">
                           <Image
-                            src={`/images/${curr === "USD" ? "usa" : "eu"}.png`}
+                            src={`/images/${flagMap[curr]}.png`}
                             alt={curr}
                             width={20}
                             height={14}
@@ -179,9 +199,9 @@ export default function BuyCoinsPage() {
             priority
           />
           <p className="text-lg md:text-2xl font-bold text-[#1D1D1D] text-center md:text-left max-w-lg">
-            Coins can be purchased in USD or EUR. All major payment methods
-            offer automatic currency conversion, so you can pay easily in your
-            local currency.
+            Coins can be purchased in USD, EUR, CAD or AUD. All major payment
+            methods offer automatic currency conversion, so you can pay easily in
+            your local currency.
           </p>
         </motion.div>
       </div>
