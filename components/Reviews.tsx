@@ -44,11 +44,11 @@ const Reviews = () => {
           Trusted by gamers worldwide.
         </motion.h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6">
           {currentIndices.map((index) => (
             <div
               key={index}
-              className="relative w-full h-[200px] rounded-2xl overflow-hidden shadow-lg"
+              className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -61,10 +61,9 @@ const Reviews = () => {
                 >
                   <Image
                     src={images[index]}
-                    alt={`Review`}
-                    width={600}
-                    height={300}
-                    className="w-full h-full object-cover"
+                    alt="Review"
+                    fill
+                    className="object-cover"
                     priority
                   />
                 </motion.div>
