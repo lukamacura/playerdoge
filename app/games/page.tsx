@@ -38,10 +38,7 @@ export default function GamesPage() {
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           className="text-center mb-8"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold font-montserrat text-[#1D1D1D] mb-2">
@@ -54,9 +51,9 @@ export default function GamesPage() {
 
         {/* Filters */}
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
           viewport={{ once: true }}
           className="flex flex-col md:flex-row gap-4 justify-center items-center mb-10"
         >
@@ -93,40 +90,40 @@ export default function GamesPage() {
 
         {/* Game Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((game, i) => (
-            <motion.div
-              key={game.slug}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 0.2 + i * 0.1,
-                duration: 0.5,
-                ease: "easeOut",
-              }}
-              viewport={{ once: true }}
-            >
-              <Link href={`/games/${game.slug}`}>
-                <div className="bg-transparent border border-[#1d1d1d] p-3 rounded-xl flex gap-4 items-center shadow-lg hover:shadow-2xl transition cursor-pointer">
-                  <div className="w-[120px] h-[80px] relative rounded-lg overflow-hidden">
-                    <Image
-                      src={game.image}
-                      alt={game.name}
-                      fill
-                      className="object-cover rounded"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-md md:text-xl font-montserrat text-[#1d1d1d]">
-                      {game.name}
-                    </h3>
-                    <p className="text-sm mt-1 bg-[#FFEFC4] w-fit px-2 py-1 rounded font-inter font-medium">
-                      {game.category}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+         {filtered.map((game, i) => (
+  <motion.div
+    key={game.slug}
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{
+      duration: 0.4,
+      ease: "easeOut",
+      delay: i * 0.05,
+    }}
+  >
+    <Link href={`/games/${game.slug}`}>
+      <div className="bg-transparent border border-[#1d1d1d] p-3 rounded-xl flex gap-4 items-center shadow-lg hover:shadow-2xl transition cursor-pointer">
+        <div className="w-[120px] h-[80px] relative rounded-lg overflow-hidden">
+          <Image
+            src={game.image}
+            alt={game.name}
+            fill
+            className="object-cover rounded"
+          />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-bold text-md md:text-xl font-montserrat text-[#1d1d1d]">
+            {game.name}
+          </h3>
+          <p className="text-sm mt-1 bg-[#FFEFC4] w-fit px-2 py-1 rounded font-inter font-medium">
+            {game.category}
+          </p>
+        </div>
+      </div>
+    </Link>
+  </motion.div>
+))}
+
         </div>
       </div>
     </main>

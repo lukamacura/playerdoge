@@ -4,20 +4,29 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const imageGroups = [
-  ["/images/reviews/review1.png", "/images/reviews/review2.png", "/images/reviews/review3.png"],
-  ["/images/reviews/review4.png", "/images/reviews/review5.png", "/images/reviews/review6.png"],
-  ["/images/reviews/review7.png", "/images/reviews/review8.png", "/images/reviews/review9.png"],
-  // Dodaj dalje ako imaš više slika...
+const images = [
+  "/images/reviews/review1.png",
+  "/images/reviews/review2.png",
+  "/images/reviews/review3.png",
+  "/images/reviews/review4.png",
+  "/images/reviews/review5.png",
+  "/images/reviews/review6.png",
+  "/images/reviews/review7.png",
+  "/images/reviews/review8.png",
+  "/images/reviews/review9.png",
 ];
 
 const Reviews = () => {
-  const [currentGroupIndex, setCurrentGroupIndex] = useState(0);
+  const [currentIndices, setCurrentIndices] = useState([0, 1, 2]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentGroupIndex((prevIndex) => (prevIndex + 1) % imageGroups.length);
-    }, 4000);
+      setCurrentIndices(([i1, i2, i3]) => [
+        (i1 + 3) % images.length,
+        (i2 + 3) % images.length,
+        (i3 + 3) % images.length,
+      ]);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -26,9 +35,9 @@ const Reviews = () => {
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
         <motion.h2
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
           viewport={{ once: true }}
           className="text-center text-3xl md:text-4xl font-extrabold font-montserrat text-[#1d1d1d] mb-12"
         >
@@ -36,26 +45,32 @@ const Reviews = () => {
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <AnimatePresence initial={false}>
-            {imageGroups[currentGroupIndex].map((src, i) => (
-              <motion.div
-                key={src}
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="rounded-2xl overflow-hidden"
-              >
-                <Image
-                  src={src}
-                  alt={`Review ${i + 1}`}
-                  width={800}
-                  height={500}
-                  className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300"
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          {currentIndices.map((index) => (
+            <div
+              key={index}
+              className="relative w-full h-[200px] rounded-2xl overflow-hidden shadow-lg"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={images[index]}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="w-full h-full"
+                >
+                  <Image
+                    src={images[index]}
+                    alt={`Review`}
+                    width={600}
+                    height={300}
+                    className="w-full h-full object-cover"
+                    priority
+                  />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ))}
         </div>
       </div>
     </section>
