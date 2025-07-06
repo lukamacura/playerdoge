@@ -4,17 +4,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function JoinPopup() {
+  const { user, loading } = useAuth();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 6000); // 6 sekundi
+    if (!loading && !user) {
+      const timer = setTimeout(() => {
+        setShow(true);
+      }, 6000); // 6 sekundi
 
-    return () => clearTimeout(timer);
-  }, []);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, user]);
+
+  if (loading || user) {
+    // Ako i dalje proverava auth ili je user logovan, ne prikazuj popup
+    return null;
+  }
 
   return (
     <AnimatePresence>
@@ -34,24 +43,18 @@ export default function JoinPopup() {
               <X size={24} />
             </button>
             <h2 className="text-xl md:text-2xl font-montserrat font-bold mb-6">
-              🔥Grab 100 free coins
+              🔥 Grab 100 free coins
               <br />
               when you join us!
             </h2>
-            <Link href="/register"
-                          onClick={() => setShow(false)}
-
-            >
+            <Link href="/register" onClick={() => setShow(false)}>
               <button className="w-full bg-gradient-to-r from-orange-500 to-orange-400 hover:brightness-110 text-white font-semibold py-3 rounded-lg shadow-md transition">
                 Register
               </button>
             </Link>
             <p className="mt-4 text-sm text-gray-300">
               Have an account?{" "}
-              <Link href="/login"
-                            onClick={() => setShow(false)}
-
-              >
+              <Link href="/login" onClick={() => setShow(false)}>
                 <span className="text-orange-400 hover:underline cursor-pointer">
                   Login
                 </span>
