@@ -31,7 +31,7 @@ const Reviews = () => {
   }, []);
 
   return (
-    <section className="bg-[#FFFDD0] py-16 px-4">
+    <section className="bg-[#FFFDD0] py-2 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
         <motion.h2
@@ -48,7 +48,7 @@ const Reviews = () => {
           {currentIndices.map((index) => (
             <div
               key={index}
-              className="relative w-full h-[200px] rounded-2xl overflow-hidden shadow-lg"
+              className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -57,16 +57,17 @@ const Reviews = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="w-full h-full"
+                  className="absolute inset-0"
                 >
-                  <Image
-                    src={images[index]}
-                    alt={`Review`}
-                    width={600}
-                    height={300}
-                    className="w-full h-full object-cover"
-                    priority
-                  />
+                 <Image
+                  src={images[index]}
+                  alt={`Review`}
+                  width={800}
+                  height={500}
+                  className="w-full h-auto rounded-2xl"
+                  priority
+                />
+
                 </motion.div>
               </AnimatePresence>
             </div>

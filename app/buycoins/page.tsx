@@ -184,8 +184,8 @@ export default function BuyCoinsPage() {
 
         {/* Right */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0}}
+          whileInView={{ opacity: 1}}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true }}
           className="flex flex-col items-center md:items-start gap-8"
