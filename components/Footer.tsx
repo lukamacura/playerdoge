@@ -87,7 +87,7 @@ export default function Footer() {
             ].map((name) => (
               <div key={name} className="flex justify-center md:justify-end">
                 <Image
-                  src={`/images/${name}.png`}
+                  src={`/images/payments/${name}.png`}
                   alt={name}
                   width={60}
                   height={32}

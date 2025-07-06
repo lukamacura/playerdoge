@@ -49,7 +49,7 @@ export default function Preloader() {
         />
       </div>
       <p
-        className={`text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
+        className={`text-xs md:text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
           fade ? "opacity-100" : "opacity-0"
         }`}
       >

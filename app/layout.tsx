@@ -16,6 +16,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        {/* Dodaj favicon */}
+        <link rel="icon" href="/images/preloader.png" />
+      </head>
       <body className={`${inter.variable} ${montserrat.variable} bg-[#FEFFD2] text-[#1D1D1D]`}>
         <Providers>
           <TidioSessionManager />

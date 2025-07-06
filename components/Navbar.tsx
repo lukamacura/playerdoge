@@ -26,7 +26,6 @@ export default function Navbar() {
         <nav className="hidden md:flex items-center gap-6 text-[#1D1D1D] font-montserrat">
           <Link href="/" className="hover:text-[#FF7D29] transition-colors duration-200">Home</Link>
           <Link href="/#about" className="hover:text-[#FF7D29] transition-colors duration-200">About</Link>
-          <Link href="/#contact" className="hover:text-[#FF7D29] transition-colors duration-200">Contact</Link>
           <Link href="/games" className="hover:text-[#FF7D29] transition-colors duration-200">Games</Link>
           <Link href="/buycoins" className="hover:text-[#FF7D29] transition-colors duration-200">Buy coins</Link>
           <Link href="/dashboard" className="hover:text-[#FF7D29] transition-colors duration-200">Dashboard</Link>
@@ -90,7 +89,6 @@ export default function Navbar() {
 <div className="md:hidden flex flex-col items-center px-4 pb-4 space-y-2 text-[#1D1D1D] bg-[#FEFFD2] shadow-md font-montserrat animate-fade-in-down">
           <Link href="/" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link href="/#about" onClick={() => setMenuOpen(false)}>About</Link>
-          <Link href="/#contact" onClick={() => setMenuOpen(false)}>Contact</Link>
           <Link href="/games" onClick={() => setMenuOpen(false)}>Games</Link>
           <Link href="/buycoins" onClick={() => setMenuOpen(false)}>Buy coins</Link>
           <Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>

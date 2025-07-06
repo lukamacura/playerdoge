@@ -18,7 +18,7 @@ export default function Team() {
           Meet the Team
         </h2>
         <p className="text-lg font-inter text-gray-700">
-          More than a platform — it’s a mission.
+          More than a platform - it’s a mission.
         </p>
       </motion.div>
 
@@ -27,7 +27,7 @@ export default function Team() {
           {
             name: "Ivan Mladenović",
             role: "Founder",
-            image: "/images/ivan.jpg",
+            image: "/images/ivan.png",
             bio: `Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how PlayerDoge was born, a project shaped by his vision, focus, and deep understanding of the gaming world.`,
             link: "https://www.instagram.com/packloader",
             handle: "@packloader",
@@ -35,8 +35,8 @@ export default function Team() {
           {
             name: "Luka Macura",
             role: "Developer",
-            image: "/images/luka.jpg",
-            bio: `Luka, born in 2006, is currently studying at the Faculty of Technical Sciences in Novi Sad, Serbia. As a certified web developer with extensive full-stack experience, he brings a blend of technical precision and creative problem-solving to the team. Highly dedicated to his work, Luka approaches every project with structure, clarity, and full focus on results. He values discipline, persistence, and continuous learning — and ensures that every line of code reflects those principles.`,
+            image: "/images/luka.png",
+            bio: `Luka was born in 2006 and is currently studying at the Faculty of Technical Sciences in Novi Sad, Serbia. As a certified web developer with solid full-stack experience, he combines technical precision with creative problem-solving. Fully dedicated to every project, Luka approaches his work with clear structure and a strong focus on delivering real results. He values discipline, persistence and continuous learning.`,
             link: "https://www.instagram.com/macuradesign/",
             handle: "@macuradesign",
           },
@@ -63,7 +63,7 @@ export default function Team() {
                 alt={member.name}
                 width={160}
                 height={160}
-                className="rounded-full object-cover w-40 h-40"
+                className="rounded-full object-cover w-40 h-48"
               />
             </motion.div>
             <h3 className="text-2xl font-bold font-montserrat">
