@@ -38,14 +38,20 @@ export default function JoinPopup() {
               <br />
               when you join us!
             </h2>
-            <Link href="/register">
+            <Link href="/register"
+                          onClick={() => setShow(false)}
+
+            >
               <button className="w-full bg-gradient-to-r from-orange-500 to-orange-400 hover:brightness-110 text-white font-semibold py-3 rounded-lg shadow-md transition">
                 Register
               </button>
             </Link>
             <p className="mt-4 text-sm text-gray-300">
               Have an account?{" "}
-              <Link href="/login">
+              <Link href="/login"
+                            onClick={() => setShow(false)}
+
+              >
                 <span className="text-orange-400 hover:underline cursor-pointer">
                   Login
                 </span>
