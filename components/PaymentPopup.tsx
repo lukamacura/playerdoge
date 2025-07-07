@@ -17,7 +17,7 @@ const paymentMethods = [
   "remitly",
   "zelle",
   "visa",
-  "master",
+  "mastercard",
   "moneygram",
 ];
 
