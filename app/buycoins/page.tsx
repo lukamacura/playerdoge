@@ -6,12 +6,15 @@ import { motion } from "framer-motion";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { CoinCard } from "@/components/CoinCard";
+import PaymentPopup from "@/components/PaymentPopup";
 import { useTidio } from "@/lib/useTidio";
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] =
     useState<"USD" | "EUR" | "CAD" | "AUD">("USD");
   const { openChatWithMessage } = useTidio();
+  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState("");
 
   const priceData = {
     USD: [
@@ -136,12 +139,12 @@ export default function BuyCoinsPage() {
                   value={coin.value}
                   index={i}
                   onBuy={() => {
-                    const message = `Hello! I want to purchase:\n\n- ${coin.amount.toLocaleString()} coins\n- Price: ${coin.value}`;
-                    openChatWithMessage(message);
-                    window.scrollTo({
-                      top: document.body.scrollHeight,
-                      behavior: "smooth",
-                    });
+                    const message =
+                      `Coin purchase request:\n\n` +
+                      `Amount: ${coin.amount.toLocaleString()} coins\n` +
+                      `Price: ${coin.value}`;
+                    setPendingMessage(message);
+                    setShowPaymentPopup(true);
                   }}
                 />
               </motion.div>
@@ -206,5 +209,14 @@ export default function BuyCoinsPage() {
         </motion.div>
       </div>
     </main>
+    <PaymentPopup
+      show={showPaymentPopup}
+      onClose={() => setShowPaymentPopup(false)}
+      onSelect={(method) => {
+        openChatWithMessage(pendingMessage + `\nPayment Method: ${method}`);
+        setShowPaymentPopup(false);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }}
+    />
   );
 }

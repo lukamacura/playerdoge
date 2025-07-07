@@ -8,7 +8,6 @@ import { useAuth } from "@/context/AuthContext";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { useTidio } from "@/lib/useTidio";
-import PaymentPopup from "@/components/PaymentPopup";
 
 
 
@@ -37,9 +36,6 @@ export default function GameDetailPage() {
   };
 
   const { openChatWithMessage } = useTidio();
-
-  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
-  const [pendingMessage, setPendingMessage] = useState("");
 
 
   const universalPacks = [
@@ -395,7 +391,8 @@ export default function GameDetailPage() {
     }
 
     // Ako sve prolazi, nastavi
-    const message = `New purchase request:\n\n` +
+    const message =
+      `New purchase request:\n\n` +
       `Game: ${game.name}\n` +
       `Pack: ${universalPacks[selectedPackIndex].coins} coins\n` +
       `Quantity: ${quantity}\n` +
@@ -404,8 +401,8 @@ export default function GameDetailPage() {
       `Country: ${countryLabel(selectedCountry)}\n` +
       `Screenshot: Please send the screenshot in this chat.`;
 
-    setPendingMessage(message);
-    setShowPaymentPopup(true);
+    openChatWithMessage(message);
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
   }}
 
 
@@ -455,15 +452,6 @@ export default function GameDetailPage() {
 </section>
 
     </main>
-    <PaymentPopup
-      show={showPaymentPopup}
-      onClose={() => setShowPaymentPopup(false)}
-      onSelect={(method) => {
-        openChatWithMessage(pendingMessage + `\nPayment Method: ${method}`);
-        setShowPaymentPopup(false);
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-      }}
-    />
     </>
   );
 }
