@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { useTidio } from "@/lib/useTidio";
+import PaymentPopup from "@/components/PaymentPopup";
 
 
 
@@ -36,6 +37,9 @@ export default function GameDetailPage() {
   };
 
   const { openChatWithMessage } = useTidio();
+
+  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
+  const [pendingMessage, setPendingMessage] = useState("");
 
 
   const universalPacks = [
@@ -103,6 +107,7 @@ export default function GameDetailPage() {
   };
 
   return (
+    <>
     <main className="bg-[#FFFDD0] min-h-screen pt-32 px-4 md:px-8 xl:px-16 font-inter">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-10">
         {/* LEFT */}
@@ -390,19 +395,17 @@ export default function GameDetailPage() {
     }
 
     // Ako sve prolazi, nastavi
-    const message = `New purchase request:
+    const message = `New purchase request:\n\n` +
+      `Game: ${game.name}\n` +
+      `Pack: ${universalPacks[selectedPackIndex].coins} coins\n` +
+      `Quantity: ${quantity}\n` +
+      `Account Info: ${accountInfo || "N/A"}\n` +
+      `Notes: ${notes || "N/A"}\n` +
+      `Country: ${countryLabel(selectedCountry)}\n` +
+      `Screenshot: Please send the screenshot in this chat.`;
 
-  Game: ${game.name}
-  Pack: ${universalPacks[selectedPackIndex].coins} coins
-  Quantity: ${quantity}
-  Account Info: ${accountInfo || "N/A"}
-  Notes: ${notes || "N/A"}
-  Country: ${countryLabel(selectedCountry)}
-  Screenshot: Please send the screenshot in this chat.
-  `;
-
-    openChatWithMessage(message);
-    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    setPendingMessage(message);
+    setShowPaymentPopup(true);
   }}
 
 
@@ -452,5 +455,15 @@ export default function GameDetailPage() {
 </section>
 
     </main>
+    <PaymentPopup
+      show={showPaymentPopup}
+      onClose={() => setShowPaymentPopup(false)}
+      onSelect={(method) => {
+        openChatWithMessage(pendingMessage + `\nPayment Method: ${method}`);
+        setShowPaymentPopup(false);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+      }}
+    />
+    </>
   );
 }
