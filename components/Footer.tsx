@@ -94,6 +94,7 @@ export default function Footer() {
                   className="h-8 md:h-10 w-auto object-contain"
                 />
               </div>
+              
             ))}
           </div>
         </div>
