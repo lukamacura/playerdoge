@@ -50,6 +50,11 @@ export default function BuyCoinsPage() {
     AUD: "australia",
   };
 
+  function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+
   const coins = priceData[currency];
 
   return (
@@ -215,7 +220,8 @@ export default function BuyCoinsPage() {
         show={showPaymentPopup}
         onClose={() => setShowPaymentPopup(false)}
         onSelect={(method) => {
-          openChatWithMessage(pendingMessage + `\nPayment Method: ${method}`);
+          openChatWithMessage(pendingMessage + `\nPayment Method: ${capitalize(method)}
+`);
           setShowPaymentPopup(false);
           window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
         }}
