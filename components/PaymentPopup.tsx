@@ -11,14 +11,14 @@ interface PaymentPopupProps {
 }
 
 const paymentMethods = [
-  "paypal",
-  "wise",
-  "paysend",
-  "remitly",
-  "zelle",
-  "visa",
-  "mastercard",
-  "moneygram",
+  "Paypal",
+  "Wise",
+  "Paysend",
+  "Remitly",
+  "Zelle",
+  "Visa",
+  "Mastercard",
+  "Moneygram",
 ];
 
 export default function PaymentPopup({ show, onClose, onSelect }: PaymentPopupProps) {
