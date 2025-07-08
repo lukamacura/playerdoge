@@ -76,14 +76,14 @@ export default function Footer() {
           {/* Payment icons */}
           <div className="grid grid-cols-4 md:flex md:flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
             {[
-               "Paypal",
-                "Wise",
-                "Paysend",
-                "Remitly",
-                "Zelle",
-                "Visa",
-                "Mastercard",
-                "Moneygram",
+                "paypal",
+                "wise",
+                "paysend",
+                "remitly",
+                "zelle",
+                "visa",
+                "mastercard",
+                "moneygram",
             ].map((name) => (
               <div key={name} className="flex justify-center md:justify-end">
                 <Image
