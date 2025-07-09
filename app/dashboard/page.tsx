@@ -46,17 +46,25 @@ export default function Dashboard() {
         orderBy("timestamp", "desc")
       );
       const snap = await getDocs(q);
-      const list: Purchase[] = snap.docs.map((doc) => {
-        const item = doc.data();
-        return {
-          game: item.game,
-          amount: item.amount,
-          image: item.image,
-          time: item.timestamp?.toDate
-            ? formatDistanceToNow(item.timestamp.toDate(), { addSuffix: true })
-            : "",
-        };
-      });
+const list: Purchase[] = snap.docs.map((doc) => {
+  const item = doc.data();
+  let displayTime = "Unknown time";
+  if (item.timestamp) {
+    if (typeof item.timestamp.toDate === "function") {
+      displayTime = formatDistanceToNow(item.timestamp.toDate(), { addSuffix: true });
+    } else if (item.timestamp.seconds) {
+      displayTime = formatDistanceToNow(new Date(item.timestamp.seconds * 1000), { addSuffix: true });
+    }
+  }
+
+  return {
+    game: item.game ?? "Unknown game",
+    amount: item.amount ?? 0,
+    image: item.image ?? "/images/placeholder.png",
+    time: displayTime,
+  };
+});
+
 
       setPurchases(list);
     };
