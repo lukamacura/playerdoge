@@ -188,24 +188,24 @@ export default function Dashboard() {
                     className="flex items-center justify-between gap-4 border-b border-[#E0D9C7] pb-2"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="relative w-20 h-20 rounded-md shadow-lg overflow-hidden bg-white">
-  <Image
-    src={item.image}
-    alt={item.game}
-    fill
-    className="object-cover"
-  />
-</div>
+                      <div className="relative w-8 h-10 md:w-20 md:h-20 rounded-md shadow-lg overflow-hidden bg-white">
+                        <Image
+                          src={item.image}
+                          alt={item.game}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
 
                       <div>
-                        <p className="font-bold font-montserrat text-[#1D1D1D]">
+                        <p className="font-bold text-xs md:text-lg font-montserrat text-[#1D1D1D]">
                           {item.game}
                         </p>
                         <p className="text-sm text-[#888]">{item.time}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="flex items-center gap-1 text-[#1D1D1D] font-bold font-montserrat">
+                      <p className="flex text-xs md:text-lg items-center gap-1 text-[#1D1D1D] font-bold font-montserrat">
                         {item.amount.toLocaleString()} 
                         <Image
                           src="/images/coin.png"
