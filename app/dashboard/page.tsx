@@ -130,7 +130,7 @@ export default function Dashboard() {
                 priority
               />
               <div>
-                <h2 className="text-lg font-semibold font-montserrat">
+                <h2 className="text-lg font-semibold ">
                   Total coins
                 </h2>
                 <div className="text-5xl font-extrabold font-montserrat">
@@ -141,13 +141,13 @@ export default function Dashboard() {
             <div className="mt-6 md:mt-0 flex flex-col gap-3 items-center">
               <Link
                 href="/buycoins"
-                className="bg-white text-[#FF7D29] font-bold px-10 py-2 rounded-md shadow-md hover:bg-[#fff1e6] transition duration-200"
+                className="bg-white text-[#FF7D29] font-montserrat font-bold px-10 py-2 rounded-md shadow-md hover:bg-[#fff1e6] transition duration-200"
               >
                 Buy coins
               </Link>
               <button
                 onClick={() => signOut(auth)}
-                className="text-white hover:text-[#FFE8D1] font-medium underline underline-offset-4 transition duration-200"
+                className="text-white hover:text-[#FFE8D1] font-montserrat font-medium underline underline-offset-4 transition duration-200"
               >
                 Sign out
               </button>
@@ -162,9 +162,9 @@ export default function Dashboard() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             viewport={{ once: true }}
-            className="bg-[#FFF8E6] rounded-2xl p-6 shadow-md w-full"
+            className="bg-[#FFEFC4] rounded-2xl p-6 shadow-md w-full"
           >
-            <h3 className="text-lg font-bold text-[#1D1D1D] mb-4">
+            <h3 className="text-lg font-extrabold font-montserrat text-[#1D1D1D] mb-4">
               Recent Purchases
             </h3>
 
@@ -188,24 +188,33 @@ export default function Dashboard() {
                     className="flex items-center justify-between gap-4 border-b border-[#E0D9C7] pb-2"
                   >
                     <div className="flex items-center gap-4">
-                      <Image
-                        src={item.image}
-                        alt={item.game}
-                        width={48}
-                        height={48}
-                        className="rounded-md"
-                      />
+                      <div className="relative w-20 h-20 rounded-md shadow-lg overflow-hidden bg-white">
+  <Image
+    src={item.image}
+    alt={item.game}
+    fill
+    className="object-cover"
+  />
+</div>
+
                       <div>
-                        <p className="font-semibold text-[#1D1D1D]">
+                        <p className="font-bold font-montserrat text-[#1D1D1D]">
                           {item.game}
                         </p>
                         <p className="text-sm text-[#888]">{item.time}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-[#1D1D1D] font-semibold">
-                        {item.amount.toLocaleString()} 🪙
+                      <p className="flex items-center gap-1 text-[#1D1D1D] font-bold font-montserrat">
+                        {item.amount.toLocaleString()} 
+                        <Image
+                          src="/images/coin.png"
+                          alt="PlayerDoge Coin"
+                          width={25}
+                          height={25}
+                        />
                       </p>
+
                     </div>
                   </motion.li>
                 ))}
