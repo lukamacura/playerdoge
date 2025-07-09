@@ -8,6 +8,15 @@ import { useAuth } from "@/context/AuthContext";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { useTidio } from "@/lib/useTidio";
+import {
+  doc,
+  updateDoc,
+  increment,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 
 
@@ -361,9 +370,9 @@ export default function GameDetailPage() {
   {errorMessage && (
         <p className="text-red-600 text-sm mt-2 font-semibold">{errorMessage}</p>
       )}
-          <button
+        <button
           className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md"
-          onClick={() => {
+          onClick={async () => {
     setErrorMessage("");
 
     // Ako nije ulogovan
@@ -400,6 +409,23 @@ export default function GameDetailPage() {
       `Notes: ${notes || "N/A"}\n` +
       `Country: ${countryLabel(selectedCountry)}\n` +
       `Screenshot: Please send the screenshot in this chat.`;
+
+    // Update Firestore: deduct coins and log purchase
+    const totalCoins = universalPacks[selectedPackIndex].coins * quantity;
+    if (user) {
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { coins: increment(-totalCoins) });
+        await addDoc(collection(db, "users", user.uid, "purchases"), {
+          game: game.name,
+          amount: totalCoins,
+          image: game.image,
+          timestamp: serverTimestamp(),
+        });
+      } catch (err) {
+        console.error("Failed to record purchase", err);
+      }
+    }
 
     openChatWithMessage(message);
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
