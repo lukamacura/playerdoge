@@ -6,7 +6,7 @@ import {
   doc,
   getDoc,
   collection,
-  getDocs,
+  onSnapshot,
   orderBy,
   query,
 } from "firebase/firestore";
@@ -32,44 +32,44 @@ export default function Dashboard() {
   const [purchases, setPurchases] = useState<Purchase[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (!user) return;
+    if (!user) return;
 
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
+    const docRef = doc(db, "users", user.uid);
+    getDoc(docRef).then((docSnap) => {
       if (docSnap.exists()) {
         setCoins(docSnap.data().coins || 0);
       }
+    });
 
-      const q = query(
-        collection(db, "users", user.uid, "purchases"),
-        orderBy("timestamp", "desc")
-      );
-      const snap = await getDocs(q);
-const list: Purchase[] = snap.docs.map((doc) => {
-  const item = doc.data();
-  let displayTime = "Unknown time";
-  if (item.timestamp) {
-    if (typeof item.timestamp.toDate === "function") {
-      displayTime = formatDistanceToNow(item.timestamp.toDate(), { addSuffix: true });
-    } else if (item.timestamp.seconds) {
-      displayTime = formatDistanceToNow(new Date(item.timestamp.seconds * 1000), { addSuffix: true });
-    }
-  }
+    const q = query(
+      collection(db, "users", user.uid, "purchases"),
+      orderBy("timestamp", "desc")
+    );
 
-  return {
-    game: item.game ?? "Unknown game",
-    amount: item.amount ?? 0,
-    image: item.image ?? "/images/placeholder.png",
-    time: displayTime,
-  };
-});
+    const unsubscribe = onSnapshot(q, (snap) => {
+      const list: Purchase[] = snap.docs.map((doc) => {
+        const item = doc.data();
+        let displayTime = "Unknown time";
+        if (item.timestamp) {
+          if (typeof item.timestamp.toDate === "function") {
+            displayTime = formatDistanceToNow(item.timestamp.toDate(), { addSuffix: true });
+          } else if (item.timestamp.seconds) {
+            displayTime = formatDistanceToNow(new Date(item.timestamp.seconds * 1000), { addSuffix: true });
+          }
+        }
 
+        return {
+          game: item.game ?? "Unknown game",
+          amount: item.amount ?? 0,
+          image: item.image ?? "/images/placeholder.png",
+          time: displayTime,
+        };
+      });
 
       setPurchases(list);
-    };
+    });
 
-    fetchData();
+    return () => unsubscribe();
   }, [user]);
 
   if (loading) {
