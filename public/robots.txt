@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.playerdoge.com
+
+# Sitemaps
+Sitemap: https://www.playerdoge.com/sitemap.xml

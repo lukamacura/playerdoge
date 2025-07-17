@@ -1,4 +1,6 @@
+
 "use client";
+
 import { useParams, useRouter, notFound } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
@@ -21,6 +23,9 @@ import { db } from "@/lib/firebase";
 
 
 type Country = "usa" | "canada" | "eu" | "australia" | "other";
+
+export const dynamic = "force-dynamic";
+
 
 export default function GameDetailPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");

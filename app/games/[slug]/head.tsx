@@ -1,5 +1,9 @@
+// app/games/[slug]/head.tsx
+export const dynamic = "force-dynamic";
+
 import { gameData } from "@/lib/gameData";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+
 
 export async function generateMetadata({
   params,
@@ -9,11 +13,18 @@ export async function generateMetadata({
   const game = gameData.find((g) => g.slug === params.slug);
 
   if (!game) {
+    console.warn("⚠️ Game not found for slug:", params.slug);
     return {
       title: "Game not found | PlayerDoge",
       description: "This game does not exist or is not available at the moment.",
+      keywords: ["game not found", "PlayerDoge"],
+      authors: [{ name: "PlayerDoge Team" }],
       alternates: {
         canonical: "https://www.playerdoge.com/games/not-found",
+      },
+      robots: {
+        index: false,
+        follow: false,
       },
     };
   }
@@ -24,8 +35,21 @@ export async function generateMetadata({
   return {
     title: `${game.name} TopUp | Buy Cheap & Safe Packs | PlayerDoge`,
     description: `Get the best deals for ${game.name} packs on PlayerDoge. Secure, fast delivery and unbeatable prices.`,
+    keywords: [
+      `${game.name} top up`,
+      `buy ${game.name} packs`,
+      `${game.name} recharge`,
+      `${game.name} mobile`,
+      "PlayerDoge",
+      "safe topup service",
+    ],
+    authors: [{ name: "PlayerDoge Team" }],
     alternates: {
       canonical: canonicalUrl,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
     openGraph: {
       title: `${game.name} TopUp | PlayerDoge`,
@@ -47,53 +71,52 @@ export async function generateMetadata({
       description: `Buy ${game.name} packs safely and affordably.`,
       images: [imageUrl],
     },
-    // 👇 Structured Data
     other: {
       "script:ld+json": JSON.stringify([
         {
           "@context": "https://schema.org",
           "@type": "Product",
-          "name": `${game.name} TopUp`,
-          "description": `Buy ${game.name} packs securely and affordably.`,
-          "image": imageUrl,
-          "brand": {
+          name: `${game.name} TopUp`,
+          description: `Buy ${game.name} packs securely and affordably.`,
+          image: imageUrl,
+          brand: {
             "@type": "Brand",
-            "name": "PlayerDoge"
+            name: "PlayerDoge",
           },
-          "offers": {
+          offers: {
             "@type": "AggregateOffer",
-            "url": canonicalUrl,
-            "priceCurrency": "USD",
-            "lowPrice": "4.99",
-            "highPrice": "99.99",
-            "offerCount": "5"
-          }
+            url: canonicalUrl,
+            priceCurrency: "USD",
+            lowPrice: "4.99",
+            highPrice: "99.99",
+            offerCount: "5",
+          },
         },
         {
           "@context": "https://schema.org",
           "@type": "BreadcrumbList",
-          "itemListElement": [
+          itemListElement: [
             {
               "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.playerdoge.com/"
+              position: 1,
+              name: "Home",
+              item: "https://www.playerdoge.com/",
             },
             {
               "@type": "ListItem",
-              "position": 2,
-              "name": "Games",
-              "item": "https://www.playerdoge.com/games"
+              position: 2,
+              name: "Games",
+              item: "https://www.playerdoge.com/games",
             },
             {
               "@type": "ListItem",
-              "position": 3,
-              "name": `${game.name}`,
-              "item": canonicalUrl
-            }
-          ]
-        }
-      ])
-    }
+              position: 3,
+              name: `${game.name}`,
+              item: canonicalUrl,
+            },
+          ],
+        },
+      ]),
+    },
   };
 }
