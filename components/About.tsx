@@ -20,7 +20,7 @@ export default function About() {
           </h2>
           <p className="text-gray-800 text-lg leading-relaxed font-inter max-w-xl">
             <strong>PlayerDoge</strong> is a trusted and professional top-up service for mobile games, helping
-            players save money on discounted <strong>in-game purchases</strong> — from Android and iOS
+            players save money on discounted <strong>in-game purchases</strong>, from Android and iOS
             game bundles to app store promo packs and limited-time offers. Every
             transaction is made securely through the game’s official store, offering
             you a smarter way to buy game packs cheaper while supporting your

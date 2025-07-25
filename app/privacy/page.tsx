@@ -2,7 +2,7 @@ export default function PrivacyPage() {
   return (
     <main className="max-w-4xl mx-auto px-6 pt-32 pb-20 text-[#1D1D1D]">
       <h1 className="text-3xl font-extrabold font-montserrat text-[#FF7D29] mb-6">Privacy Policy</h1>
-      <p className="text-sm font-inter text-gray-500 mb-6">Last Updated: 26.06.2025</p>
+      <p className="text-sm font-inter text-gray-500 mb-6">Last Updated: 26.06.2025.</p>
 
       <p className="mb-4 font-inter">
         PlayerDoge.com is committed to protecting your privacy and safeguarding the personal data
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">Legal Basis and Jurisdiction</h2>
       <p className="mb-4 font-inter">
-        Our services operate under the jurisdiction of Wyoming, United States. The primary legal
+        Our services operate under the jurisdiction of Georgia, United States. The primary legal
         grounds for processing personal data are to deliver the services you&apos;ve requested and
         provide relevant updates or offers.
       </p>

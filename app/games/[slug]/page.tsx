@@ -86,6 +86,8 @@ export default function GameDetailPage() {
   const [selectedPackIndex, setSelectedPackIndex] = useState<number>(0);
   const [isCredentialsChecked, setIsCredentialsChecked] = useState(false);
   const [isScreenshotChecked, setIsScreenshotChecked] = useState(false);
+  const [isCodeRequiredChecked, setIsCodeRequiredChecked] = useState(false);
+
 
 
   const slug = (useParams()?.slug ?? "") as string;
@@ -256,7 +258,7 @@ export default function GameDetailPage() {
             <p className="text-sm mb-4 flex items-center gap-1">
               Selected:{" "}
               <strong>
-                {universalPacks[selectedPackIndex].coins} Coins
+                {universalPacks[selectedPackIndex].coins} coins
               </strong>
               <Image
                 src="/images/coin.png"
@@ -369,6 +371,16 @@ export default function GameDetailPage() {
                 />
                 Clear screenshot(s) of the desired package(s) will be sent via live chat.
               </label>
+                          <label className="block text-xs">
+              <input
+                type="checkbox"
+                className="mr-2"
+                checked={isCodeRequiredChecked}
+                onChange={(e) => setIsCodeRequiredChecked(e.target.checked)}
+              />
+              One-time login code may be required to complete the service.
+            </label>
+
             </div>
 
           </div>

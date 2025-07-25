@@ -21,6 +21,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,8 +46,13 @@ export default function Register() {
 
       await sendEmailVerification(userCred.user);
 
-      alert("Verification email sent! Please check your inbox.");
-      router.push("/login");
+      setSuccessMessage("✅ Verification email sent! Please check your inbox.");
+      setTimeout(() => {
+  auth.signOut(); // izloguj neregistrovanog korisnika
+  router.push("/login");
+}, 4000); // 4 sekunde za prikaz poruke
+
+
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         const code = err.code;
@@ -119,10 +125,20 @@ export default function Register() {
             >
               {loading ? "Registering..." : "Register"}
             </button>
+            {successMessage && (
+              <motion.p
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-green-700 text-sm mt-2 font-medium text-center"
+              >
+                {successMessage}
+              </motion.p>
+            )}
+
           </div>
 
           <p className="text-sm text-center mt-4 text-[#1D1D1D]/70">
-            🔥Get{" "}
+            🔥 Get{" "}
             <span className="font-bold text-[#1D1D1D]">
               100 free coins
             </span>{" "}

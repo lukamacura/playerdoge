@@ -16,7 +16,7 @@ const badges = [
   {
     icon: '/images/trust3.png',
     title: 'Customer First',
-    desc: 'Real support for mobile gamers — quick replies, no bots, and service built fully around your needs.',
+    desc: 'Real support for mobile gamers, quick replies, no bots, and service built fully around your needs.',
   },
 ]
 

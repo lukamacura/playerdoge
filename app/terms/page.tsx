@@ -2,7 +2,7 @@ export default function TermsPage() {
   return (
     <main className="max-w-4xl mx-auto px-6 pt-32 pb-20 text-[#1D1D1D]">
       <h1 className="text-3xl font-extrabold font-montserrat text-[#FF7D29] mb-6">Terms of Service</h1>
-      <p className="text-sm font-inter text-gray-500 mb-6">Last Updated: 26.06.2025</p>
+      <p className="text-sm font-inter text-gray-500 mb-6">Last Updated: 26.06.2025.</p>
 
       <p className="mb-4 font-inter">
         Welcome to PlayerDoge. These Terms of Service (&quot;Terms&quot;) govern your use of the

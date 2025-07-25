@@ -8,7 +8,7 @@ const steps = [
     title: "1. Choose your pack",
     description: (
       <>
-        <span className="font-bold">Pick your mobile game pack</span> and upload a screenshot from the game to avoid any mistake.
+        <span className="font-bold">Pick your mobile game pack</span> and share a screenshot from the game to avoid any mistake.
       </>
     ),
     icon: "/images/howitworks1.png",

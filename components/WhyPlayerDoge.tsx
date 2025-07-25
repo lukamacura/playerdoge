@@ -28,7 +28,7 @@ export default function WhyPlayerDoge() {
           <p className="mt-4 text-lg leading-relaxed font-inter">
             PlayerDoge is a{" "}
             <strong className="font-semibold">fully legit</strong> top-up
-            service focused on safety and savings — no bans, no shortcuts. <br />
+            service focused on safety and savings, no bans, no shortcuts. <br />
             With years of experience and thousands of happy users, we’re the
             trusted way to get cheaper{" "}
             <strong className="font-semibold">game packs</strong>, backed by
