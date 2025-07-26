@@ -175,7 +175,7 @@ export default function BuyCoinsPage() {
                   "remitly",
                   "zelle",
                   "visa",
-                  "master",
+                  "mastercard",
                   "moneygram",
                 ].map((method) => (
                   <Image
