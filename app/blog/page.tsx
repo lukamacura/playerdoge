@@ -17,13 +17,20 @@ interface BlogPost {
 export default async function BlogListPage() {
   const snapshot = await getDocs(collection(db, "blogs"));
 
-  const posts: BlogPost[] = snapshot.docs.map((doc) => {
-    const data = doc.data() as Omit<BlogPost, "id">;
-    return {
-      id: doc.id,
-      ...data,
-    };
-  });
+const posts = snapshot.docs.map((doc) => {
+  const data = doc.data();
+  return {
+    id: doc.id,
+    title: data.title,
+    slug: data.slug,
+    description: data.description,
+    content: data.content,
+    author: data.author,
+    image: data.image,
+    createdAt: data.createdAt,
+  } satisfies BlogPost;
+});
+
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
