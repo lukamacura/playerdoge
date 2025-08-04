@@ -25,6 +25,7 @@ export default function Footer() {
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/#about">About</Link>
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/games">Games</Link>
             <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/#contact">Contact</Link>
+            <Link className="hover:text-[#FF7D29] transition-colors duration-200" href="/blog">Blog</Link>
             <Link href="/register" className="bg-[#FF7D29] text-white px-6 py-2 rounded-md font-bold font-montserrat hover:bg-[#e96e1b]">
               Register
             </Link>

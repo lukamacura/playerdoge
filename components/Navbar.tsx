@@ -29,6 +29,7 @@ export default function Navbar() {
           <Link href="/games" className="hover:text-[#FF7D29] transition-colors duration-200">Games</Link>
           <Link href="/buycoins" className="hover:text-[#FF7D29] transition-colors duration-200">Buy coins</Link>
           <Link href="/dashboard" className="hover:text-[#FF7D29] transition-colors duration-200">Dashboard</Link>
+          <Link href="/blog" className="hover:text-[#FF7D29] transition-colors duration-200">Blog</Link>
 
           {!user ? (
             <>
@@ -92,6 +93,7 @@ export default function Navbar() {
           <Link href="/games" onClick={() => setMenuOpen(false)}>Games</Link>
           <Link href="/buycoins" onClick={() => setMenuOpen(false)}>Buy coins</Link>
           <Link href="/dashboard" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+          <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
 
           {!user ? (
             <>
