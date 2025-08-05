@@ -11,33 +11,19 @@ interface BlogPost {
   content?: string;
   author?: string;
   image?: string;
-  createdAt?: any;
+  createdAt?: Timestamp;
 }
-
 
 export default async function BlogListPage() {
   const snapshot = await getDocs(collection(db, "blogs"));
 
-
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  description?: string;
-  content?: string;
-  author?: string;
-  image?: string;
-  createdAt?: Timestamp;
-}
-
-const posts: BlogPost[] = snapshot.docs.map((doc) => {
-  const data = doc.data() as Omit<BlogPost, "id">;
-  return {
-    id: doc.id,
-    ...data,
-  };
-});
-
+  const posts: BlogPost[] = snapshot.docs.map((doc) => {
+    const data = doc.data() as Omit<BlogPost, "id">;
+    return {
+      id: doc.id,
+      ...data,
+    };
+  });
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
