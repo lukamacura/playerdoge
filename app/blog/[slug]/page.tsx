@@ -4,6 +4,18 @@ import { notFound } from "next/navigation";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
+import { Timestamp } from "firebase/firestore";
+
+interface BlogPost {
+  title: string;
+  slug: string;
+  description?: string;
+  seoDescription?: string;
+  content: string;
+  image?: string;
+  author?: string;
+  createdAt?: Timestamp;
+}
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +30,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const blog = snapshot.docs[0].data();
+const blog = snapshot.docs[0].data() as BlogPost;
 
   return {
     title: blog.title,
