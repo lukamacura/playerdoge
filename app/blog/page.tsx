@@ -1,6 +1,7 @@
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Link from "next/link";
+import { Timestamp } from "firebase/firestore";
 
 interface BlogPost {
   id: string;
@@ -17,18 +18,24 @@ interface BlogPost {
 export default async function BlogListPage() {
   const snapshot = await getDocs(collection(db, "blogs"));
 
-const posts = snapshot.docs.map((doc) => {
-  const data = doc.data();
+
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  content?: string;
+  author?: string;
+  image?: string;
+  createdAt?: Timestamp;
+}
+
+const posts: BlogPost[] = snapshot.docs.map((doc) => {
+  const data = doc.data() as Omit<BlogPost, "id">;
   return {
     id: doc.id,
-    title: data.title,
-    slug: data.slug,
-    description: data.description,
-    content: data.content,
-    author: data.author,
-    image: data.image,
-    createdAt: data.createdAt,
-  } satisfies BlogPost;
+    ...data,
+  };
 });
 
 
