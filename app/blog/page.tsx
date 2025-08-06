@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Link from "next/link";
@@ -17,13 +19,21 @@ interface BlogPost {
 export default async function BlogListPage() {
   const snapshot = await getDocs(collection(db, "blogs"));
 
-  const posts: BlogPost[] = snapshot.docs.map((doc) => {
-    const data = doc.data() as Omit<BlogPost, "id">;
-    return {
-      id: doc.id,
-      ...data,
-    };
-  });
+  const posts: BlogPost[] = snapshot.docs
+    .map((doc) => {
+      const data = doc.data() as Omit<BlogPost, "id">;
+      return {
+        id: doc.id,
+        ...data,
+      };
+    })
+    .sort((a, b) => {
+      const aTime = a.createdAt?.toDate?.().getTime?.() ?? 0;
+      const bTime = b.createdAt?.toDate?.().getTime?.() ?? 0;
+      return bTime - aTime;
+    });
+
+  console.log("[posts]", posts); // 🐞 debug za Vercel
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-10">
