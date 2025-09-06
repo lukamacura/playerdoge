@@ -4,9 +4,17 @@ import Script from "next/script";
 import { Providers } from "./providers";
 import TidioSessionManager from "@/components/TidioSessionManager";
 import ClientLayout from "@/components/ClientLayout";
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-sans",
+});
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-montserrat",
+});
 
 export const metadata = {
   title: {
