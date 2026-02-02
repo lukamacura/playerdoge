@@ -45,7 +45,7 @@ export default function Preloader() {
           alt="Kinged logo"
           width={100}
           height={100}
-          className="object-contain animate-spin-slow"
+          className="object-contain animate-scale-pulse"
         />
       </div>
       <p

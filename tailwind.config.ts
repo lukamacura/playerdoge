@@ -36,6 +36,15 @@ const config: Config = {
         // za naslove, ako želiš: className="font-montserrat"
         montserrat: ["var(--font-montserrat)", ...defaultTheme.fontFamily.sans],
       },
+      keyframes: {
+        "scale-pulse": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.15)" },
+        },
+      },
+      animation: {
+        "scale-pulse": "scale-pulse 1.5s ease-in-out infinite",
+      },
     },
   },
   plugins: [animate],

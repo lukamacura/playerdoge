@@ -2,11 +2,12 @@ import Hero from '@/components/Hero'
 import TrustBadges from '@/components/TrustBadges'
 import Trending from "@/components/Trending";
 import About from "@/components/About";
-import HowItWorks from '@/components/HowItWorks';
+// import HowItWorks from '@/components/HowItWorks';
 import WhyKinged from '@/components/WhyKinged'
 import Reviews from "@/components/Reviews";
 import Faq from "@/components/Faq";
 import Team from "@/components/Team";
+import HowItWorksTutorial from "@/components/HowItWorksTutorial";
 
 
 
@@ -17,7 +18,8 @@ export default function Home() {
       <TrustBadges />
       <Trending />
       <About />
-      <HowItWorks />
+      {/* <HowItWorks /> */}
+      <HowItWorksTutorial />
       <WhyKinged />
       <Faq />
       <Reviews />
