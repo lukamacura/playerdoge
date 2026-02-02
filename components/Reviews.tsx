@@ -11,9 +11,6 @@ const images = [
   "/images/reviews/review4.png",
   "/images/reviews/review5.png",
   "/images/reviews/review6.png",
-  "/images/reviews/review7.png",
-  "/images/reviews/review8.png",
-  "/images/reviews/review9.png",
 ];
 
 const Reviews = () => {

@@ -1,7 +1,7 @@
 import { gameData } from "@/lib/gameData";
 
 export function GET() {
-  const baseUrl = "https://www.playerdoge.com";
+  const baseUrl = "https://www.kinged.com";
 
   const urls = gameData.map(game => `
   <url>

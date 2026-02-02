@@ -5,7 +5,7 @@ export default function PrivacyPage() {
       <p className="text-sm font-inter text-gray-500 mb-6">Last Updated: 26.06.2025.</p>
 
       <p className="mb-4 font-inter">
-        PlayerDoge.com is committed to protecting your privacy and safeguarding the personal data
+        Kinged.com is committed to protecting your privacy and safeguarding the personal data
         you share with us. This Privacy Policy outlines how we collect, use, store, and protect your
         information, in compliance with applicable laws and privacy regulations.
       </p>
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">Global Privacy Compliance</h2>
       <p className="mb-4 font-inter">
-        PlayerDoge follows best practices in data protection and aligns with key global privacy laws,
+        Kinged follows best practices in data protection and aligns with key global privacy laws,
         including the General Data Protection Regulation (GDPR) in the EU and the California
         Consumer Privacy Act (CCPA) in the U.S.
       </p>
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
         <li>Applying strong security measures to protect your data</li>
       </ul>
       <p className="mb-4 font-inter">
-        To exercise any of your GDPR rights, please contact us at info@playerdoge.com.
+        To exercise any of your GDPR rights, please contact us at info@kinged.com.
       </p>
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">CCPA – California Residents</h2>
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
         </li>
       </ul>
       <p className="mb-4 font-inter">
-        To make a request under the CCPA, contact us at info@playerdoge.com.
+        To make a request under the CCPA, contact us at info@kinged.com.
       </p>
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">Users Outside the U.S.</h2>
@@ -96,13 +96,13 @@ export default function PrivacyPage() {
       <h2 className="font-bold font-montserrat mt-8 mb-2">Contacting Our Privacy Team</h2>
       <p className="mb-4 font-inter">
         For any questions regarding this Privacy Policy or your personal data, you can reach us at
-        info@playerdoge.com. We are available to help with access requests, data deletion, or general
+        info@kinged.com. We are available to help with access requests, data deletion, or general
         inquiries.
       </p>
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">Third-Party Services</h2>
       <p className="mb-4 font-inter">
-        PlayerDoge includes our main website and our official Discord server. We do not engage
+        Kinged includes our main website and our official Discord server. We do not engage
         third-party platforms to process your data and remain fully responsible for keeping your
         information secure within our network.
       </p>
@@ -115,7 +115,7 @@ export default function PrivacyPage() {
 
       <h2 className="font-bold font-montserrat mt-8 mb-2">Your Privacy Rights</h2>
       <p className="mb-4 font-inter">
-        To access, modify, or delete your personal data, please contact info@playerdoge.com. We are
+        To access, modify, or delete your personal data, please contact info@kinged.com. We are
         committed to respecting your privacy and handling all requests in accordance with applicable
         regulations.
       </p>

@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
         {/* Left: Company info */}
         <div className="space-y-4">
-          <h2 className="text-2xl font-bold text-[#FF7D29]">PlayerDoge LLC</h2>
-          <p className="text-[#1D1D1D]">© 2025 PlayerDoge. All rights reserved.</p>
+          <h2 className="text-2xl font-bold text-[#FF7D29]">Kinged LLC</h2>
+          <p className="text-[#1D1D1D]">© 2025 Kinged. All rights reserved.</p>
           <p className="text-sm leading-5 text-[#1D1D1D]">
             300 Colonial Center<br />
             Parkway STE 100N,<br />
@@ -36,12 +36,12 @@ export default function Footer() {
             {[
               {
                 icon: "/icons/email.png",
-                label: "support@playerdoge.com",
-                href: "mailto:support@playerdoge.com",
+                label: "support@kinged.com",
+                href: "mailto:support@kinged.com",
               },
               {
                 icon: "/icons/discord.png",
-                label: "PlayerDoge",
+                label: "Kinged",
                 href: "https://discord.gg/ntgxjAhtUQ",
               },
               {

@@ -26,7 +26,7 @@ const steps = [
     title: "3. Coin payment",
     description: (
       <>
-        <span className="font-bold">Pay using PlayerDoge coins</span> and enjoy fast delivery with full safety for your account.
+        <span className="font-bold">Pay using Kinged coins</span> and enjoy fast delivery with full safety for your account.
       </>
     ),
     icon: "/images/howitworks3.png",

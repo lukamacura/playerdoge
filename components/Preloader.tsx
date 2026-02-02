@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const slogans = [
-  "🎮 Did you know? You can save up to 35% with PlayerDoge!",
-  "🕹️ Thousands of gamers already top-up cheaper using PlayerDoge!",
+  "🎮 Did you know? You can save up to 35% with Kinged!",
+  "🕹️ Thousands of gamers already top-up cheaper using Kinged!",
   "⏱️ Most orders are delivered in less than 30 minutes!",
 ];
 
@@ -38,18 +38,18 @@ export default function Preloader() {
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#FEFFD2] text-[#1d1d1d] z-50 flex flex-col justify-center items-center transition-opacity duration-500">
+    <div className="fixed inset-0 bg-[#1d1d1d] text-[#1d1d1d] z-50 flex flex-col justify-center items-center transition-opacity duration-500">
       <div className="mb-6">
         <Image
           src="/images/preloader.png"
-          alt="PlayerDoge logo"
+          alt="Kinged logo"
           width={100}
           height={100}
           className="object-contain animate-spin-slow"
         />
       </div>
       <p
-        className={`text-xs md:text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
+        className={`text-xs text-white md:text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
           fade ? "opacity-100" : "opacity-0"
         }`}
       >

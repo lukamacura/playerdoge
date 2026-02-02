@@ -138,7 +138,7 @@ export default function GameDetailPage() {
             >
               {game.name}
             </span>{" "}
-            packs safely and affordably with PlayerDoge
+            packs safely and affordably with Kinged
           </h1>
 
           <div className="mb-4">
@@ -187,7 +187,7 @@ export default function GameDetailPage() {
           <div className="mb-8">
             <p className="text-xs mb-4 font-montserrat">
               Check the prices of{" "}
-              <span className="font-bold">PlayerDoge coins</span>.
+              <span className="font-bold">Kinged coins</span>.
             </p>
             <Link
               href="/buycoins"
@@ -203,7 +203,7 @@ export default function GameDetailPage() {
                 key={i}
                 className="bg-[#FFEFC4] p-3 rounded-xl shadow-lg flex items-center gap-4 hover:shadow-lg transition"
               >
-                <div className="w-[100px] h-[70px] relative rounded-md overflow-hidden shrink-0">
+                <div className="w-[100px] h-[100px] relative rounded-md overflow-hidden shrink-0">
                   <Image
                     src={game.image}
                     alt={game.name}
@@ -227,7 +227,7 @@ export default function GameDetailPage() {
                     Buy for {pack.coins}
                     <Image
                       src="/images/coin.png"
-                      alt="PlayerDoge Coin"
+                      alt="Kinged Coin"
                       width={25}
                       height={25}
                     />
@@ -242,7 +242,7 @@ export default function GameDetailPage() {
             <strong className="font-extrabold text-[#1D1D1D] tracking-wide">
               {game.name}
             </strong>{" "}
-            experience without overpaying? PlayerDoge offers a seamless,
+            experience without overpaying? Kinged offers a seamless,
             secure, and cost-effective solution for purchasing in-game packs.
             As a registered LLC, we prioritize your account’s safety and provide
             a transparent TopUp process.
@@ -463,11 +463,11 @@ export default function GameDetailPage() {
 
       <section className="max-w-7xl mx-auto mt-16 mb-20 text-[#1D1D1D] font-inter px-4">
   <h2 className="text-xl md:text-2xl font-semibold mb-4">
-    Why choose <span className="font-bold">PlayerDoge</span> for your {game.name} TopUps?
+    Why choose <span className="font-bold">Kinged</span> for your {game.name} TopUps?
   </h2>
   <ul className="list-disc list-inside space-y-2 mb-8">
     <li><span className="font-semibold">Legitimate and secure:</span> All our products are sourced from official channels, ensuring authenticity and quality.</li>
-    <li><span className="font-semibold">Registered business:</span> PlayerDoge operates as a legally registered LLC, offering you peace of mind with every transaction.</li>
+    <li><span className="font-semibold">Registered business:</span> Kinged operates as a legally registered LLC, offering you peace of mind with every transaction.</li>
     <li><span className="font-semibold">User-friendly process:</span> Our platform is designed for ease of use, making your TopUp experience straightforward and hassle-free.</li>
     <li><span className="font-semibold">Competitive pricing:</span> Enjoy better rates compared to standard in-app purchases, saving you money on your favorite games.</li>
     <li><span className="font-semibold">Responsive support:</span> Our dedicated customer service team is available to assist you at every step.</li>
@@ -475,8 +475,8 @@ export default function GameDetailPage() {
 
   <h2 className="text-xl md:text-2xl font-semibold mb-4">How it works?</h2>
   <ol className="list-decimal list-inside space-y-2 mb-8">
-    <li><span className="font-semibold">Create or log in to your PlayerDoge account:</span> Start by accessing your account on our platform.</li>
-    <li><span className="font-semibold">Purchase coins:</span> Buy the desired amount of PlayerDoge coins using your preferred payment method.</li>
+    <li><span className="font-semibold">Create or log in to your Kinged account:</span> Start by accessing your account on our platform.</li>
+    <li><span className="font-semibold">Purchase coins:</span> Buy the desired amount of Kinged coins using your preferred payment method.</li>
     <li><span className="font-semibold">Select your game and package:</span> Choose {game.name} and the specific pack you wish to purchase.</li>
     <li><span className="font-semibold">Provide game account details:</span> Enter your {game.name} login credentials securely. This information is necessary for us to process the TopUp directly into your account.</li>
     <li><span className="font-semibold">Confirm and complete your order:</span> After placing your order, send a clear screenshot of the desired package from your in-game store via live chat. This helps us match the correct product and avoid any confusion or mistakes. Once the payment is confirmed, our team will process your order promptly.</li>
@@ -490,7 +490,7 @@ export default function GameDetailPage() {
     <li><span className="font-semibold">Beware of scams:</span> Be cautious of third-party sites attempting scams. Always confirm transactions through our official site and links published on the site. Happy shopping!</li>
   </ul>
   <p className="mt-4 text-sm">
-    By choosing PlayerDoge, you are opting for a trusted, efficient, and user-centric TopUp service for {game.name}.
+    By choosing Kinged, you are opting for a trusted, efficient, and user-centric TopUp service for {game.name}.
   </p>
 </section>
 

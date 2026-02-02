@@ -217,7 +217,7 @@ const list: Purchase[] = snap.docs.map((doc) => {
                         {item.amount.toLocaleString()} 
                         <Image
                           src="/images/coin.png"
-                          alt="PlayerDoge Coin"
+                          alt="Kinged Coin"
                           width={25}
                           height={25}
                         />

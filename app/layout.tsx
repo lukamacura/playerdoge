@@ -18,10 +18,10 @@ const montserrat = Montserrat({
 
 export const metadata = {
   title: {
-    default: "PlayerDoge",
-    template: "%s | PlayerDoge",
+    default: "Kinged",
+    template: "%s | Kinged",
   },
-  description: "Buy safe and discounted mobile game top-ups with PlayerDoge. 50+ supported games. Instant delivery. No bans.",
+  description: "Buy safe and discounted mobile game top-ups with Kinged. 50+ supported games. Instant delivery. No bans.",
   keywords: [
     "buy game packs",
     "discounted top-ups",
@@ -30,30 +30,30 @@ export const metadata = {
     "Sea of Conquest",
     "Guns of Glory",
   ],
-  metadataBase: new URL("https://www.playerdoge.com"),
+  metadataBase: new URL("https://www.kinged.gg"),
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "PlayerDoge | Safe Game Top-Ups",
+    title: "Kinged | Safe Game Top-Ups",
     description: "Buy discounted and secure game packs for 50+ mobile titles. Trusted by gamers worldwide.",
     type: "website",
-    url: "https://www.playerdoge.com",
+    url: "https://www.kinged.gg",
     images: [
       {
-        url: "https://www.playerdoge.com/images/og-default.jpg",
+        url: "https://www.kinged.gg/images/og-default.jpg",
         width: 1200,
         height: 630,
-        alt: "PlayerDoge",
+        alt: "Kinged",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "PlayerDoge | Cheaper Mobile Game Top-Ups",
-    description: "Top up mobile games like King of Avalon and State of Survival cheaper and safely through PlayerDoge.",
-    images: ["https://www.playerdoge.com/images/og-default.jpg"],
+    title: "Kinged | Cheaper Mobile Game Top-Ups",
+    description: "Top up mobile games like King of Avalon and State of Survival cheaper and safely through Kinged.",
+    images: ["https://www.kinged.gg/images/og-default.jpg"],
   },
   icons: {
     icon: "/images/preloader.png",

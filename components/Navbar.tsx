@@ -19,7 +19,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="text-xl font-extrabold text-[#1D1D1D] font-montserrat">
-          PlayerDoge
+          Kinged
         </Link>
 
         {/* Desktop nav */}

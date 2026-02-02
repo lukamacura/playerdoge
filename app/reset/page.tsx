@@ -20,29 +20,22 @@ const handleReset = async (e: React.FormEvent) => {
   setLoading(true)
 
   try {
-    // Prvo proveri da li korisnik postoji
-    const res = await fetch('/api/checkUserExists', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    })
-    const data = await res.json()
-
-    if (!data.exists) {
-      setError('No account found with this email.')
-      return
-    }
-
-    // Ako postoji, šalji reset link
     await sendPasswordResetEmail(auth, email)
-    setMessage('Password reset email sent. Check your inbox. 📬')
+    setMessage('If an account exists with this email, a reset link has been sent. Check your inbox.')
   } catch (err: unknown) {
     if (err instanceof FirebaseError) {
-      const code = err.code
-      if (code === 'auth/invalid-email') setError('No account found with this email.')
-      else setError('Something went wrong. Please try again.')
+      switch (err.code) {
+        case 'auth/invalid-email':
+          setError('Please enter a valid email address.')
+          break
+        case 'auth/too-many-requests':
+          setError('Too many requests. Please try again later.')
+          break
+        default:
+          setError('Something went wrong. Please try again.')
+      }
     } else {
-      setError('Unexpected error occurred.')
+      setError('Network error. Please check your connection.')
     }
   } finally {
     setLoading(false)

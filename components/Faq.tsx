@@ -5,8 +5,8 @@ import Image from "next/image";
 
 const faqs = [
   {
-    question: "How does the PlayerDoge top-up process work?",
-    answer: `Place your order on the PlayerDoge website by selecting your game, choosing a pack, and entering your account details at checkout. After placing your order, send a clear screenshot of the desired item from your in-game store via live chat. Stay logged out while we process your top-up, we’ll let you know once it’s complete so you can log back in and confirm. Most orders are delivered within 30 minutes.`,
+    question: "How does the Kinged top-up process work?",
+    answer: `Place your order on the Kinged website by selecting your game, choosing a pack, and entering your account details at checkout. After placing your order, send a clear screenshot of the desired item from your in-game store via live chat. Stay logged out while we process your top-up, we’ll let you know once it’s complete so you can log back in and confirm. Most orders are delivered within 30 minutes.`,
   },
   {
     question: "How do I place an order and make a payment?",
@@ -14,13 +14,13 @@ const faqs = [
 We support PayPal, Wise, Paysend, Zelle (+3%), crypto (with a discount), and credit/debit cards (+5%), plus local payment options based on your country.`,
   },
   {
-    question: "How safe is PlayerDoge?",
+    question: "How safe is Kinged?",
     answer: `Your account’s safety is our top priority. We top up only through official in-game stores, with no third-party tools or risk involved.
-Only verified team members handle your login info, stored securely and never shared. With thousands of safe top-ups completed, PlayerDoge is a trusted choice for mobile gamers.`,
+Only verified team members handle your login info, stored securely and never shared. With thousands of safe top-ups completed, Kinged is a trusted choice for mobile gamers.`,
   },
   {
-    question: "Can I use PlayerDoge from my country?",
-    answer: `Yes. PlayerDoge is available worldwide, no matter where you’re from, you can place an order. We support international payments and process top-ups for players across all regions. Just make sure your account details are correct and follow the steps at checkout.`,
+    question: "Can I use Kinged from my country?",
+    answer: `Yes. Kinged is available worldwide, no matter where you’re from, you can place an order. We support international payments and process top-ups for players across all regions. Just make sure your account details are correct and follow the steps at checkout.`,
   },
 ];
 
@@ -45,7 +45,7 @@ export default function Faq() {
           You’ve got questions? Let’s answer them.
         </h2>
         <p className="text-[#4b4b4b] text-base font-inter md:text-lg">
-          Clear and honest info about how PlayerDoge works, so you always know what to expect.
+          Clear and honest info about how Kinged works, so you always know what to expect.
         </p>
       </motion.div>
 

@@ -103,7 +103,7 @@ export default function GamesPage() {
   >
     <Link href={`/games/${game.slug}`}>
       <div className="bg-transparent border border-[#1d1d1d] p-3 rounded-xl flex gap-4 items-center shadow-lg hover:shadow-2xl transition cursor-pointer">
-        <div className="w-[120px] h-[80px] relative rounded-lg overflow-hidden">
+        <div className="w-[100px] h-[100px] relative rounded-lg overflow-hidden">
           <Image
             src={game.image}
             alt={game.name}

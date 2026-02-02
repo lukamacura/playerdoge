@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: 'https://www.playerdoge.com',
+  siteUrl: 'https://www.kinged.com',
   generateRobotsTxt: true,
   changefreq: 'weekly',
   priority: 0.8,

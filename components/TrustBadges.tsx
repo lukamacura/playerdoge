@@ -6,7 +6,7 @@ const badges = [
   {
     icon: '/images/trust1.png',
     title: 'Trust',
-    desc: 'PlayerDoge delivers safe mobile game top-ups trusted by thousands of gamers across Android and iOS.',
+    desc: 'Kinged delivers safe mobile game top-ups trusted by thousands of gamers across Android and iOS.',
   },
   {
     icon: '/images/trust2.png',

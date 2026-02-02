@@ -15,12 +15,12 @@ export async function generateMetadata({
   if (!game) {
     console.warn("⚠️ Game not found for slug:", params.slug);
     return {
-      title: "Game not found | PlayerDoge",
+      title: "Game not found | Kinged",
       description: "This game does not exist or is not available at the moment.",
-      keywords: ["game not found", "PlayerDoge"],
-      authors: [{ name: "PlayerDoge Team" }],
+      keywords: ["game not found", "Kinged"],
+      authors: [{ name: "Kinged Team" }],
       alternates: {
-        canonical: "https://www.playerdoge.com/games/not-found",
+        canonical: "https://www.kinged.com/games/not-found",
       },
       robots: {
         index: false,
@@ -29,21 +29,21 @@ export async function generateMetadata({
     };
   }
 
-  const canonicalUrl = `https://www.playerdoge.com/games/${game.slug}`;
-  const imageUrl = `https://www.playerdoge.com${game.image}`;
+  const canonicalUrl = `https://www.kinged.com/games/${game.slug}`;
+  const imageUrl = `https://www.kinged.com${game.image}`;
 
   return {
-    title: `${game.name} TopUp | Buy Cheap & Safe Packs | PlayerDoge`,
-    description: `Get the best deals for ${game.name} packs on PlayerDoge. Secure, fast delivery and unbeatable prices.`,
+    title: `${game.name} TopUp | Buy Cheap & Safe Packs | Kinged`,
+    description: `Get the best deals for ${game.name} packs on Kinged. Secure, fast delivery and unbeatable prices.`,
     keywords: [
       `${game.name} top up`,
       `buy ${game.name} packs`,
       `${game.name} recharge`,
       `${game.name} mobile`,
-      "PlayerDoge",
+      "Kinged",
       "safe topup service",
     ],
-    authors: [{ name: "PlayerDoge Team" }],
+    authors: [{ name: "Kinged Team" }],
     alternates: {
       canonical: canonicalUrl,
     },
@@ -52,7 +52,7 @@ export async function generateMetadata({
       follow: true,
     },
     openGraph: {
-      title: `${game.name} TopUp | PlayerDoge`,
+      title: `${game.name} TopUp | Kinged`,
       description: `Buy ${game.name} packs safely and affordably. Trusted and verified top-up service.`,
       url: canonicalUrl,
       type: "website",
@@ -67,7 +67,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${game.name} TopUp | PlayerDoge`,
+      title: `${game.name} TopUp | Kinged`,
       description: `Buy ${game.name} packs safely and affordably.`,
       images: [imageUrl],
     },
@@ -81,7 +81,7 @@ export async function generateMetadata({
           image: imageUrl,
           brand: {
             "@type": "Brand",
-            name: "PlayerDoge",
+            name: "Kinged",
           },
           offers: {
             "@type": "AggregateOffer",
@@ -100,13 +100,13 @@ export async function generateMetadata({
               "@type": "ListItem",
               position: 1,
               name: "Home",
-              item: "https://www.playerdoge.com/",
+              item: "https://www.kinged.com/",
             },
             {
               "@type": "ListItem",
               position: 2,
               name: "Games",
-              item: "https://www.playerdoge.com/games",
+              item: "https://www.kinged.com/games",
             },
             {
               "@type": "ListItem",

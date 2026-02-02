@@ -19,7 +19,7 @@ export default function About() {
             About Us
           </h2>
           <p className="text-gray-800 text-lg leading-relaxed font-inter max-w-xl">
-            <strong>PlayerDoge</strong> is a trusted and professional top-up service for mobile games, helping
+            <strong>Kinged</strong> is a trusted and professional top-up service for mobile games, helping
             players save money on discounted <strong>in-game purchases</strong>, from Android and iOS
             game bundles to app store promo packs and limited-time offers. Every
             transaction is made securely through the game’s official store, offering
@@ -38,7 +38,7 @@ export default function About() {
         >
           <Image
             src="/images/about.png"
-            alt="PlayerDoge Mascot"
+            alt="Kinged Mascot"
             width={300}
             height={300}
             className="w-[220px] md:w-[300px] h-auto"

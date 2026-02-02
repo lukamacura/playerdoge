@@ -52,7 +52,7 @@ export default function Hero() {
             viewport={{ once: true }}
             className="text-5xl md:text-7xl font-extrabold font-montserrat leading-tight tracking-tight text-[#1d1d1d] drop-shadow-lg max-w-3xl mx-auto lg:mx-0"
           >
-            Welcome to <span className="text-[#FF7D29]">PlayerDoge</span>
+            Welcome to <span className="text-[#FF7D29]">Kinged</span>
           </motion.h1>
 
           {/* Paragraph */}
@@ -63,7 +63,7 @@ export default function Hero() {
             viewport={{ once: true }}
             className="mt-6 text-lg md:text-2xl text-[#1D1D1D]/90 font-medium font-inter drop-shadow-md max-w-2xl mx-auto lg:mx-0"
           >
-            Every upgrade counts, buy game packs cheaper with PlayerDoge, your
+            Every upgrade counts, buy game packs cheaper with Kinged, your
             trusted top-up service for secure purchases, no ban risk, and real
             savings.
           </motion.p>

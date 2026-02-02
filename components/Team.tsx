@@ -28,7 +28,7 @@ export default function Team() {
             name: "Ivan Mladenović",
             role: "Founder",
             image: "/images/ivan.png",
-            bio: `Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how PlayerDoge was born, a project shaped by his vision, focus, and deep understanding of the gaming world.`,
+            bio: `Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how Kinged was born, a project shaped by his vision, focus, and deep understanding of the gaming world.`,
             link: "https://www.instagram.com/packloader",
             handle: "@packloader",
           },
