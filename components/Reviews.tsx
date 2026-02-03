@@ -27,6 +27,18 @@ const Reviews = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Load Trustpilot widget script
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <section className="bg-[#FFFDD0] py-2 px-4">
       <div className="max-w-7xl mx-auto">
@@ -40,6 +52,27 @@ const Reviews = () => {
         >
           Trusted by gamers worldwide.
         </motion.h2>
+
+        {/* Trustpilot Widget */}
+        <div className="mb-8">
+          <div
+            className="trustpilot-widget"
+            data-locale="en-US"
+            data-template-id="56278e9abfbbba0bdcd568bc"
+            data-businessunit-id="69821379c5b7f0ff5cd3c59d"
+            data-style-height="52px"
+            data-style-width="100%"
+            data-token="28aae309-75d9-476f-a54e-1c6d74c8fbaf"
+          >
+            <a
+              href="https://www.trustpilot.com/review/kinged.gg"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Trustpilot
+            </a>
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {currentIndices.map((index) => (
