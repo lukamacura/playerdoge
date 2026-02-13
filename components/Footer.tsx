@@ -36,8 +36,8 @@ export default function Footer() {
             {[
               {
                 icon: "/icons/email.png",
-                label: "support@kinged.com",
-                href: "mailto:support@kinged.com",
+                label: "support@kinged.gg",
+                href: "mailto:support@kinged.gg",
               },
               {
                 icon: "/icons/discord.png",
