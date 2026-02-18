@@ -63,9 +63,9 @@ export default function Hero() {
             viewport={{ once: true }}
             className="mt-6 text-lg md:text-2xl text-[#1D1D1D]/90 font-medium font-inter drop-shadow-md max-w-2xl mx-auto lg:mx-0"
           >
-            Every upgrade counts, buy game packs cheaper with Kinged, your
-            trusted top-up service for secure purchases, no ban risk, and real
-            savings.
+            Kinged is your team&apos;s secret weapon to win more while spending
+            the same. Unleash the force of quick, accessible and risk-free
+            discounts and lead to the top.
           </motion.p>
 
           {/* CTA Buttons */}

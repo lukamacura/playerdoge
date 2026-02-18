@@ -1,0 +1,261 @@
+Privacy Policy
+
+Effective Date: August 14, 2025
+
+Kinged LLC (“Kinged,” “we,” “our,” or “us”) values your privacy and is committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and protect your information when you use our website and services (collectively, the “Services”).
+
+We only collect personal information necessary to provide our Services, prevent fraud, comply with the law, and improve user experience. We never sell your personal information, and we only share it when needed to deliver our Services or meet legal obligations.
+
+We do not buy or sell personal data. We do not share your account information with third parties for advertising purposes. We do not use your personal data to make automated decisions that produce legal or similarly significant effects without human involvement.
+
+We do not intentionally collect sensitive personal data such as racial or ethnic origin, political opinions, religious beliefs, health information, or biometric identifiers.
+
+This Privacy Policy is reviewed at least quarterly and updated as needed to reflect changes in laws, technology, and our practices.
+
+By using Kinged, you agree to the practices described here. If you do not agree, you must stop using our Services immediately.
+
+Overview
+
+We collect:
+
+Account details such as your name, email, username, and password.
+
+Payment and billing details to process your transactions.
+
+Order details such as game title, purchase amount, and screenshots for order fulfillment and fraud prevention.
+
+Device and usage data such as IP address, browser type, and activity logs to secure your account and improve our Services.
+
+Communications you send us to provide support.
+
+We use your information to:
+
+Process orders and payments.
+
+Verify identity for security purposes.
+
+Prevent fraud, abuse, and unauthorized transactions.
+
+Provide customer support and respond to inquiries.
+
+Improve and secure our Services.
+
+Comply with legal requirements.
+
+Information We Collect and Why
+
+Information You Provide Directly – Account registration details, payment information, order details, and any information shared in communications with us. Used to provide Services, process transactions, prevent fraud, and offer customer support.
+
+Information Collected Automatically – Device details, browser type, IP address, approximate location, and usage patterns. Used to secure accounts, detect suspicious activity, and improve user experience.
+
+Information from Third Parties – Payment confirmation, fraud risk assessments, or identity verification data from payment processors, verification services, or legal authorities when required.
+
+You are responsible for ensuring the information you provide is accurate, complete, and up to date.
+
+How We Use Your Information
+
+We use your information to:
+
+Provide, process, and fulfill your orders.
+
+Verify your identity when necessary for account security.
+
+Prevent, detect, and investigate fraud or abuse.
+
+Respond to support requests and resolve disputes.
+
+Improve our Services, security, and user experience.
+
+Comply with applicable laws and enforce our Terms of Service.
+
+Send service-related notifications and, if you consent, marketing communications you can opt out of at any time. Opt-out requests for marketing communications are processed within 10 business days.
+
+How We Protect Your Information and Your Account
+
+We take your security and privacy seriously. Every part of our process is designed to protect your account details and personal data.
+
+Our track record: over 121,000 orders fulfilled, 0 bans, and US-based legal compliance.
+
+Why We May Require Temporary Account Access
+
+Our business model involves logging into your game account solely to complete your requested in-game purchases because:
+
+We purchase official Google Play and Apple gift cards in bulk from trusted suppliers at discounted rates.
+
+We redeem these cards on our Google or Apple accounts and use the Coins to buy your requested packs directly inside your game, the same way you would yourself.
+
+This ensures game developers receive the full listed price for every transaction, appearing exactly like any other player purchase.
+
+We do not:
+
+Use stolen payment methods.
+
+Use bots or automated gameplay.
+
+Access your account for any purpose beyond completing your requested purchase.
+
+Security Practices During Account Access
+
+Credentials stored with encryption in transit and at rest.
+
+Access by trained buyer agents - never bots - to mimic normal player behavior and avoid triggering automated detection systems.
+
+Vetting of each game and order before acceptance.
+
+Agents log in, complete the purchase, and log out - nothing else is accessed or altered.
+
+Credentials are never shared outside our authorized fulfillment team.
+
+All employees and contractors with access to personal data are required to complete privacy and data protection training, and are bound by confidentiality agreements.
+
+Why This Is Low Risk Under Game Terms of Service
+
+Game ToS often prohibit account sharing to stop account sales, hacking, or botting - not legitimate purchasing.
+
+Players regularly log in from new devices or share with trusted friends without penalties.
+
+Our process mirrors normal player activity, uses official payment channels, and benefits developers by increasing engagement and revenue.
+
+More details at: Is Kinged Safe?
+
+Security Commitments
+
+If we ever experience a data breach likely to risk your rights or freedoms, we will notify you without undue delay and within legal timeframes, and also inform relevant authorities when required.
+
+We may engage independent security auditors to review our systems and practices, and we address any findings as part of our commitment to ongoing improvement.
+
+Data Minimization and Retention
+
+We collect and retain only the minimum personal information necessary.
+
+Retention periods and reasons:
+
+Account data – kept while active and for up to 2 years after closure for fraud prevention.
+Order and transaction records – kept for 6 years to comply with tax and accounting laws.
+Support communications – kept for up to 3 years to resolve disputes.
+
+Personal data stored in backups is subject to the same security controls and retention schedules as live systems, and is deleted or anonymized when the backup is cycled out.
+
+We may retain certain information beyond our standard retention periods when necessary to resolve ongoing disputes, comply with investigations, or enforce our agreements, in accordance with applicable law.
+
+When no longer needed, data is securely deleted or anonymized.
+
+Legal Bases for Processing
+
+For users in the EEA, UK, and similar jurisdictions, we process personal data based on:
+
+Contract performance.
+
+Legitimate interests (fraud prevention, service improvement).
+
+Legal obligations.
+
+Consent (where required).
+
+These principles apply globally.
+
+Sharing Your Information
+
+We share data only when necessary:
+
+With secure payment processors that comply with PCI DSS (Payment Card Industry Data Security Standard) requirements.
+
+With trusted service providers for hosting, analytics, fraud prevention, and support.
+
+To comply with lawful requests. We only share with authorities when legally compelled, and will notify you where the law allows.
+
+In case of a merger, acquisition, or asset sale.
+
+We do not share your personal information with game publishers except for fraud prevention, dispute resolution, or legal requirements.
+
+Third-party providers such as payment processors have their own privacy policies - we encourage reviewing them before use.
+
+International Data Transfers
+
+Your data is primarily stored in secure servers in the United States. When transferred abroad, we use safeguards such as Standard Contractual Clauses and review them regularly for compliance. We will notify you if the legal basis for transfers changes.
+
+Your Rights
+
+Depending on your location, you may:
+
+Access your data.
+
+Request corrections.
+
+Request deletion.
+
+Restrict or object to processing.
+
+Receive a portable copy.
+
+Withdraw consent for specific processing.
+
+To exercise rights, email legal@kinged.gg from your registered account email. We may require proof of identity.
+
+You may also complain to your local data protection authority if you believe your rights have been violated.
+
+We will not discriminate against you for exercising your privacy rights.
+
+Rights for California Residents
+
+You may:
+
+Know what we collect and how it’s used.
+
+Request deletion of your data, subject to exceptions.
+
+Opt out of sale/sharing (we don’t sell).
+
+Receive equal service and pricing regardless of exercising rights.
+
+Rights for Canada and Brazil
+
+Under PIPEDA and LGPD, you have similar rights to GDPR, including access, correction, deletion, and consent withdrawal. Requests are handled as in Section 9.
+
+Cookies and Tracking
+
+We use cookies to:
+
+Keep you signed in.
+
+Remember preferences.
+
+Improve performance.
+
+Analyze usage.
+
+You can disable cookies in your browser, though some features may not function.
+
+Automated Decision-Making and AI Use
+
+We may use automated tools to detect fraudulent or unauthorized transactions. Any decision impacting your access to our Services is reviewed by a human before becoming final.
+
+Children’s Privacy
+
+Our Services are not for individuals under 18. We do not knowingly collect their data. If we discover a user has misrepresented their age, we will immediately delete their personal information, terminate their account, and refund any unused Coins where applicable.
+
+How to Delete Your Account
+
+For further questions or to express concerns regarding this Privacy Policy, contact us directly at info@kinged.gg. Our commitment to your privacy is unwavering, and we welcome the opportunity to assist you.
+
+Privacy Impact Assessments
+
+Before launching any new product, feature, or process involving personal data, we assess its privacy impact and implement safeguards.
+
+Transparency Reporting
+
+We may publish periodic transparency reports summarizing the number and type of lawful requests we receive for personal data, how we responded, and any other disclosures made, in line with applicable laws.
+
+Changes to This Privacy Policy
+
+We may update this Privacy Policy from time to time. When we do, we will revise the Effective Date and, where required by law, provide notice of material changes. Continued use of our Services after updates constitutes acceptance of the revised policy.
+
+Contact Us
+
+The only official method to contact Kinged regarding privacy or legal matters is by email at legal@kinged.gg.
+
+For general service or account support, please use our customer service channels listed on our website.
+
+Registered Address: Kinged LLC, Georgia, United States
+
+© 2025 Kinged. All rights reserved.

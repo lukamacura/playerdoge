@@ -5,22 +5,32 @@ import Image from "next/image";
 
 const faqs = [
   {
-    question: "How does the Kinged top-up process work?",
-    answer: `Place your order on the Kinged website by selecting your game, choosing a pack, and entering your account details at checkout. After placing your order, send a clear screenshot of the desired item from your in-game store via live chat. Stay logged out while we process your top-up, we’ll let you know once it’s complete so you can log back in and confirm. Most orders are delivered within 30 minutes.`,
+    question: "Why does Kinged ask for my personal information?",
+    answer: `We need your personal information to purchase bundles on your behalf. We understand that this may raise concerns, so we take this matter seriously.\n\nTo remain authorized, we access your account to buy bundles for you while respecting the rules established by Google and the Apple Store.`,
   },
   {
-    question: "How do I place an order and make a payment?",
-    answer: `Buy coins first, that’s your balance for all orders. Each game pack has its coin price, and the amount is deducted when you order.
-We support PayPal, Wise, Paysend, Zelle (+3%), crypto (with a discount), and credit/debit cards (+5%), plus local payment options based on your country.`,
+    question: "How can I ensure the security of my account information?",
+    answer: `At Kinged, we prioritize the security of your account information. Here's how we maintain the safety of your data:\n\n• Kinged purchases bundles for you from official stores.\n• By complying with the rules, every transaction meets the requirements of Google, Apple, and developers.\n\nRest assured that your Kinged purchases are as secure as if you made them yourself.`,
   },
   {
-    question: "How safe is Kinged?",
-    answer: `Your account’s safety is our top priority. We top up only through official in-game stores, with no third-party tools or risk involved.
-Only verified team members handle your login info, stored securely and never shared. With thousands of safe top-ups completed, Kinged is a trusted choice for mobile gamers.`,
+    question: "What measures do you take to safeguard my transactions?",
+    answer: `An extra layer of protection is the implementation of the 2FA code.\n\nYou are in complete control over your account because you receive the code on your phone when logging in. This guarantees no one else can access your account without your permission.`,
   },
   {
-    question: "Can I use Kinged from my country?",
-    answer: `Yes. Kinged is available worldwide, no matter where you’re from, you can place an order. We support international payments and process top-ups for players across all regions. Just make sure your account details are correct and follow the steps at checkout.`,
+    question: "What level of security is provided for the payment methods?",
+    answer: `We implement high-security protocols for all payment methods.\n\nFor instance, we utilize the safest gateway for credit card payment methods, just like many other companies do. A gateway serves as a link to your point of sale system or virtual terminal to the next step in the payment authorization process.`,
+  },
+  {
+    question: "Why do I have to pay before the order process begins?",
+    answer: `Sending payments in advance can be tough, especially if you're unfamiliar with the other side. We require payment upfront to protect our business from potential scams and ensure efficient service. The mobile gaming world has many scammers, and this practice helps us allocate resources effectively.`,
+  },
+  {
+    question: "Does Kinged violate the game's Terms of Service?",
+    answer: `Using Kinged doesn't violate games' Terms of Service (ToS). Our purchasing process mirrors individual transactions, making them fully compliant with every game's ToS.\n\nMoreover, our security measures further guarantee that using Kinged fits within the practical enforcement of ToS, maintaining a safe and enjoyable gaming experience without the risk of any ToS violations.`,
+  },
+  {
+    question: "Why do you promote a 35% discount when I see only 10%?",
+    answer: `We understand you might feel you're not saving as much as you'd hoped, and we're here to help.\n\nThe price you see depends on several factors like the in-game price, taxes on digital goods, currency exchange, and other elements. For example, a €119.99 bundle is equivalent to $99.99, so European players save 30% or more, while US players save 10% plus tax. For US and Canadian players, we cover digital taxes, so if a bundle costs $99.99 with an additional 10% tax in your state, you end up paying only $89.99 with Kinged.\n\nWe promote a 10-35% discount because savings vary based on these factors. Additionally, we offer flash deals where you can save even more.`,
   },
 ];
 

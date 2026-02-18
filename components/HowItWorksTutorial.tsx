@@ -14,36 +14,36 @@ const steps: {
 }[] = [
   {
     number: 1,
-    title: "Choose your pack",
+    title: "Buy coins",
     description: (
       <>
-        <strong className="text-[#FF7A3D]">Pick your mobile game pack</strong> and share a{" "}
-        <strong>screenshot</strong> from the game to avoid any mistake.
+        <strong className="text-[#FF7A3D]">Create or log in</strong> to Kinged and{" "}
+        <strong>purchase coins</strong> with your preferred payment method.
+      </>
+    ),
+    icon: "wallet",
+  },
+  {
+    number: 2,
+    title: "Choose package(s)",
+    description: (
+      <>
+        <strong className="text-[#FF7A3D]">Select your game</strong> and package(s), then enter
+        your <strong>game account login details</strong> securely.
       </>
     ),
     icon: "gamepad",
   },
   {
-    number: 2,
-    title: "Account Details",
+    number: 3,
+    title: "Order confirmation",
     description: (
       <>
-        <strong className="text-[#FF7A3D]">Send your login details</strong> safely while we get
-        your order ready with <strong>full data protection</strong>.
+        <strong className="text-[#FF7A3D]">Confirm order</strong> and send a package(s){" "}
+        <strong>screenshot(s) via live chat</strong>; we process it without delay.
       </>
     ),
     icon: "account",
-  },
-  {
-    number: 3,
-    title: "Coin payment",
-    description: (
-      <>
-        <strong className="text-[#FF7A3D]">Pay using Kinged coins</strong> and enjoy{" "}
-        <strong>fast delivery</strong> with full safety for your account.
-      </>
-    ),
-    icon: "wallet",
   },
 ];
 

@@ -6,17 +6,17 @@ const badges = [
   {
     icon: '/images/trust1.png',
     title: 'Trust',
-    desc: 'Kinged delivers safe mobile game top-ups trusted by thousands of gamers across Android and iOS.',
+    desc: 'Thousands of recurring customers confirm our purchases are as safe as you buy directly. We uphold a zero-ban track record to this day.',
   },
   {
     icon: '/images/trust2.png',
     title: 'Efficiency',
-    desc: 'Fast and reliable top-up service for mobile games with secure payments and real in-game discounts.',
+    desc: 'We impose strict security measures to make sure our purchases are identical to your purchases, without delays.',
   },
   {
     icon: '/images/trust3.png',
     title: 'Customer First',
-    desc: 'Real support for mobile gamers, quick replies, no bots, and service built fully around your needs.',
+    desc: 'Kinged acts as your personal shopper, buying game bundles directly from official stores, ensuring purchases match your previous ones.',
   },
 ]
 

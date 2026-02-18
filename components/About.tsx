@@ -19,12 +19,9 @@ export default function About() {
             About Us
           </h2>
           <p className="text-gray-800 text-lg leading-relaxed font-inter max-w-xl">
-            <strong>Kinged</strong> is a trusted and professional top-up service for mobile games, helping
-            players save money on discounted <strong>in-game purchases</strong>, from Android and iOS
-            game bundles to app store promo packs and limited-time offers. Every
-            transaction is made securely through the game’s official store, offering
-            you a smarter way to buy game packs cheaper while supporting your
-            favorite titles.
+            <strong>Kinged</strong> is a company that provides in-app purchase service for mobile games.
+            We offer amazing discounts on every in-app price, including already modified prices by the game
+            itself (promos, limited offers etc). Everything you wish we buy for you directly from in game shop.
           </p>
         </motion.div>
 

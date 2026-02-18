@@ -26,13 +26,12 @@ export default function WhyKinged() {
             Why Kinged?
           </h2>
           <p className="mt-4 text-lg leading-relaxed font-inter">
-            Kinged is a{" "}
-            <strong className="font-semibold">fully legit</strong> top-up
-            service focused on safety and savings, no bans, no shortcuts. <br />
-            With years of experience and thousands of happy users, we&apos;re the
-            trusted way to get cheaper{" "}
-            <strong className="font-semibold">game packs</strong>, backed by
-            real people and real results.
+            With so many sketchy options online, it&apos;s easy to confuse Kinged with
+            prohibited services that can get your account suspended. As your{" "}
+            <strong className="font-semibold">trusted shopper</strong>, Kinged buys
+            bundles directly from the{" "}
+            <strong className="font-semibold">official stores</strong>, ensuring
+            authenticity and reliability. We put your safety and security above all else.
           </p>
         </motion.div>
 
