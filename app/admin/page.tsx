@@ -102,7 +102,7 @@ export default function AdminPage() {
       fetch("/api/admin/transactions")
         .then((res) => res.json())
         .then((data) => {
-          setTransactions(data);
+          setTransactions(Array.isArray(data) ? data : []);
           setTxLoading(false);
         });
     }

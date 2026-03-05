@@ -14,11 +14,17 @@ import { useCallback } from "react";
 
 export function useTidio() {
   const openChatWithMessage = useCallback((message: string) => {
-    if (typeof window !== "undefined" && window.tidioChatApi) {
+    if (typeof window === "undefined") return;
+
+    const open = () => {
       window.tidioChatApi.open();
       window.tidioChatApi.messageFromVisitor(message);
+    };
+
+    if (window.tidioChatApi) {
+      open();
     } else {
-      console.warn("Tidio API not ready yet.");
+      document.addEventListener("tidioChat-ready", open, { once: true });
     }
   }, []);
 

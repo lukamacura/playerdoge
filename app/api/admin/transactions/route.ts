@@ -4,6 +4,7 @@ import { adminDb } from "@/lib/firebaseAdmin";
 import { NextResponse } from "next/server";
 
 export async function GET() {
+  try {
   const usersSnapshot = await adminDb.collection("users").get();
 
   const results = await Promise.all(
@@ -35,4 +36,8 @@ export async function GET() {
   allTransactions.sort((a, b) => b.timestampMs - a.timestampMs);
 
   return NextResponse.json(allTransactions);
+  } catch (err) {
+    console.error("Admin transactions error:", err);
+    return NextResponse.json({ error: String(err) }, { status: 500 });
+  }
 }
