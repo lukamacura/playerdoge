@@ -22,7 +22,7 @@ export default function Login() {
     setError("");
 
     try {
-      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
 
       router.push("/dashboard");
     } catch (err: unknown) {
