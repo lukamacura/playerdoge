@@ -397,7 +397,7 @@ export default function GameDetailPage() {
                   checked={isCredentialsChecked}
                   onChange={(e) => setIsCredentialsChecked(e.target.checked)}
                 />
-                Linked email and password is required.
+                Account login details are required to complete the top-up.
               </label>
               <label className="block text-xs">
                 <input

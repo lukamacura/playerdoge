@@ -24,11 +24,6 @@ export default function Login() {
     try {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
 
-      if (!user.emailVerified) {
-        setError("Please verify your email address before logging in.");
-        return;
-      }
-
       router.push("/dashboard");
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {

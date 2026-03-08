@@ -44,12 +44,7 @@ export default function Footer() {
                 label: "Kinged",
                 href: "https://discord.gg/ntgxjAhtUQ",
               },
-              {
-                icon: "/icons/instagram.png",
-                label: "@packloader",
-                href: "https://www.instagram.com/packloader/",
-              },
-              
+
             ].map((contact) => (
               <Link
                 key={contact.label}

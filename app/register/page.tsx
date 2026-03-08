@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
@@ -44,13 +43,7 @@ export default function Register() {
         createdAt: serverTimestamp(),
       });
 
-      await sendEmailVerification(userCred.user);
-
-      setSuccessMessage("✅ Verification email sent! Please check your inbox.");
-      setTimeout(() => {
-  auth.signOut(); // izloguj neregistrovanog korisnika
-  router.push("/login");
-}, 4000); // 4 sekunde za prikaz poruke
+      router.push("/login");
 
 
     } catch (err: unknown) {
