@@ -20,7 +20,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [successMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +43,8 @@ export default function Register() {
         createdAt: serverTimestamp(),
       });
 
-      router.push("/login");
+      setSuccessMessage("Registration successful! Redirecting to login...");
+      setTimeout(() => router.push("/login"), 1500);
 
 
     } catch (err: unknown) {

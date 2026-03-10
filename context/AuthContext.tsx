@@ -34,18 +34,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
 
       if (firebaseUser) {
-        const docRef = doc(db, "users", firebaseUser.uid);
-        const docSnap = await getDoc(docRef);
+        try {
+          const docRef = doc(db, "users", firebaseUser.uid);
+          const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          setUserData({
-            coins: data.coins ?? 0,
-            email: data.email ?? "",
-            name: data.name ?? "",
-          });
-        } else {
-          // Ako dokument ne postoji
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setUserData({
+              coins: data.coins ?? 0,
+              email: data.email ?? "",
+              name: data.name ?? "",
+            });
+          } else {
+            setUserData({ coins: 0, email: "", name: "" });
+          }
+        } catch {
           setUserData({ coins: 0, email: "", name: "" });
         }
       } else {
