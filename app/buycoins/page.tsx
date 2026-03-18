@@ -215,9 +215,7 @@ export default function BuyCoinsPage() {
               priority
             />
             <p className="text-lg md:text-2xl font-bold text-[#1D1D1D] text-center md:text-left max-w-lg">
-              Coins can be purchased in USD, EUR, CAD or AUD. All major payment
-              methods offer automatic currency conversion, so you can pay easily
-              in your local currency.
+              Our service is available worldwide. To maintain a standardized payment process, we currently accept payments in USD and EUR. However, most major payment methods support automatic currency conversion, allowing you to pay conveniently in your local currency.
             </p>
           </motion.div>
         </div>
