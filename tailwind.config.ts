@@ -48,7 +48,7 @@ const config: Config = {
       },
       animation: {
         "scale-pulse": "scale-pulse 1.5s ease-in-out infinite",
-        "spin-medium": "spin-medium 2s linear infinite",
+        "spin-medium": "spin-medium 5s linear infinite",
       },
     },
   },

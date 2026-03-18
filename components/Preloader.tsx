@@ -38,7 +38,7 @@ export default function Preloader() {
   if (!loading) return null;
 
   return (
-    <div className="fixed inset-0 bg-[#1d1d1d] text-[#1d1d1d] z-50 flex flex-col justify-center items-center transition-opacity duration-500">
+    <div className="fixed inset-0 bg-[#FEFFD2] text-[#1d1d1d] z-50 flex flex-col justify-center items-center transition-opacity duration-500">
       <div className="mb-6">
         <Image
           src="/images/dog.png"
@@ -49,7 +49,7 @@ export default function Preloader() {
         />
       </div>
       <p
-        className={`text-xs text-white md:text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
+        className={`text-xs text-[#1d1d1d] md:text-lg font-semibold font-montserrat px-6 text-center transition-opacity duration-500 ${
           fade ? "opacity-100" : "opacity-0"
         }`}
       >
