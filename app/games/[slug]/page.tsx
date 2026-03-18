@@ -54,7 +54,7 @@ const gameFaqs = [
 
 
 
-type Country = "usa" | "canada" | "eu" | "australia" | "other";
+type Country = "usa" | "canada" | "eu" | "australia" | "uk" | "other";
 
 export const dynamic = "force-dynamic";
 
@@ -78,8 +78,10 @@ export default function GameDetailPage() {
         return "Europe";
       case "australia":
         return "Australia";
-        case "other":
-  return "Other region";
+      case "uk":
+        return "United Kingdom";
+      case "other":
+        return "Other region";
 
       default:
         return "";
@@ -102,6 +104,7 @@ export default function GameDetailPage() {
     canada: [6.99, 13.99, 26.99, 69.99, 139.99],
     eu: [5.99, 11.99, 22.99, 59.99, 119.99],
     australia: [7.99, 16.99, 33.99, 79.99, 159.99],
+    uk: [4.99, 9.99, 19.99, 49.99, 99.99],
     other: [4.99, 9.99, 19.99, 49.99, 99.99], // isto kao usa
 
     
@@ -112,6 +115,7 @@ export default function GameDetailPage() {
     canada: "CAD",
     eu: "EUR",
     australia: "AUD",
+    uk: "GBP",
     other: "USD", // kao usa
 
   };
@@ -193,7 +197,7 @@ export default function GameDetailPage() {
           </span>
         </Listbox.Button>
         <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-{(["usa", "eu", "canada", "australia", "other"] as Country[]).map((country) => (
+{(["usa", "eu", "canada", "australia", "uk", "other"] as Country[]).map((country) => (
             <Listbox.Option
               key={country}
               value={country}

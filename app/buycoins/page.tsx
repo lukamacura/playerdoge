@@ -11,7 +11,7 @@ import { useTidio } from "@/lib/useTidio";
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] =
-    useState<"USD" | "EUR" | "CAD" | "AUD">("USD");
+    useState<"USD" | "EUR" | "CAD" | "AUD" | "GBP">("USD");
   const { openChatWithMessage } = useTidio();
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const [pendingMessage, setPendingMessage] = useState("");
@@ -36,10 +36,16 @@ export default function BuyCoinsPage() {
       { amount: 100000, price: "1399.99 CAD", value: "1209.99 CAD" },
     ],
     AUD: [
-      { amount: 2000, price: "33.99 AUD", value: "27.99 AUD" },
-      { amount: 5000, price: "79.99 AUD", value: "67.99 AUD" },
-      { amount: 10000, price: "159.99 AUD", value: "135.99 AUD" },
-      { amount: 100000, price: "1599.99 AUD", value: "1354.99 AUD" },
+      { amount: 2000, price: "33.99 AUD", value: "24.99 AUD" },
+      { amount: 5000, price: "79.99 AUD", value: "60.99 AUD" },
+      { amount: 10000, price: "159.99 AUD", value: "122.99 AUD" },
+      { amount: 100000, price: "1599.99 AUD", value: "1229.99 AUD" },
+    ],
+    GBP: [
+      { amount: 2000, price: "19.99 GBP", value: "13.49 GBP" },
+      { amount: 5000, price: "49.99 GBP", value: "32.99 GBP" },
+      { amount: 10000, price: "99.99 GBP", value: "65.99 GBP" },
+      { amount: 100000, price: "999.99 GBP", value: "659.99 GBP" },
     ],
   };
 
@@ -48,6 +54,7 @@ export default function BuyCoinsPage() {
     EUR: "eu",
     CAD: "canada",
     AUD: "australia",
+    GBP: "uk",
   };
 
   function capitalize(str: string) {
@@ -97,7 +104,7 @@ export default function BuyCoinsPage() {
                       </span>
                     </Listbox.Button>
                     <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {["USD", "EUR", "CAD", "AUD"].map((curr) => (
+                      {["USD", "EUR", "CAD", "AUD", "GBP"].map((curr) => (
                         <Listbox.Option
                           key={curr}
                           value={curr}

@@ -41,11 +41,11 @@ export default function Preloader() {
     <div className="fixed inset-0 bg-[#1d1d1d] text-[#1d1d1d] z-50 flex flex-col justify-center items-center transition-opacity duration-500">
       <div className="mb-6">
         <Image
-          src="/images/preloader.png"
+          src="/images/dog.png"
           alt="Kinged logo"
           width={100}
           height={100}
-          className="object-contain animate-scale-pulse"
+          className="object-contain animate-spin-medium"
         />
       </div>
       <p

@@ -85,7 +85,7 @@ export default function PrivacyPage() {
       </p>
       <ul className="list-disc list-inside mb-4 space-y-1 font-inter">
         <li>We purchase official Google Play and Apple gift cards in bulk from trusted suppliers at discounted rates.</li>
-        <li>We redeem these cards on our Google or Apple accounts and use the Coins to buy your requested packs directly inside your game, the same way you would yourself.</li>
+        <li>We redeem these cards on our Google or Apple accounts and use the balance to buy your requested packs directly inside your game, the same way you would yourself.</li>
         <li>This ensures game developers receive the full listed price for every transaction, appearing exactly like any other player purchase.</li>
       </ul>
       <p className="mb-2 font-inter">We do not:</p>
