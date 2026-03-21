@@ -42,7 +42,7 @@ export const metadata = {
     url: "https://www.kinged.gg",
     images: [
       {
-        url: "https://www.kinged.gg/images/og-default.jpg",
+        url: "https://www.kinged.gg/images/home_main1.png",
         width: 1200,
         height: 630,
         alt: "Kinged",
@@ -53,7 +53,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Kinged | Cheaper Mobile Game Top-Ups",
     description: "Top up mobile games like King of Avalon and State of Survival cheaper and safely through Kinged.",
-    images: ["https://www.kinged.gg/images/og-default.jpg"],
+    images: ["https://www.kinged.gg/images/home_main1.png"],
   },
   icons: {
     icon: "/images/preloader.png",

@@ -71,8 +71,12 @@ const Reviews = () => {
               href="https://www.trustpilot.com/review/kinged.gg"
               target="_blank"
               rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 bg-[#00B67A] text-white font-semibold text-sm px-5 py-3 rounded-xl w-fit mx-auto hover:bg-[#009e6a] transition-colors"
             >
-              Trustpilot
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 0L14.59 8.26H23.51L16.46 13.38L19.05 21.64L12 16.52L4.95 21.64L7.54 13.38L0.49 8.26H9.41L12 0Z"/>
+              </svg>
+              See our reviews on Trustpilot
             </a>
           </div>
         </div>
