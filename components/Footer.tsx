@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Left: Company info */}
         <div className="space-y-4">
           <h2 className="text-2xl font-bold text-[#FF7D29]">Kinged LLC</h2>
-          <p className="text-[#1D1D1D]">© 2025 Kinged. All rights reserved.</p>
+          <p className="text-[#1D1D1D]">© 2026 Kinged. All rights reserved.</p>
           <p className="text-sm leading-5 text-[#1D1D1D]">
             300 Colonial Center<br />
             Parkway STE 100N,<br />
