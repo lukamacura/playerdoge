@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
 interface UserData {
   coins: number;
   email: string;
   name: string;
+  creatorCode: string | null;
+  freePackageStatus: "ineligible" | "pending" | "granted";
 }
 
 interface AuthContextType {
@@ -15,6 +17,14 @@ interface AuthContextType {
   loading: boolean;
   logout: () => Promise<void>;
 }
+
+const defaultUserData: UserData = {
+  coins: 0,
+  email: "",
+  name: "",
+  creatorCode: null,
+  freePackageStatus: "ineligible",
+};
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -29,34 +39,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+    let unsubscribeDoc: (() => void) | undefined;
+
+    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+      unsubscribeDoc?.();
       setUser(firebaseUser);
-      setLoading(false);
 
       if (firebaseUser) {
-        try {
-          const docRef = doc(db, "users", firebaseUser.uid);
-          const docSnap = await getDoc(docRef);
-
-          if (docSnap.exists()) {
-            const data = docSnap.data();
-            setUserData({
-              coins: data.coins ?? 0,
-              email: data.email ?? "",
-              name: data.name ?? "",
-            });
-          } else {
-            setUserData({ coins: 0, email: "", name: "" });
+        const docRef = doc(db, "users", firebaseUser.uid);
+        unsubscribeDoc = onSnapshot(
+          docRef,
+          (snap) => {
+            setLoading(false);
+            if (snap.exists()) {
+              const d = snap.data();
+              setUserData({
+                coins: d.coins ?? 0,
+                email: d.email ?? "",
+                name: d.name ?? "",
+                creatorCode: d.creatorCode ?? null,
+                freePackageStatus: d.freePackageStatus ?? "ineligible",
+              });
+            } else {
+              setUserData(defaultUserData);
+            }
+          },
+          () => {
+            setLoading(false);
+            setUserData(defaultUserData);
           }
-        } catch {
-          setUserData({ coins: 0, email: "", name: "" });
-        }
+        );
       } else {
+        setLoading(false);
         setUserData(null);
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribeAuth();
+      unsubscribeDoc?.();
+    };
   }, []);
 
   const logout = async () => {

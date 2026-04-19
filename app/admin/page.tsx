@@ -14,6 +14,11 @@ import {
   Gamepad2,
   CalendarClock,
   UserX,
+  CheckCircle2,
+  Tag,
+  TrendingUp,
+  ToggleLeft,
+  ToggleRight,
 } from "lucide-react";
 
 interface UserData {
@@ -28,20 +33,46 @@ interface TransactionData {
   game: string;
   amount: number;
   timestampMs: number;
+  creatorCode?: string | null;
+  isFreeBonus?: boolean;
+}
+
+interface CreatorData {
+  code: string;
+  displayName: string;
+  active: boolean;
+  commissionPct: number;
+  totalReferredUsers: number;
+  totalReferredRevenueUSD: number;
+  createdAt: number | null;
+}
+
+interface ConfirmPurchaseState {
+  uid: string;
+  email: string;
 }
 
 export default function AdminPage() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [authorized, setAuthorized] = useState<boolean | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"users" | "transactions">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "transactions" | "creators">("users");
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [txLoading, setTxLoading] = useState(false);
+  const [creators, setCreators] = useState<CreatorData[]>([]);
+  const [creatorsLoading, setCreatorsLoading] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+
+  // Confirm Purchase modal state
+  const [confirmPurchase, setConfirmPurchase] = useState<ConfirmPurchaseState | null>(null);
+  const [cpCoinAmount, setCpCoinAmount] = useState("");
+  const [cpUsdValue, setCpUsdValue] = useState("");
+  const [cpGame, setCpGame] = useState("");
+  const [cpLoading, setCpLoading] = useState(false);
+  const [cpError, setCpError] = useState("");
 
   useEffect(() => {
     const allowedAdmins = ["luka.xzy@gmail.com", "ivan.emi010@gmail.com"];
-
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && allowedAdmins.includes(user.email || "")) {
@@ -68,12 +99,8 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#FFEFC4] gap-4">
         <UserX size={64} className="text-red-600" />
-        <p className="text-3xl font-bold text-[#1d1d1d] text-center">
-          Access Denied
-        </p>
-        <p className="text-sm text-[#1d1d1d]/60">
-          You are not authorized to view this page.
-        </p>
+        <p className="text-3xl font-bold text-[#1d1d1d] text-center">Access Denied</p>
+        <p className="text-sm text-[#1d1d1d]/60">You are not authorized to view this page.</p>
       </div>
     );
   }
@@ -95,7 +122,7 @@ export default function AdminPage() {
     setConfirmDelete(null);
   };
 
-  const handleTabChange = (tab: "users" | "transactions") => {
+  const handleTabChange = (tab: "users" | "transactions" | "creators") => {
     setActiveTab(tab);
     if (tab === "transactions" && transactions.length === 0) {
       setTxLoading(true);
@@ -106,6 +133,69 @@ export default function AdminPage() {
           setTxLoading(false);
         });
     }
+    if (tab === "creators" && creators.length === 0) {
+      setCreatorsLoading(true);
+      fetch("/api/admin/creators")
+        .then((res) => res.json())
+        .then((data) => {
+          setCreators(Array.isArray(data) ? data : []);
+          setCreatorsLoading(false);
+        });
+    }
+  };
+
+  const openConfirmPurchase = (user: UserData) => {
+    setConfirmPurchase({ uid: user.uid, email: user.email });
+    setCpCoinAmount("");
+    setCpUsdValue("");
+    setCpGame("");
+    setCpError("");
+  };
+
+  const submitConfirmPurchase = async () => {
+    if (!confirmPurchase) return;
+    const coins = Number(cpCoinAmount);
+    if (!coins || coins <= 0) {
+      setCpError("Enter a valid coin amount");
+      return;
+    }
+    setCpLoading(true);
+    setCpError("");
+    try {
+      const res = await fetch("/api/admin/confirmPurchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: confirmPurchase.uid,
+          coinAmount: coins,
+          usdValue: Number(cpUsdValue) || 0,
+          game: cpGame.trim() || "Coin Purchase",
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        setCpError(d.error ?? "Failed to confirm purchase");
+      } else {
+        // Refresh user list to reflect updated coins
+        fetch("/api/admin/users")
+          .then((r) => r.json())
+          .then(setUsers);
+        setConfirmPurchase(null);
+      }
+    } catch {
+      setCpError("Something went wrong");
+    } finally {
+      setCpLoading(false);
+    }
+  };
+
+  const toggleCreatorActive = async (code: string, active: boolean) => {
+    await fetch("/api/admin/creators", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code, active }),
+    });
+    setCreators(creators.map((c) => (c.code === code ? { ...c, active } : c)));
   };
 
   const filteredUsers = users.filter((u) =>
@@ -137,59 +227,43 @@ export default function AdminPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-[#1d1d1d]/10 p-1 rounded-xl w-fit">
-          <button
-            onClick={() => handleTabChange("users")}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
-              activeTab === "users"
-                ? "bg-[#1d1d1d] text-[#FFEFC4] shadow"
-                : "text-[#1d1d1d]/60 hover:text-[#1d1d1d]"
-            }`}
-          >
-            <Users size={15} />
-            Users
-            <span
-              className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
-                activeTab === "users"
-                  ? "bg-[#FFEFC4]/20 text-[#FFEFC4]"
-                  : "bg-[#1d1d1d]/10 text-[#1d1d1d]/50"
-              }`}
-            >
-              {users.length}
-            </span>
-          </button>
-          <button
-            onClick={() => handleTabChange("transactions")}
-            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
-              activeTab === "transactions"
-                ? "bg-[#1d1d1d] text-[#FFEFC4] shadow"
-                : "text-[#1d1d1d]/60 hover:text-[#1d1d1d]"
-            }`}
-          >
-            <Receipt size={15} />
-            Transactions
-            {transactions.length > 0 && (
-              <span
-                className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
-                  activeTab === "transactions"
-                    ? "bg-[#FFEFC4]/20 text-[#FFEFC4]"
-                    : "bg-[#1d1d1d]/10 text-[#1d1d1d]/50"
+          {(["users", "transactions", "creators"] as const).map((tab) => {
+            const icons = { users: <Users size={15} />, transactions: <Receipt size={15} />, creators: <Tag size={15} /> };
+            const labels = { users: "Users", transactions: "Transactions", creators: "Creators" };
+            const badge = tab === "users" ? users.length : tab === "transactions" && transactions.length > 0 ? transactions.length : tab === "creators" && creators.length > 0 ? creators.length : null;
+            return (
+              <button
+                key={tab}
+                onClick={() => handleTabChange(tab)}
+                className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  activeTab === tab
+                    ? "bg-[#1d1d1d] text-[#FFEFC4] shadow"
+                    : "text-[#1d1d1d]/60 hover:text-[#1d1d1d]"
                 }`}
               >
-                {transactions.length}
-              </span>
-            )}
-          </button>
+                {icons[tab]}
+                {labels[tab]}
+                {badge !== null && (
+                  <span
+                    className={`text-xs px-1.5 py-0.5 rounded-full font-bold ${
+                      activeTab === tab
+                        ? "bg-[#FFEFC4]/20 text-[#FFEFC4]"
+                        : "bg-[#1d1d1d]/10 text-[#1d1d1d]/50"
+                    }`}
+                  >
+                    {badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* Users Tab */}
         {activeTab === "users" && (
           <div>
-            {/* Search */}
             <div className="relative mb-4">
-              <Search
-                size={16}
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1d1d1d]/40"
-              />
+              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#1d1d1d]/40" />
               <Input
                 placeholder="Search by email..."
                 value={searchQuery}
@@ -198,14 +272,12 @@ export default function AdminPage() {
               />
             </div>
 
-            {/* User list */}
             <div className="space-y-2">
               {filteredUsers.map((user) => (
                 <div
                   key={user.uid}
                   className="bg-white border border-[#1d1d1d]/15 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4"
                 >
-                  {/* Avatar + email */}
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-9 h-9 rounded-full bg-[#FFEFC4] border border-[#1d1d1d]/20 flex items-center justify-center text-sm font-bold text-[#1d1d1d] shrink-0">
                       {getInitial(user.email)}
@@ -215,20 +287,25 @@ export default function AdminPage() {
                     </p>
                   </div>
 
-                  {/* Coins editor */}
                   <div className="flex items-center gap-2 shrink-0">
                     <Coins size={16} className="text-amber-500 shrink-0" />
                     <Input
                       type="number"
                       defaultValue={user.coins}
-                      onBlur={(e) =>
-                        updateCoins(user.uid, Number(e.target.value))
-                      }
+                      onBlur={(e) => updateCoins(user.uid, Number(e.target.value))}
                       className="w-24 border-[#1d1d1d]/30 text-center font-semibold"
                     />
                   </div>
 
-                  {/* Delete */}
+                  {/* Confirm Purchase */}
+                  <button
+                    onClick={() => openConfirmPurchase(user)}
+                    className="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-green-300 text-green-700 rounded-lg hover:bg-green-50 transition-colors shrink-0"
+                  >
+                    <CheckCircle2 size={13} />
+                    Confirm Purchase
+                  </button>
+
                   {confirmDelete === user.uid ? (
                     <div className="flex items-center gap-2 shrink-0">
                       <span className="text-xs text-[#1d1d1d]/60">Sure?</span>
@@ -287,7 +364,6 @@ export default function AdminPage() {
                     key={i}
                     className="bg-white border border-[#1d1d1d]/15 rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3"
                   >
-                    {/* Avatar + email */}
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="w-8 h-8 rounded-full bg-[#FFEFC4] border border-[#1d1d1d]/20 flex items-center justify-center text-xs font-bold text-[#1d1d1d] shrink-0">
                         {getInitial(tx.userEmail)}
@@ -297,21 +373,30 @@ export default function AdminPage() {
                       </p>
                     </div>
 
-                    {/* Game */}
                     <div className="flex items-center gap-1.5 text-sm text-[#1d1d1d]/70 shrink-0">
                       <Gamepad2 size={14} className="text-[#1d1d1d]/40" />
                       {tx.game}
                     </div>
 
-                    {/* Amount */}
                     <div className="flex items-center gap-1 shrink-0">
                       <Coins size={14} className="text-amber-500" />
-                      <span className="text-sm font-bold text-red-600">
-                        −{tx.amount}
+                      <span className={`text-sm font-bold ${tx.isFreeBonus ? "text-green-600" : "text-red-600"}`}>
+                        {tx.isFreeBonus ? "+" : "−"}{tx.amount}
                       </span>
+                      {tx.isFreeBonus && (
+                        <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-semibold ml-1">
+                          Bonus
+                        </span>
+                      )}
                     </div>
 
-                    {/* Date */}
+                    {tx.creatorCode && (
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Tag size={12} className="text-[#1d1d1d]/40" />
+                        <span className="text-xs font-semibold text-[#1d1d1d]/60">{tx.creatorCode}</span>
+                      </div>
+                    )}
+
                     <div className="flex items-center gap-1.5 text-xs text-[#1d1d1d]/45 shrink-0">
                       <CalendarClock size={13} />
                       {new Date(tx.timestampMs).toLocaleString()}
@@ -322,7 +407,137 @@ export default function AdminPage() {
             )}
           </div>
         )}
+
+        {/* Creators Tab */}
+        {activeTab === "creators" && (
+          <div>
+            {creatorsLoading ? (
+              <div className="flex flex-col items-center justify-center py-24 gap-3 text-[#1d1d1d]/40">
+                <Loader2 size={32} className="animate-spin" />
+                <p className="text-sm">Loading creators...</p>
+              </div>
+            ) : creators.length === 0 ? (
+              <div className="text-center py-16 text-[#1d1d1d]/40">
+                <Tag size={36} className="mx-auto mb-3 opacity-30" />
+                <p className="text-sm">No creator codes found.</p>
+                <p className="text-xs mt-1">Seed them manually in the Firebase console under <code>creatorCodes/</code>.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {creators.map((creator) => (
+                  <div
+                    key={creator.code}
+                    className="bg-white border border-[#1d1d1d]/15 rounded-xl px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-4"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-[#1d1d1d] text-sm bg-[#FFEFC4] px-2 py-0.5 rounded">
+                          {creator.code}
+                        </span>
+                        <span className="text-sm text-[#1d1d1d]/70">{creator.displayName}</span>
+                      </div>
+                      {creator.commissionPct > 0 && (
+                        <p className="text-xs text-[#1d1d1d]/40 mt-0.5">{(creator.commissionPct * 100).toFixed(0)}% commission</p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-5 shrink-0 text-sm">
+                      <div className="flex items-center gap-1.5 text-[#1d1d1d]/70">
+                        <Users size={14} />
+                        <span className="font-semibold">{creator.totalReferredUsers}</span>
+                        <span className="text-xs text-[#1d1d1d]/40">users</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[#1d1d1d]/70">
+                        <TrendingUp size={14} />
+                        <span className="font-semibold">${creator.totalReferredRevenueUSD.toFixed(2)}</span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => toggleCreatorActive(creator.code, !creator.active)}
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border transition-colors shrink-0"
+                      style={creator.active
+                        ? { borderColor: "#16a34a33", color: "#16a34a", backgroundColor: "#f0fdf4" }
+                        : { borderColor: "#d1d5db", color: "#6b7280", backgroundColor: "#f9fafb" }
+                      }
+                    >
+                      {creator.active ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
+                      {creator.active ? "Active" : "Inactive"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Confirm Purchase Modal */}
+      {confirmPurchase && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 w-[90%] max-w-sm shadow-2xl">
+            <h3 className="text-base font-bold text-[#1d1d1d] mb-1">Confirm Purchase</h3>
+            <p className="text-xs text-[#1d1d1d]/50 mb-4 break-all">{confirmPurchase.email}</p>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-[#1d1d1d]/60 mb-1 block">
+                  Coins to grant <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  type="number"
+                  placeholder="e.g. 5000"
+                  value={cpCoinAmount}
+                  onChange={(e) => setCpCoinAmount(e.target.value)}
+                  className="border-[#1d1d1d]/30"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-[#1d1d1d]/60 mb-1 block">
+                  USD value paid
+                </label>
+                <Input
+                  type="number"
+                  placeholder="e.g. 9.99"
+                  value={cpUsdValue}
+                  onChange={(e) => setCpUsdValue(e.target.value)}
+                  className="border-[#1d1d1d]/30"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-[#1d1d1d]/60 mb-1 block">
+                  Game (optional)
+                </label>
+                <Input
+                  placeholder="Coin Purchase"
+                  value={cpGame}
+                  onChange={(e) => setCpGame(e.target.value)}
+                  className="border-[#1d1d1d]/30"
+                />
+              </div>
+            </div>
+
+            {cpError && <p className="text-xs text-red-500 mt-3">{cpError}</p>}
+
+            <div className="flex gap-2 mt-5">
+              <button
+                onClick={() => setConfirmPurchase(null)}
+                className="flex-1 text-sm px-4 py-2 border border-[#1d1d1d]/20 text-[#1d1d1d]/60 rounded-lg hover:bg-[#1d1d1d]/5 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={submitConfirmPurchase}
+                disabled={cpLoading}
+                className="flex-1 flex items-center justify-center gap-1.5 text-sm px-4 py-2 bg-[#1d1d1d] text-white rounded-lg font-semibold hover:bg-[#333] disabled:opacity-50 transition-colors"
+              >
+                {cpLoading ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

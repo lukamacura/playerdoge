@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{uid} {
+      // User can read their own doc
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      // User can create their own doc at registration
+      allow create: if request.auth != null && request.auth.uid == uid;
+
+      // User can update their own doc but cannot touch referral fields
+      // (those are written server-side via admin SDK which bypasses these rules)
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && !request.resource.data.diff(resource.data).affectedKeys()
+            .hasAny(['creatorCode', 'creatorCodeAppliedAt', 'freePackageStatus', 'firstPurchaseAt']);
+
+      match /purchases/{purchaseId} {
+        allow read: if request.auth != null && request.auth.uid == uid;
+        // Game purchases written by client; admin-confirmed purchases use admin SDK
+        allow create: if request.auth != null && request.auth.uid == uid
+          && request.resource.data.isFreeBonus == false;
+      }
+    }
+
+    // Creator codes: authenticated users can read (for badge display)
+    // All writes go through admin SDK (server-side)
+    match /creatorCodes/{code} {
+      allow read: if request.auth != null;
+    }
+  }
+}
