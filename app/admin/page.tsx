@@ -67,7 +67,6 @@ export default function AdminPage() {
   const [confirmPurchase, setConfirmPurchase] = useState<ConfirmPurchaseState | null>(null);
   const [cpCoinAmount, setCpCoinAmount] = useState("");
   const [cpUsdValue, setCpUsdValue] = useState("");
-  const [cpGame, setCpGame] = useState("");
   const [cpLoading, setCpLoading] = useState(false);
   const [cpError, setCpError] = useState("");
 
@@ -148,7 +147,6 @@ export default function AdminPage() {
     setConfirmPurchase({ uid: user.uid, email: user.email });
     setCpCoinAmount("");
     setCpUsdValue("");
-    setCpGame("");
     setCpError("");
   };
 
@@ -169,7 +167,6 @@ export default function AdminPage() {
           uid: confirmPurchase.uid,
           coinAmount: coins,
           usdValue: Number(cpUsdValue) || 0,
-          game: cpGame.trim() || "Coin Purchase",
         }),
       });
       if (!res.ok) {
@@ -380,8 +377,8 @@ export default function AdminPage() {
 
                     <div className="flex items-center gap-1 shrink-0">
                       <Coins size={14} className="text-amber-500" />
-                      <span className={`text-sm font-bold ${tx.isFreeBonus ? "text-green-600" : "text-red-600"}`}>
-                        {tx.isFreeBonus ? "+" : "−"}{tx.amount}
+                      <span className="text-sm font-bold text-green-600">
+                        +{tx.amount}
                       </span>
                       {tx.isFreeBonus && (
                         <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-semibold ml-1">
@@ -501,17 +498,6 @@ export default function AdminPage() {
                   placeholder="e.g. 9.99"
                   value={cpUsdValue}
                   onChange={(e) => setCpUsdValue(e.target.value)}
-                  className="border-[#1d1d1d]/30"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-[#1d1d1d]/60 mb-1 block">
-                  Game (optional)
-                </label>
-                <Input
-                  placeholder="Coin Purchase"
-                  value={cpGame}
-                  onChange={(e) => setCpGame(e.target.value)}
                   className="border-[#1d1d1d]/30"
                 />
               </div>
