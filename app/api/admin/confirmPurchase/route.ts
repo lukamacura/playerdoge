@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     });
 
     // Single atomic user update
-    const userUpdate: Record<string, unknown> = {
+    const userUpdate: Record<string, FieldValue | string | number | boolean | null> = {
       coins: FieldValue.increment(grantBonus ? coinAmount + 500 : coinAmount),
     };
     if (!data.firstPurchaseAt) {
