@@ -16,9 +16,9 @@ import {
   UserX,
   CheckCircle2,
   Tag,
-  TrendingUp,
   ToggleLeft,
   ToggleRight,
+  Wallet,
 } from "lucide-react";
 
 interface UserData {
@@ -377,9 +377,14 @@ export default function AdminPage() {
 
                     <div className="flex items-center gap-1 shrink-0">
                       <Coins size={14} className="text-amber-500" />
-                      <span className="text-sm font-bold text-green-600">
-                        +{tx.amount}
-                      </span>
+                      {(() => {
+                        const isCredit = tx.game === "Coin Purchase" || tx.isFreeBonus;
+                        return (
+                          <span className={`text-sm font-bold ${isCredit ? "text-green-600" : "text-red-500"}`}>
+                            {isCredit ? `+${tx.amount}` : `-${tx.amount}`}
+                          </span>
+                        );
+                      })()}
                       {tx.isFreeBonus && (
                         <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-semibold ml-1">
                           Bonus
@@ -445,7 +450,7 @@ export default function AdminPage() {
                         <span className="text-xs text-[#1d1d1d]/40">users</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-[#1d1d1d]/70">
-                        <TrendingUp size={14} />
+                        <Wallet size={14} />
                         <span className="font-semibold">${creator.totalReferredRevenueUSD.toFixed(2)}</span>
                       </div>
                     </div>
@@ -500,6 +505,11 @@ export default function AdminPage() {
                   onChange={(e) => setCpUsdValue(e.target.value)}
                   className="border-[#1d1d1d]/30"
                 />
+                {!cpUsdValue && (
+                  <p className="text-xs text-amber-500 mt-1">
+                    Leaving this blank will not update creator revenue stats.
+                  </p>
+                )}
               </div>
             </div>
 

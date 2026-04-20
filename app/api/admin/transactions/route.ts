@@ -27,6 +27,8 @@ export async function GET() {
           game: data.game ?? "",
           amount: data.amount ?? 0,
           timestampMs: data.timestamp?.toMillis?.() ?? 0,
+          isFreeBonus: data.isFreeBonus ?? false,
+          creatorCode: data.creatorCode ?? null,
         };
       });
     })

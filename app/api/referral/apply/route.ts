@@ -36,21 +36,24 @@ export async function POST(request: Request) {
   }
 
   const userRef = adminDb.collection("users").doc(uid);
-  const userSnap = await userRef.get();
 
-  if (!userSnap.exists) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 });
-  }
+  let alreadyApplied = false;
+  let userNotFound = false;
 
-  if (userSnap.data()?.creatorCode) {
-    return NextResponse.json({ error: "Code already applied" }, { status: 409 });
-  }
+  await adminDb.runTransaction(async (tx) => {
+    const userSnap = await tx.get(userRef);
+    if (!userSnap.exists) { userNotFound = true; return; }
+    if (userSnap.data()?.creatorCode) { alreadyApplied = true; return; }
 
-  await userRef.update({
-    creatorCode: normalizedCode,
-    creatorCodeAppliedAt: FieldValue.serverTimestamp(),
-    freePackageStatus: "pending",
+    tx.update(userRef, {
+      creatorCode: normalizedCode,
+      creatorCodeAppliedAt: FieldValue.serverTimestamp(),
+      freePackageStatus: "pending",
+    });
   });
+
+  if (userNotFound) return NextResponse.json({ error: "User not found" }, { status: 404 });
+  if (alreadyApplied) return NextResponse.json({ error: "Code already applied" }, { status: 409 });
 
   return NextResponse.json({ success: true, displayName: codeSnap.data()?.displayName });
 }
