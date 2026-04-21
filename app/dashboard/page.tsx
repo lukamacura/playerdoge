@@ -22,7 +22,7 @@ import { motion } from "framer-motion";
 type Purchase = {
   game: string;
   amount: number;
-  image: string;
+  image: string | null;
   time: string;
 };
 
@@ -60,7 +60,7 @@ const list: Purchase[] = snap.docs.map((doc) => {
   return {
     game: item.game ?? "Unknown game",
     amount: item.amount ?? 0,
-    image: item.image ?? "/images/placeholder.png",
+    image: item.image ?? null,
     time: displayTime,
   };
 });
@@ -196,14 +196,16 @@ const list: Purchase[] = snap.docs.map((doc) => {
                     className="flex items-center justify-between gap-4 border-b border-[#E0D9C7] pb-2"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="relative w-8 h-10 md:w-20 md:h-20 rounded-md shadow-lg overflow-hidden bg-white">
-                        <Image
-                          src={item.image}
-                          alt={item.game}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
+                      {item.image && (
+                        <div className="relative w-8 h-10 md:w-20 md:h-20 rounded-md shadow-lg overflow-hidden bg-white">
+                          <Image
+                            src={item.image}
+                            alt={item.game}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
 
                       <div>
                         <p className="font-bold text-xs md:text-lg font-montserrat text-[#1D1D1D]">

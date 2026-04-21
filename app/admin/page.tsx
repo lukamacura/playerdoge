@@ -8,7 +8,7 @@ import {
   Users,
   Receipt,
   Search,
-  Coins,
+  Coins, 
   Trash2,
   Loader2,
   Gamepad2,

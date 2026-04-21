@@ -12,10 +12,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "uid and coinAmount are required" }, { status: 400 });
   }
 
-  const userRef = adminDb.collection("users").doc(uid);
-
   await adminDb.runTransaction(async (tx) => {
-    const userDoc = await tx.get(userRef);
+    const userRef2 = adminDb.collection("users").doc(uid);
+    const userDoc = await tx.get(userRef2);
     if (!userDoc.exists) throw new Error("User not found");
 
     const data = userDoc.data()!;
@@ -23,8 +22,14 @@ export async function POST(request: Request) {
     const freePackageStatus: string = data.freePackageStatus ?? "ineligible";
     const grantBonus = creatorCode !== null && freePackageStatus === "pending";
 
+    let commissionPct = 0;
+    if (creatorCode && usdValue > 0) {
+      const codeDoc = await tx.get(adminDb.collection("creatorCodes").doc(creatorCode));
+      commissionPct = codeDoc.exists ? (codeDoc.data()?.commissionPct ?? 0) : 0;
+    }
+
     // Paid purchase doc
-    const purchaseRef = userRef.collection("purchases").doc();
+    const purchaseRef = userRef2.collection("purchases").doc();
     tx.set(purchaseRef, {
       game,
       amount: coinAmount,
@@ -45,27 +50,34 @@ export async function POST(request: Request) {
     if (grantBonus) {
       userUpdate.freePackageStatus = "granted";
     }
-    tx.update(userRef, userUpdate);
+    tx.update(userRef2, userUpdate);
 
-    if (grantBonus) {
-      // Bonus purchase doc
-      const bonusRef = userRef.collection("purchases").doc();
-      tx.set(bonusRef, {
-        game: "Referral Bonus",
-        amount: 500,
-        image: "",
-        timestamp: FieldValue.serverTimestamp(),
-        creatorCode,
-        isFreeBonus: true,
-        usdValue: 0,
-      });
-
-      // Update creator stats
+    if (creatorCode) {
       const codeRef = adminDb.collection("creatorCodes").doc(creatorCode);
-      tx.update(codeRef, {
-        totalReferredUsers: FieldValue.increment(1),
-        totalReferredRevenueUSD: FieldValue.increment(usdValue),
-      });
+      const creatorUpdate: Record<string, FieldValue> = {};
+
+      if (grantBonus) {
+        // Bonus purchase doc
+        const bonusRef = userRef2.collection("purchases").doc();
+        tx.set(bonusRef, {
+          game: "Referral Bonus",
+          amount: 500,
+          image: "",
+          timestamp: FieldValue.serverTimestamp(),
+          creatorCode,
+          isFreeBonus: true,
+          usdValue: 0,
+        });
+        creatorUpdate.totalReferredUsers = FieldValue.increment(1);
+      }
+
+      if (usdValue > 0 && commissionPct > 0) {
+        creatorUpdate.totalReferredRevenueUSD = FieldValue.increment(usdValue * commissionPct);
+      }
+
+      if (Object.keys(creatorUpdate).length > 0) {
+        tx.update(codeRef, creatorUpdate);
+      }
     }
   });
 
