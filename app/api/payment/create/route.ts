@@ -6,7 +6,6 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
 import { createPaymentRequest, gatewayUrl } from "@/lib/paymento";
 import { PACKS, isPackId } from "@/lib/packs";
-import type { PackId } from "@/lib/packs";
 
 export async function POST(request: Request) {
   const authHeader = request.headers.get("Authorization");
