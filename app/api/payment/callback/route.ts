@@ -70,6 +70,7 @@ export async function POST(request: Request) {
         coinAmount: pending.coinAmount,
         usdValue: pending.usdValue,
         game: "Coin Purchase",
+        paymentMethod: "crypto",
       });
     } catch (e) {
       const message = e instanceof Error ? e.message : "credit failed";

@@ -1,11 +1,14 @@
 import { adminDb } from "@/lib/firebaseAdmin";
 import { FieldValue } from "firebase-admin/firestore";
 
+export type PaymentMethod = "crypto" | "manual";
+
 export interface CreditPurchaseInput {
   uid: string;
   coinAmount: number;
   usdValue?: number;
   game?: string;
+  paymentMethod?: PaymentMethod;
 }
 
 export async function creditPurchase({
@@ -13,6 +16,7 @@ export async function creditPurchase({
   coinAmount,
   usdValue = 0,
   game = "Coin Purchase",
+  paymentMethod = "manual",
 }: CreditPurchaseInput): Promise<void> {
   if (!uid || !coinAmount || coinAmount <= 0) {
     throw new Error("creditPurchase: uid and positive coinAmount required");
@@ -43,6 +47,7 @@ export async function creditPurchase({
       creatorCode,
       isFreeBonus: false,
       usdValue,
+      paymentMethod,
     });
 
     const userUpdate: Record<string, FieldValue | string | number | boolean | null> = {
@@ -70,6 +75,7 @@ export async function creditPurchase({
           creatorCode,
           isFreeBonus: true,
           usdValue: 0,
+          paymentMethod,
         });
         creatorUpdate.totalReferredUsers = FieldValue.increment(1);
       }

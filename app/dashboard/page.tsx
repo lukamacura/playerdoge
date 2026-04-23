@@ -24,6 +24,7 @@ type Purchase = {
   amount: number;
   image: string | null;
   time: string;
+  paymentMethod: "crypto" | "manual";
 };
 
 export default function Dashboard() {
@@ -62,6 +63,7 @@ const list: Purchase[] = snap.docs.map((doc) => {
     amount: item.amount ?? 0,
     image: item.image ?? null,
     time: displayTime,
+    paymentMethod: (item.paymentMethod ?? "manual") as "crypto" | "manual",
   };
 });
 
@@ -208,9 +210,16 @@ const list: Purchase[] = snap.docs.map((doc) => {
                       )}
 
                       <div>
-                        <p className="font-bold text-xs md:text-lg font-montserrat text-[#1D1D1D]">
-                          {item.game}
-                        </p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-bold text-xs md:text-lg font-montserrat text-[#1D1D1D]">
+                            {item.game}
+                          </p>
+                          {item.paymentMethod === "crypto" && (
+                            <span className="text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold">
+                              Crypto
+                            </span>
+                          )}
+                        </div>
                         <p className="text-sm text-[#888]">{item.time}</p>
                       </div>
                     </div>

@@ -19,6 +19,8 @@ import {
   ToggleLeft,
   ToggleRight,
   Wallet,
+  Bitcoin,
+  HandCoins,
 } from "lucide-react";
 
 interface UserData {
@@ -35,6 +37,8 @@ interface TransactionData {
   timestampMs: number;
   creatorCode?: string | null;
   isFreeBonus?: boolean;
+  paymentMethod?: "crypto" | "manual";
+  usdValue?: number;
 }
 
 interface CreatorData {
@@ -59,6 +63,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<"users" | "transactions" | "creators">("users");
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [txLoading, setTxLoading] = useState(false);
+  const [txMethodFilter, setTxMethodFilter] = useState<"all" | "crypto" | "manual">("all");
   const [creators, setCreators] = useState<CreatorData[]>([]);
   const [creatorsLoading, setCreatorsLoading] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
@@ -355,8 +360,44 @@ export default function AdminPage() {
                 <p className="text-sm">No transactions found.</p>
               </div>
             ) : (
+              <>
+                <div className="flex items-center gap-1 mb-4 bg-[#1d1d1d]/10 p-1 rounded-lg w-fit">
+                  {(["all", "crypto", "manual"] as const).map((f) => {
+                    const count =
+                      f === "all"
+                        ? transactions.length
+                        : transactions.filter((t) => (t.paymentMethod ?? "manual") === f).length;
+                    const icon =
+                      f === "crypto" ? <Bitcoin size={13} /> : f === "manual" ? <HandCoins size={13} /> : null;
+                    return (
+                      <button
+                        key={f}
+                        onClick={() => setTxMethodFilter(f)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all capitalize ${
+                          txMethodFilter === f
+                            ? "bg-[#1d1d1d] text-[#FFEFC4] shadow"
+                            : "text-[#1d1d1d]/60 hover:text-[#1d1d1d]"
+                        }`}
+                      >
+                        {icon}
+                        {f}
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                            txMethodFilter === f
+                              ? "bg-[#FFEFC4]/20 text-[#FFEFC4]"
+                              : "bg-[#1d1d1d]/10 text-[#1d1d1d]/50"
+                          }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               <div className="space-y-2">
-                {transactions.map((tx, i) => (
+                {transactions
+                  .filter((tx) => txMethodFilter === "all" || (tx.paymentMethod ?? "manual") === txMethodFilter)
+                  .map((tx, i) => (
                   <div
                     key={i}
                     className="bg-white border border-[#1d1d1d]/15 rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-center gap-3"
@@ -373,6 +414,17 @@ export default function AdminPage() {
                     <div className="flex items-center gap-1.5 text-sm text-[#1d1d1d]/70 shrink-0">
                       <Gamepad2 size={14} className="text-[#1d1d1d]/40" />
                       {tx.game}
+                      {tx.paymentMethod === "crypto" ? (
+                        <span className="flex items-center gap-1 text-[10px] bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold">
+                          <Bitcoin size={10} />
+                          Crypto
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1 text-[10px] bg-[#1d1d1d]/10 text-[#1d1d1d]/60 px-1.5 py-0.5 rounded-full font-bold">
+                          <HandCoins size={10} />
+                          Manual
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex items-center gap-1 shrink-0">
@@ -406,6 +458,7 @@ export default function AdminPage() {
                   </div>
                 ))}
               </div>
+              </>
             )}
           </div>
         )}

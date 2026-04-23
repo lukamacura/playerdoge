@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await creditPurchase({ uid, coinAmount, usdValue, game });
+    await creditPurchase({ uid, coinAmount, usdValue, game, paymentMethod: "manual" });
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed";
     const status = message === "User not found" ? 404 : 500;

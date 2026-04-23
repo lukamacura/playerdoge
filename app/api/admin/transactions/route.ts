@@ -29,6 +29,8 @@ export async function GET() {
           timestampMs: data.timestamp?.toMillis?.() ?? 0,
           isFreeBonus: data.isFreeBonus ?? false,
           creatorCode: data.creatorCode ?? null,
+          paymentMethod: data.paymentMethod ?? "manual",
+          usdValue: data.usdValue ?? 0,
         };
       });
     })
