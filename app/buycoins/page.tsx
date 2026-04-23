@@ -37,28 +37,28 @@ export default function BuyCoinsPage() {
       { amount: 100000, price: "999.99 USD", value: "879.99 USD", packId: "usd-100000" },
     ],
     EUR: [
-      { amount: 2000, price: "22.99 EUR", value: "17.99 EUR" },
-      { amount: 5000, price: "59.99 EUR", value: "43.99 EUR" },
-      { amount: 10000, price: "119.99 EUR", value: "87.99 EUR" },
-      { amount: 100000, price: "1199.99 EUR", value: "879.99 EUR" },
+      { amount: 2000, price: "22.99 EUR", value: "17.99 EUR", packId: "usd-2000" },
+      { amount: 5000, price: "59.99 EUR", value: "43.99 EUR", packId: "usd-5000" },
+      { amount: 10000, price: "119.99 EUR", value: "87.99 EUR", packId: "usd-10000" },
+      { amount: 100000, price: "1199.99 EUR", value: "879.99 EUR", packId: "usd-100000" },
     ],
     CAD: [
-      { amount: 2000, price: "26.99 CAD", value: "24.99 CAD" },
-      { amount: 5000, price: "69.99 CAD", value: "60.99 CAD" },
-      { amount: 10000, price: "139.99 CAD", value: "120.99 CAD" },
-      { amount: 100000, price: "1399.99 CAD", value: "1209.99 CAD" },
+      { amount: 2000, price: "26.99 CAD", value: "24.99 CAD", packId: "usd-2000" },
+      { amount: 5000, price: "69.99 CAD", value: "60.99 CAD", packId: "usd-5000" },
+      { amount: 10000, price: "139.99 CAD", value: "120.99 CAD", packId: "usd-10000" },
+      { amount: 100000, price: "1399.99 CAD", value: "1209.99 CAD", packId: "usd-100000" },
     ],
     AUD: [
-      { amount: 2000, price: "33.99 AUD", value: "24.99 AUD" },
-      { amount: 5000, price: "79.99 AUD", value: "60.99 AUD" },
-      { amount: 10000, price: "159.99 AUD", value: "122.99 AUD" },
-      { amount: 100000, price: "1599.99 AUD", value: "1229.99 AUD" },
+      { amount: 2000, price: "33.99 AUD", value: "24.99 AUD", packId: "usd-2000" },
+      { amount: 5000, price: "79.99 AUD", value: "60.99 AUD", packId: "usd-5000" },
+      { amount: 10000, price: "159.99 AUD", value: "122.99 AUD", packId: "usd-10000" },
+      { amount: 100000, price: "1599.99 AUD", value: "1229.99 AUD", packId: "usd-100000" },
     ],
     GBP: [
-      { amount: 2000, price: "19.99 GBP", value: "13.49 GBP" },
-      { amount: 5000, price: "49.99 GBP", value: "32.99 GBP" },
-      { amount: 10000, price: "99.99 GBP", value: "65.99 GBP" },
-      { amount: 100000, price: "999.99 GBP", value: "659.99 GBP" },
+      { amount: 2000, price: "19.99 GBP", value: "13.49 GBP", packId: "usd-2000" },
+      { amount: 5000, price: "49.99 GBP", value: "32.99 GBP", packId: "usd-5000" },
+      { amount: 10000, price: "99.99 GBP", value: "65.99 GBP", packId: "usd-10000" },
+      { amount: 100000, price: "999.99 GBP", value: "659.99 GBP", packId: "usd-100000" },
     ],
   };
 
@@ -75,7 +75,7 @@ export default function BuyCoinsPage() {
   }
 
   const coins = priceData[currency];
-  const cryptoDisabled = currency !== "USD";
+  const cryptoDisabled = false;
 
   const handleCryptoSelect = async () => {
     if (!user || !pendingPackId) return;
@@ -271,13 +271,7 @@ export default function BuyCoinsPage() {
         }}
         onCryptoSelect={pendingPackId ? handleCryptoSelect : undefined}
         cryptoDisabled={cryptoDisabled}
-        cryptoDisabledReason={
-          cryptoError
-            ? cryptoError
-            : cryptoDisabled
-              ? "Crypto payments are billed in USD — switch currency to USD to use."
-              : undefined
-        }
+        cryptoDisabledReason={cryptoError ?? undefined}
         cryptoLoading={cryptoLoading}
       />
     </>
