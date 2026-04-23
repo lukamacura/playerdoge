@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { X, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
+import { X, CheckCircle2, Loader2, ArrowRight, Zap, Bitcoin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
@@ -10,6 +10,10 @@ interface PaymentPopupProps {
   show: boolean;
   onClose: () => void;
   onSelect: (method: string) => void;
+  onCryptoSelect?: () => void;
+  cryptoDisabled?: boolean;
+  cryptoDisabledReason?: string;
+  cryptoLoading?: boolean;
 }
 
 const paymentMethods = [
@@ -23,7 +27,15 @@ const paymentMethods = [
   "moneygram",
 ];
 
-export default function PaymentPopup({ show, onClose, onSelect }: PaymentPopupProps) {
+export default function PaymentPopup({
+  show,
+  onClose,
+  onSelect,
+  onCryptoSelect,
+  cryptoDisabled = false,
+  cryptoDisabledReason,
+  cryptoLoading = false,
+}: PaymentPopupProps) {
   const { user, userData } = useAuth();
   const [step, setStep] = useState<"creator-code" | "payment">("creator-code");
   const [codeInput, setCodeInput] = useState("");
@@ -84,7 +96,7 @@ export default function PaymentPopup({ show, onClose, onSelect }: PaymentPopupPr
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
         >
-          <div className="relative bg-[#1d1d1d] text-white rounded-2xl p-6 w-[90%] max-w-lg shadow-2xl">
+          <div className="relative bg-[#1d1d1d] text-white rounded-2xl p-6 w-[90%] max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
             <button
               onClick={onClose}
               className="absolute top-4 right-4 text-white hover:text-gray-300 transition"
@@ -186,6 +198,69 @@ export default function PaymentPopup({ show, onClose, onSelect }: PaymentPopupPr
                         Referred by{" "}
                         <span className="font-bold text-white">{appliedCode}</span>
                       </span>
+                    </div>
+                  )}
+
+                  {onCryptoSelect && (
+                    <motion.button
+                      type="button"
+                      onClick={() => !cryptoDisabled && !cryptoLoading && onCryptoSelect()}
+                      disabled={cryptoDisabled || cryptoLoading}
+                      whileHover={!cryptoDisabled && !cryptoLoading ? { scale: 1.01 } : {}}
+                      whileTap={!cryptoDisabled && !cryptoLoading ? { scale: 0.99 } : {}}
+                      className={`group relative w-full mb-5 overflow-hidden rounded-xl border border-[#FF7D29]/40 bg-gradient-to-br from-[#2a1d0d] via-[#1d1d1d] to-[#2a1d0d] px-5 py-4 text-left transition ${
+                        cryptoDisabled
+                          ? "opacity-50 cursor-not-allowed"
+                          : cryptoLoading
+                          ? "cursor-wait"
+                          : "hover:border-[#FF7D29]"
+                      }`}
+                    >
+                      <div
+                        className="pointer-events-none absolute -inset-x-10 -top-10 h-24 rotate-12 bg-gradient-to-r from-transparent via-[#FF7D29]/10 to-transparent blur-2xl transition-transform duration-700 group-hover:translate-x-6"
+                        aria-hidden
+                      />
+                      <div className="relative flex items-center gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#FF7D29]/15 ring-1 ring-[#FF7D29]/30">
+                          <Bitcoin size={22} className="text-[#FF7D29]" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="font-montserrat font-bold text-base">
+                              Pay with Crypto
+                            </span>
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#FF7D29] px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                              <Zap size={10} className="fill-white" />
+                              Instant
+                            </span>
+                          </div>
+                          <p className="mt-0.5 text-xs text-gray-400">
+                            {cryptoDisabled && cryptoDisabledReason
+                              ? cryptoDisabledReason
+                              : "BTC, ETH, USDT & more — coins credited automatically"}
+                          </p>
+                        </div>
+                        <div className="shrink-0">
+                          {cryptoLoading ? (
+                            <Loader2 size={20} className="animate-spin text-[#FF7D29]" />
+                          ) : (
+                            <ArrowRight
+                              size={20}
+                              className="text-[#FF7D29] transition-transform group-hover:translate-x-1"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    </motion.button>
+                  )}
+
+                  {onCryptoSelect && (
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="h-px flex-1 bg-white/10" />
+                      <span className="text-[11px] uppercase tracking-widest text-gray-500">
+                        or pay another way
+                      </span>
+                      <div className="h-px flex-1 bg-white/10" />
                     </div>
                   )}
 

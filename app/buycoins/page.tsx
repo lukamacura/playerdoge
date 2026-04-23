@@ -8,20 +8,33 @@ import clsx from "clsx";
 import { CoinCard } from "@/components/CoinCard";
 import PaymentPopup from "@/components/PaymentPopup";
 import { useTidio } from "@/lib/useTidio";
+import { useAuth } from "@/context/AuthContext";
+
+type Currency = "USD" | "EUR" | "CAD" | "AUD" | "GBP";
+
+interface PackEntry {
+  amount: number;
+  price: string;
+  value: string;
+  packId?: string;
+}
 
 export default function BuyCoinsPage() {
-  const [currency, setCurrency] =
-    useState<"USD" | "EUR" | "CAD" | "AUD" | "GBP">("USD");
+  const [currency, setCurrency] = useState<Currency>("USD");
   const { openChatWithMessage } = useTidio();
+  const { user } = useAuth();
   const [showPaymentPopup, setShowPaymentPopup] = useState(false);
   const [pendingMessage, setPendingMessage] = useState("");
+  const [pendingPackId, setPendingPackId] = useState<string | null>(null);
+  const [cryptoLoading, setCryptoLoading] = useState(false);
+  const [cryptoError, setCryptoError] = useState<string | null>(null);
 
-  const priceData = {
+  const priceData: Record<Currency, PackEntry[]> = {
     USD: [
-      { amount: 2000, price: "19.99 USD", value: "17.99 USD" },
-      { amount: 5000, price: "49.99 USD", value: "43.99 USD" },
-      { amount: 10000, price: "99.99 USD", value: "87.99 USD" },
-      { amount: 100000, price: "999.99 USD", value: "879.99 USD" },
+      { amount: 2000, price: "19.99 USD", value: "17.99 USD", packId: "usd-2000" },
+      { amount: 5000, price: "49.99 USD", value: "43.99 USD", packId: "usd-5000" },
+      { amount: 10000, price: "99.99 USD", value: "87.99 USD", packId: "usd-10000" },
+      { amount: 100000, price: "999.99 USD", value: "879.99 USD", packId: "usd-100000" },
     ],
     EUR: [
       { amount: 2000, price: "22.99 EUR", value: "17.99 EUR" },
@@ -58,11 +71,37 @@ export default function BuyCoinsPage() {
   };
 
   function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 
   const coins = priceData[currency];
+  const cryptoDisabled = currency !== "USD";
+
+  const handleCryptoSelect = async () => {
+    if (!user || !pendingPackId) return;
+    setCryptoError(null);
+    setCryptoLoading(true);
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch("/api/payment/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ packId: pendingPackId }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.redirectUrl) {
+        throw new Error(data.error || "Failed to create payment");
+      }
+      window.location.href = data.redirectUrl;
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Something went wrong";
+      setCryptoError(message);
+      setCryptoLoading(false);
+    }
+  };
 
   return (
     <>
@@ -70,7 +109,6 @@ export default function BuyCoinsPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
           {/* Left */}
           <div className="flex flex-col justify-center">
-            {/* Heading */}
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +119,6 @@ export default function BuyCoinsPage() {
               Buy coins
             </motion.h1>
 
-            {/* Currency Select */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -104,7 +141,7 @@ export default function BuyCoinsPage() {
                       </span>
                     </Listbox.Button>
                     <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {["USD", "EUR", "CAD", "AUD", "GBP"].map((curr) => (
+                      {(["USD", "EUR", "CAD", "AUD", "GBP"] as Currency[]).map((curr) => (
                         <Listbox.Option
                           key={curr}
                           value={curr}
@@ -132,7 +169,6 @@ export default function BuyCoinsPage() {
               </Listbox>
             </motion.div>
 
-            {/* Coin Cards */}
             <div className="space-y-4">
               {coins.map((coin, i) => (
                 <motion.div
@@ -157,6 +193,8 @@ export default function BuyCoinsPage() {
                         `Amount: ${coin.amount.toLocaleString()} coins\n` +
                         `Price: ${coin.value}`;
                       setPendingMessage(message);
+                      setPendingPackId(coin.packId ?? null);
+                      setCryptoError(null);
                       setShowPaymentPopup(true);
                     }}
                   />
@@ -164,7 +202,6 @@ export default function BuyCoinsPage() {
               ))}
             </div>
 
-            {/* Payment Methods */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -198,7 +235,6 @@ export default function BuyCoinsPage() {
             </motion.div>
           </div>
 
-          {/* Right */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -223,13 +259,26 @@ export default function BuyCoinsPage() {
 
       <PaymentPopup
         show={showPaymentPopup}
-        onClose={() => setShowPaymentPopup(false)}
+        onClose={() => {
+          setShowPaymentPopup(false);
+          setCryptoLoading(false);
+          setCryptoError(null);
+        }}
         onSelect={(method) => {
-          openChatWithMessage(pendingMessage + `\nPayment Method: ${capitalize(method)}
-`);
+          openChatWithMessage(pendingMessage + `\nPayment Method: ${capitalize(method)}\n`);
           setShowPaymentPopup(false);
           window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
         }}
+        onCryptoSelect={pendingPackId ? handleCryptoSelect : undefined}
+        cryptoDisabled={cryptoDisabled}
+        cryptoDisabledReason={
+          cryptoError
+            ? cryptoError
+            : cryptoDisabled
+              ? "Crypto payments are billed in USD — switch currency to USD to use."
+              : undefined
+        }
+        cryptoLoading={cryptoLoading}
       />
     </>
   );
