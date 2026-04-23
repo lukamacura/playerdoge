@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebaseAdmin";
 import { creditPurchase } from "@/lib/creditPurchase";
-import { verifyHmac, verifyPayment, OrderStatus } from "@/lib/paymento";
+import { verifyHmac, verifyPayment, OrderStatus, findSignatureHeader, computeHmac } from "@/lib/paymento";
 
 interface CallbackBody {
   Token?: string;
@@ -17,12 +17,32 @@ interface CallbackBody {
 
 export async function POST(request: Request) {
   const rawBody = await request.text();
-  const signature =
-    request.headers.get("X-Hmac-Sha256-Signature") ||
-    request.headers.get("x-hmac-sha256-signature") ||
-    request.headers.get("HMAC_SHA256_SIGNATURE");
+  const allHeaderNames = Array.from(request.headers.keys());
+  const found = findSignatureHeader(request.headers);
 
-  if (!verifyHmac(rawBody, signature)) {
+  console.log("[paymento-callback] incoming", {
+    bodyLength: rawBody.length,
+    bodyPreview: rawBody.slice(0, 200),
+    sigHeaderName: found.name,
+    sigValue: found.value ? `${found.value.slice(0, 12)}...` : null,
+    allHeaderNames,
+  });
+
+  if (!found.value) {
+    console.warn("[paymento-callback] no signature header found — headers received:", allHeaderNames);
+    return NextResponse.json(
+      { error: "Missing signature header", receivedHeaders: allHeaderNames },
+      { status: 401 },
+    );
+  }
+
+  if (!verifyHmac(rawBody, found.value)) {
+    const expected = computeHmac(rawBody);
+    console.warn("[paymento-callback] HMAC mismatch", {
+      expectedPreview: `${expected.slice(0, 16)}...`,
+      receivedPreview: `${found.value.trim().toUpperCase().slice(0, 16)}...`,
+      bodyLength: rawBody.length,
+    });
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 

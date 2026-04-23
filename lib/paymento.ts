@@ -107,16 +107,45 @@ export async function verifyPayment(token: string): Promise<VerifyPaymentResult 
   }
 }
 
-export function verifyHmac(rawBody: string, receivedSignature: string | null): boolean {
-  if (!receivedSignature) return false;
-  const expected = crypto
+export function computeHmac(rawBody: string): string {
+  return crypto
     .createHmac("sha256", secretKey())
     .update(rawBody, "utf8")
     .digest("hex")
     .toUpperCase();
+}
+
+export function verifyHmac(rawBody: string, receivedSignature: string | null): boolean {
+  if (!receivedSignature) return false;
+  const expected = computeHmac(rawBody);
   const received = receivedSignature.trim().toUpperCase();
   if (expected.length !== received.length) return false;
   return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(received));
+}
+
+export function findSignatureHeader(headers: Headers): { name: string | null; value: string | null } {
+  const candidates = [
+    "X-Hmac-Sha256-Signature",
+    "x-hmac-sha256-signature",
+    "X-HMAC-SHA256-SIGNATURE",
+    "HMAC_SHA256_SIGNATURE",
+    "hmac_sha256_signature",
+    "Hmac-Sha256-Signature",
+    "hmac-sha256-signature",
+  ];
+  for (const name of candidates) {
+    const v = headers.get(name);
+    if (v) return { name, value: v };
+  }
+  let match: { name: string; value: string } | null = null;
+  headers.forEach((value, name) => {
+    if (match) return;
+    if (/hmac.*sha.*256.*sig/i.test(name) || /sig.*hmac/i.test(name)) {
+      match = { name, value };
+    }
+  });
+  if (match) return match;
+  return { name: null, value: null };
 }
 
 export function gatewayUrl(token: string): string {
