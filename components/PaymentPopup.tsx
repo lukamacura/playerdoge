@@ -237,7 +237,7 @@ export default function PaymentPopup({
                           <p className="mt-0.5 text-xs text-gray-400">
                             {cryptoDisabled && cryptoDisabledReason
                               ? cryptoDisabledReason
-                              : "BTC, ETH, USDT & more — coins credited automatically"}
+                              : "BTC, ETH, USDT & more - coins credited automatically"}
                           </p>
                         </div>
                         <div className="shrink-0">
