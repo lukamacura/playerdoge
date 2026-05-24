@@ -54,7 +54,18 @@ const gameFaqs = [
 
 
 
-type Country = "usa" | "canada" | "eu" | "australia" | "uk" | "other";
+type Country =
+  | "usa"
+  | "canada"
+  | "eu"
+  | "australia"
+  | "uk"
+  | "switzerland"
+  | "denmark"
+  | "norway"
+  | "poland"
+  | "sweden"
+  | "other";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +91,16 @@ export default function GameDetailPage() {
         return "Australia";
       case "uk":
         return "United Kingdom";
+      case "switzerland":
+        return "Switzerland";
+      case "denmark":
+        return "Denmark";
+      case "norway":
+        return "Norway";
+      case "poland":
+        return "Poland";
+      case "sweden":
+        return "Sweden";
       case "other":
         return "Other region";
 
@@ -92,6 +113,7 @@ export default function GameDetailPage() {
 
 
   const universalPacks = [
+    { label: "Any pack", coins: 100 },
     { label: "Any pack", coins: 500 },
     { label: "Any pack", coins: 1000 },
     { label: "Any pack", coins: 2000 },
@@ -100,14 +122,17 @@ export default function GameDetailPage() {
   ];
 
   const countryPrices: Record<Country, number[]> = {
-    usa: [4.99, 9.99, 19.99, 49.99, 99.99],
-    canada: [6.99, 13.99, 26.99, 69.99, 139.99],
-    eu: [5.99, 11.99, 22.99, 59.99, 119.99],
-    australia: [7.99, 16.99, 33.99, 79.99, 159.99],
-    uk: [4.99, 9.99, 19.99, 49.99, 99.99],
-    other: [4.99, 9.99, 19.99, 49.99, 99.99], // isto kao usa
-
-    
+    usa: [0.99, 4.99, 9.99, 19.99, 49.99, 99.99],
+    canada: [1.39, 6.99, 13.99, 27.99, 69.99, 139.99],
+    eu: [1.19, 5.99, 11.99, 23.99, 59.99, 119.99],
+    australia: [1.59, 7.99, 15.99, 31.99, 79.99, 159.99],
+    uk: [0.99, 4.99, 9.99, 19.99, 49.99, 99.99],
+    switzerland: [0.89, 4.49, 8.99, 17.99, 44.99, 89.99],
+    denmark: [8.99, 44.99, 89.99, 179.99, 449.99, 899.99],
+    norway: [12.99, 64.99, 129.99, 259.99, 649.99, 1299.99],
+    poland: [4.99, 24.99, 49.99, 99.99, 249.99, 499.99],
+    sweden: [12.99, 64.99, 129.99, 259.99, 649.99, 1299.99],
+    other: [0.99, 4.99, 9.99, 19.99, 49.99, 99.99], // isto kao usa
   };
 
   const currencyPrefixes: Record<Country, string> = {
@@ -116,9 +141,22 @@ export default function GameDetailPage() {
     eu: "EUR",
     australia: "AUD",
     uk: "GBP",
+    switzerland: "CHF",
+    denmark: "DKK",
+    norway: "NOK",
+    poland: "PLN",
+    sweden: "SEK",
     other: "USD", // kao usa
-
   };
+
+  const otherRegionLabels = [
+    "lowest-priced",
+    "entry-level",
+    "lower mid-tier",
+    "upper mid-tier",
+    "high-tier",
+    "top-tier",
+  ];
 
   const [selectedCountry, setSelectedCountry] = useState<Country>("usa");
   const [quantity, setQuantity] = useState<number>(1);
@@ -197,7 +235,7 @@ export default function GameDetailPage() {
           </span>
         </Listbox.Button>
         <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-{(["usa", "eu", "canada", "australia", "uk", "other"] as Country[]).map((country) => (
+{(["usa", "eu", "canada", "australia", "uk", "switzerland", "denmark", "norway", "poland", "sweden", "other"] as Country[]).map((country) => (
             <Listbox.Option
               key={country}
               value={country}
@@ -256,8 +294,9 @@ export default function GameDetailPage() {
                   <p className="text-mds font-normal font-montserrat text-[#1d1d1d]">
                     Any{" "}
                     <strong className="font-extrabold text-[#1D1D1D] tracking-wide">
-                      {currentPrices[i].toFixed(2)}{" "}
-                      {currencyPrefixes[selectedCountry]}
+                      {selectedCountry === "other"
+                        ? otherRegionLabels[i]
+                        : `${currentPrices[i].toFixed(2)} ${currencyPrefixes[selectedCountry]}`}
                     </strong>{" "}
                     pack
                   </p>
