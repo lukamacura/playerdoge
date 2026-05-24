@@ -8,11 +8,12 @@ interface CoinCardProps {
   amount: number;
   price: string;
   value: string;
+  discount: string;
   index: number;
   onBuy: () => void;
 }
 
-export function CoinCard({ amount, price, value, index, onBuy }: CoinCardProps) {
+export function CoinCard({ amount, price, value, discount, index, onBuy }: CoinCardProps) {
   const { user } = useAuth();
   const router = useRouter();
 
@@ -34,9 +35,14 @@ export function CoinCard({ amount, price, value, index, onBuy }: CoinCardProps) 
           height={80}
         />
         <div className="md:text-left">
-          <p className="font-extrabold text-lg font-montserrat text-[#1D1D1D]">
-            {amount.toLocaleString()} coins
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="font-extrabold text-lg font-montserrat text-[#1D1D1D]">
+              {amount.toLocaleString()} coins
+            </p>
+            <span className="rounded-full bg-[#FF7D29] px-2 py-0.5 text-xs font-bold text-white">
+              {discount}
+            </span>
+          </div>
           <p className="text-sm font-semibold font-inter text-[#666]">
             In-game value: {price}
           </p>

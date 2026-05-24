@@ -10,7 +10,17 @@ import PaymentPopup from "@/components/PaymentPopup";
 import { useTidio } from "@/lib/useTidio";
 import { useAuth } from "@/context/AuthContext";
 
-type Currency = "USD" | "EUR" | "CAD" | "AUD" | "GBP";
+type Currency =
+  | "USD"
+  | "EUR"
+  | "CAD"
+  | "AUD"
+  | "GBP"
+  | "CHF"
+  | "DKK"
+  | "NOK"
+  | "PLN"
+  | "SEK";
 
 interface PackEntry {
   amount: number;
@@ -31,34 +41,84 @@ export default function BuyCoinsPage() {
 
   const priceData: Record<Currency, PackEntry[]> = {
     USD: [
+      { amount: 500, price: "4.99 USD", value: "4.49 USD", packId: "usd-500" },
+      { amount: 1000, price: "9.99 USD", value: "8.99 USD", packId: "usd-1000" },
       { amount: 2000, price: "19.99 USD", value: "17.99 USD", packId: "usd-2000" },
-      { amount: 5000, price: "49.99 USD", value: "43.99 USD", packId: "usd-5000" },
-      { amount: 10000, price: "99.99 USD", value: "87.99 USD", packId: "usd-10000" },
-      { amount: 100000, price: "999.99 USD", value: "879.99 USD", packId: "usd-100000" },
+      { amount: 5000, price: "49.99 USD", value: "44.99 USD", packId: "usd-5000" },
+      { amount: 10000, price: "99.99 USD", value: "89.99 USD", packId: "usd-10000" },
+      { amount: 20000, price: "199.99 USD", value: "179.99 USD", packId: "usd-20000" },
     ],
     EUR: [
-      { amount: 2000, price: "22.99 EUR", value: "17.99 EUR", packId: "usd-2000" },
-      { amount: 5000, price: "59.99 EUR", value: "43.99 EUR", packId: "usd-5000" },
-      { amount: 10000, price: "119.99 EUR", value: "87.99 EUR", packId: "usd-10000" },
-      { amount: 100000, price: "1199.99 EUR", value: "879.99 EUR", packId: "usd-100000" },
+      { amount: 500, price: "5.99 EUR", value: "3.99 EUR", packId: "usd-500" },
+      { amount: 1000, price: "11.99 EUR", value: "7.99 EUR", packId: "usd-1000" },
+      { amount: 2000, price: "23.99 EUR", value: "15.99 EUR", packId: "usd-2000" },
+      { amount: 5000, price: "59.99 EUR", value: "40.49 EUR", packId: "usd-5000" },
+      { amount: 10000, price: "119.99 EUR", value: "80.99 EUR", packId: "usd-10000" },
+      { amount: 20000, price: "239.99 EUR", value: "161.99 EUR", packId: "usd-20000" },
     ],
     CAD: [
-      { amount: 2000, price: "26.99 CAD", value: "24.99 CAD", packId: "usd-2000" },
-      { amount: 5000, price: "69.99 CAD", value: "60.99 CAD", packId: "usd-5000" },
-      { amount: 10000, price: "139.99 CAD", value: "120.99 CAD", packId: "usd-10000" },
-      { amount: 100000, price: "1399.99 CAD", value: "1209.99 CAD", packId: "usd-100000" },
+      { amount: 500, price: "6.99 CAD", value: "5.99 CAD", packId: "usd-500" },
+      { amount: 1000, price: "13.99 CAD", value: "11.99 CAD", packId: "usd-1000" },
+      { amount: 2000, price: "27.99 CAD", value: "23.99 CAD", packId: "usd-2000" },
+      { amount: 5000, price: "69.99 CAD", value: "60.49 CAD", packId: "usd-5000" },
+      { amount: 10000, price: "139.99 CAD", value: "121.49 CAD", packId: "usd-10000" },
+      { amount: 20000, price: "279.99 CAD", value: "242.99 CAD", packId: "usd-20000" },
     ],
     AUD: [
-      { amount: 2000, price: "33.99 AUD", value: "24.99 AUD", packId: "usd-2000" },
-      { amount: 5000, price: "79.99 AUD", value: "60.99 AUD", packId: "usd-5000" },
-      { amount: 10000, price: "159.99 AUD", value: "122.99 AUD", packId: "usd-10000" },
-      { amount: 100000, price: "1599.99 AUD", value: "1229.99 AUD", packId: "usd-100000" },
+      { amount: 500, price: "7.99 AUD", value: "6.74 AUD", packId: "usd-500" },
+      { amount: 1000, price: "15.99 AUD", value: "13.49 AUD", packId: "usd-1000" },
+      { amount: 2000, price: "31.99 AUD", value: "26.99 AUD", packId: "usd-2000" },
+      { amount: 5000, price: "79.99 AUD", value: "67.49 AUD", packId: "usd-5000" },
+      { amount: 10000, price: "159.99 AUD", value: "134.99 AUD", packId: "usd-10000" },
+      { amount: 20000, price: "319.99 AUD", value: "269.99 AUD", packId: "usd-20000" },
     ],
     GBP: [
-      { amount: 2000, price: "19.99 GBP", value: "13.49 GBP", packId: "usd-2000" },
-      { amount: 5000, price: "49.99 GBP", value: "32.99 GBP", packId: "usd-5000" },
-      { amount: 10000, price: "99.99 GBP", value: "65.99 GBP", packId: "usd-10000" },
-      { amount: 100000, price: "999.99 GBP", value: "659.99 GBP", packId: "usd-100000" },
+      { amount: 500, price: "4.99 GBP", value: "3.44 GBP", packId: "usd-500" },
+      { amount: 1000, price: "9.99 GBP", value: "6.89 GBP", packId: "usd-1000" },
+      { amount: 2000, price: "19.99 GBP", value: "13.79 GBP", packId: "usd-2000" },
+      { amount: 5000, price: "49.99 GBP", value: "34.49 GBP", packId: "usd-5000" },
+      { amount: 10000, price: "99.99 GBP", value: "68.99 GBP", packId: "usd-10000" },
+      { amount: 20000, price: "199.99 GBP", value: "137.99 GBP", packId: "usd-20000" },
+    ],
+    CHF: [
+      { amount: 500, price: "4.49 CHF", value: "3.79 CHF", packId: "usd-500" },
+      { amount: 1000, price: "8.99 CHF", value: "7.69 CHF", packId: "usd-1000" },
+      { amount: 2000, price: "17.99 CHF", value: "15.29 CHF", packId: "usd-2000" },
+      { amount: 5000, price: "44.99 CHF", value: "37.99 CHF", packId: "usd-5000" },
+      { amount: 10000, price: "89.99 CHF", value: "76.49 CHF", packId: "usd-10000" },
+      { amount: 20000, price: "179.99 CHF", value: "152.99 CHF", packId: "usd-20000" },
+    ],
+    DKK: [
+      { amount: 500, price: "44.99 DKK", value: "30.14 DKK", packId: "usd-500" },
+      { amount: 1000, price: "89.99 DKK", value: "60.29 DKK", packId: "usd-1000" },
+      { amount: 2000, price: "179.99 DKK", value: "120.59 DKK", packId: "usd-2000" },
+      { amount: 5000, price: "449.99 DKK", value: "301.49 DKK", packId: "usd-5000" },
+      { amount: 10000, price: "899.99 DKK", value: "602.99 DKK", packId: "usd-10000" },
+      { amount: 20000, price: "1799.99 DKK", value: "1205.99 DKK", packId: "usd-20000" },
+    ],
+    NOK: [
+      { amount: 500, price: "64.99 NOK", value: "44.84 NOK", packId: "usd-500" },
+      { amount: 1000, price: "129.99 NOK", value: "89.69 NOK", packId: "usd-1000" },
+      { amount: 2000, price: "259.99 NOK", value: "179.39 NOK", packId: "usd-2000" },
+      { amount: 5000, price: "649.99 NOK", value: "448.49 NOK", packId: "usd-5000" },
+      { amount: 10000, price: "1299.99 NOK", value: "896.99 NOK", packId: "usd-10000" },
+      { amount: 20000, price: "2599.99 NOK", value: "1793.99 NOK", packId: "usd-20000" },
+    ],
+    PLN: [
+      { amount: 500, price: "24.99 PLN", value: "17.24 PLN", packId: "usd-500" },
+      { amount: 1000, price: "49.99 PLN", value: "34.49 PLN", packId: "usd-1000" },
+      { amount: 2000, price: "99.99 PLN", value: "68.99 PLN", packId: "usd-2000" },
+      { amount: 5000, price: "249.99 PLN", value: "172.49 PLN", packId: "usd-5000" },
+      { amount: 10000, price: "499.99 PLN", value: "344.99 PLN", packId: "usd-10000" },
+      { amount: 20000, price: "999.99 PLN", value: "689.99 PLN", packId: "usd-20000" },
+    ],
+    SEK: [
+      { amount: 500, price: "64.99 SEK", value: "43.54 SEK", packId: "usd-500" },
+      { amount: 1000, price: "129.99 SEK", value: "87.09 SEK", packId: "usd-1000" },
+      { amount: 2000, price: "259.99 SEK", value: "174.19 SEK", packId: "usd-2000" },
+      { amount: 5000, price: "649.99 SEK", value: "435.49 SEK", packId: "usd-5000" },
+      { amount: 10000, price: "1299.99 SEK", value: "870.99 SEK", packId: "usd-10000" },
+      { amount: 20000, price: "2599.99 SEK", value: "1741.99 SEK", packId: "usd-20000" },
     ],
   };
 
@@ -68,6 +128,24 @@ export default function BuyCoinsPage() {
     CAD: "canada",
     AUD: "australia",
     GBP: "uk",
+    CHF: "switzerland",
+    DKK: "denmark",
+    NOK: "norway",
+    PLN: "poland",
+    SEK: "sweden",
+  };
+
+  const discountMap: Record<Currency, string> = {
+    USD: "-10%",
+    EUR: "-33%",
+    CAD: "-13%",
+    AUD: "-16%",
+    GBP: "-31%",
+    CHF: "-15%",
+    DKK: "-33%",
+    NOK: "-31%",
+    PLN: "-31%",
+    SEK: "-33%",
   };
 
   function capitalize(str: string) {
@@ -141,7 +219,7 @@ export default function BuyCoinsPage() {
                       </span>
                     </Listbox.Button>
                     <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full md:w-auto overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {(["USD", "EUR", "CAD", "AUD", "GBP"] as Currency[]).map((curr) => (
+                      {(["USD", "EUR", "CAD", "AUD", "GBP", "CHF", "DKK", "NOK", "PLN", "SEK"] as Currency[]).map((curr) => (
                         <Listbox.Option
                           key={curr}
                           value={curr}
@@ -160,6 +238,9 @@ export default function BuyCoinsPage() {
                               height={14}
                             />
                             {curr}
+                            <span className="ml-auto rounded-full bg-[#FF7D29] px-2 py-0.5 text-xs font-bold text-white">
+                              {discountMap[curr]}
+                            </span>
                           </div>
                         </Listbox.Option>
                       ))}
@@ -186,6 +267,7 @@ export default function BuyCoinsPage() {
                     amount={coin.amount}
                     price={coin.price}
                     value={coin.value}
+                    discount={discountMap[currency]}
                     index={i}
                     onBuy={() => {
                       const message =
