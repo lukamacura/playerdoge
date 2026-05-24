@@ -5,9 +5,8 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import { CoinCard } from "@/components/CoinCard";
-import PaymentPopup from "@/components/PaymentPopup";
-import { useTidio } from "@/lib/useTidio";
 import { useAuth } from "@/context/AuthContext";
 
 type Currency =
@@ -31,13 +30,14 @@ interface PackEntry {
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] = useState<Currency>("USD");
-  const { openChatWithMessage } = useTidio();
-  const { user } = useAuth();
-  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
-  const [pendingMessage, setPendingMessage] = useState("");
-  const [pendingPackId, setPendingPackId] = useState<string | null>(null);
+  const { user, userData } = useAuth();
   const [cryptoLoading, setCryptoLoading] = useState(false);
   const [cryptoError, setCryptoError] = useState<string | null>(null);
+
+  const [codeInput, setCodeInput] = useState("");
+  const [codeStatus, setCodeStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [codeError, setCodeError] = useState("");
+  const appliedCode = userData?.creatorCode ?? null;
 
   const priceData: Record<Currency, PackEntry[]> = {
     USD: [
@@ -148,15 +148,43 @@ export default function BuyCoinsPage() {
     SEK: "-33%",
   };
 
-  function capitalize(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
   const coins = priceData[currency];
-  const cryptoDisabled = false;
 
-  const handleCryptoSelect = async () => {
-    if (!user || !pendingPackId) return;
+  const handleApplyCode = async () => {
+    const trimmed = codeInput.trim().toUpperCase();
+    if (!trimmed || !user) return;
+
+    setCodeStatus("loading");
+    setCodeError("");
+
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch("/api/referral/apply", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ code: trimmed }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setCodeError(data.error ?? "Failed to apply code");
+        setCodeStatus("error");
+      } else {
+        setCodeInput("");
+        setCodeStatus("idle");
+      }
+    } catch {
+      setCodeError("Something went wrong");
+      setCodeStatus("error");
+    }
+  };
+
+  const startPayment = async (packId?: string) => {
+    if (!user || !packId || cryptoLoading) return;
     setCryptoError(null);
     setCryptoLoading(true);
     try {
@@ -167,7 +195,7 @@ export default function BuyCoinsPage() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ packId: pendingPackId }),
+        body: JSON.stringify({ packId }),
       });
       const data = await res.json();
       if (!res.ok || !data.redirectUrl) {
@@ -250,6 +278,64 @@ export default function BuyCoinsPage() {
               </Listbox>
             </motion.div>
 
+            {user && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className="mb-6"
+              >
+                {appliedCode ? (
+                  <div className="flex items-center gap-2 bg-[#FFEFC4] rounded-lg px-4 py-2.5 w-fit">
+                    <CheckCircle2 size={15} className="text-green-600 shrink-0" />
+                    <span className="text-sm text-[#1D1D1D]">
+                      Referred by{" "}
+                      <span className="font-bold">{appliedCode}</span>
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-sm font-semibold text-[#1D1D1D] mb-1.5">
+                      Have a creator code? Support your favorite creator.
+                    </p>
+                    <div className="flex gap-2 max-w-sm">
+                      <input
+                        type="text"
+                        placeholder="Enter creator code"
+                        value={codeInput}
+                        onChange={(e) => {
+                          setCodeInput(e.target.value);
+                          setCodeStatus("idle");
+                          setCodeError("");
+                        }}
+                        onKeyDown={(e) => e.key === "Enter" && handleApplyCode()}
+                        className="flex-1 bg-white border border-black/20 rounded-lg px-3 py-2 text-sm text-[#1D1D1D] placeholder:text-gray-400 focus:outline-none focus:border-[#FF7D29] transition"
+                      />
+                      <button
+                        onClick={handleApplyCode}
+                        disabled={!codeInput.trim() || codeStatus === "loading"}
+                        className="flex items-center gap-1.5 bg-[#FF7D29] hover:bg-[#e96e1b] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold px-4 py-2 rounded-lg transition"
+                      >
+                        {codeStatus === "loading" ? (
+                          <Loader2 size={14} className="animate-spin" />
+                        ) : (
+                          "Apply"
+                        )}
+                      </button>
+                    </div>
+                    {codeStatus === "error" && (
+                      <p className="text-xs text-red-600 mt-1.5 ml-1">{codeError}</p>
+                    )}
+                  </div>
+                )}
+              </motion.div>
+            )}
+
+            {cryptoError && (
+              <p className="mb-4 text-sm font-semibold text-red-600">{cryptoError}</p>
+            )}
+
             <div className="space-y-4">
               {coins.map((coin, i) => (
                 <motion.div
@@ -269,16 +355,7 @@ export default function BuyCoinsPage() {
                     value={coin.value}
                     discount={discountMap[currency]}
                     index={i}
-                    onBuy={() => {
-                      const message =
-                        `Coin purchase request:\n\n` +
-                        `Amount: ${coin.amount.toLocaleString()} coins\n` +
-                        `Price: ${coin.value}`;
-                      setPendingMessage(message);
-                      setPendingPackId(coin.packId ?? null);
-                      setCryptoError(null);
-                      setShowPaymentPopup(true);
-                    }}
+                    onBuy={() => startPayment(coin.packId)}
                   />
                 </motion.div>
               ))}
@@ -339,23 +416,14 @@ export default function BuyCoinsPage() {
         </div>
       </main>
 
-      <PaymentPopup
-        show={showPaymentPopup}
-        onClose={() => {
-          setShowPaymentPopup(false);
-          setCryptoLoading(false);
-          setCryptoError(null);
-        }}
-        onSelect={(method) => {
-          openChatWithMessage(pendingMessage + `\nPayment Method: ${capitalize(method)}\n`);
-          setShowPaymentPopup(false);
-          window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-        }}
-        onCryptoSelect={pendingPackId ? handleCryptoSelect : undefined}
-        cryptoDisabled={cryptoDisabled}
-        cryptoDisabledReason={cryptoError ?? undefined}
-        cryptoLoading={cryptoLoading}
-      />
+      {cryptoLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-3 rounded-2xl bg-[#1d1d1d] px-8 py-6 text-white">
+            <Loader2 size={36} className="animate-spin text-[#FF7D29]" />
+            <p className="text-sm font-semibold">Redirecting to checkout…</p>
+          </div>
+        </div>
+      )}
     </>
   );
 }

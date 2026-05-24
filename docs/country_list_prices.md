@@ -1,5 +1,4 @@
-Na državama koje trenutno imamo, dodaješ:
-
+To the countries we currently have, you add:
 Any 0.99 USD pack
 
 Any 1.19 EUR pack
@@ -12,8 +11,7 @@ Any 0.99 GBP pack
 
 ---
 
-Takođe, provukle su mi se fatalne greške, pa ih molim te ispravi:
-
+Also, there are some fatal errors, so please correct them:
 ❌ Any 22.99 EUR pack
 ✅ Any 23.99 EUR pack
 
@@ -28,7 +26,6 @@ Takođe, provukle su mi se fatalne greške, pa ih molim te ispravi:
 
 ---
 
-🍆💦
 
 ---
 
