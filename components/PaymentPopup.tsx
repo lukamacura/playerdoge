@@ -37,7 +37,6 @@ export default function PaymentPopup({
   cryptoLoading = false,
 }: PaymentPopupProps) {
   const { user, userData } = useAuth();
-  const [step, setStep] = useState<"creator-code" | "payment">("creator-code");
   const [codeInput, setCodeInput] = useState("");
   const [codeStatus, setCodeStatus] = useState<"idle" | "loading" | "error">("idle");
   const [codeError, setCodeError] = useState("");
@@ -46,7 +45,6 @@ export default function PaymentPopup({
 
   useEffect(() => {
     if (show) {
-      setStep(user ? "creator-code" : "payment");
       setCodeInput("");
       setCodeStatus("idle");
       setCodeError("");
@@ -105,78 +103,6 @@ export default function PaymentPopup({
             </button>
 
             <AnimatePresence mode="wait">
-              {step === "creator-code" ? (
-                <motion.div
-                  key="creator-code"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                >
-                  <h2 className="text-xl md:text-2xl font-montserrat font-bold text-center mb-1">
-                    Do you have a creator code?
-                  </h2>
-                  <p className="text-center text-sm text-gray-400 mb-6">
-                    Support your favorite creator before checking out
-                  </p>
-
-                  {appliedCode ? (
-                    <div className="flex items-center gap-2 bg-[#2d2d2d] rounded-lg px-4 py-3 w-fit mx-auto mb-6">
-                      <CheckCircle2 size={15} className="text-green-400 shrink-0" />
-                      <span className="text-sm text-gray-300">
-                        Referred by{" "}
-                        <span className="font-bold text-white">{appliedCode}</span>
-                      </span>
-                    </div>
-                  ) : (
-                    <div className="mb-2">
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          placeholder="Enter creator code"
-                          value={codeInput}
-                          onChange={(e) => {
-                            setCodeInput(e.target.value);
-                            setCodeStatus("idle");
-                            setCodeError("");
-                          }}
-                          onKeyDown={(e) => e.key === "Enter" && handleApplyCode()}
-                          className="flex-1 bg-[#2d2d2d] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF7D29] transition"
-                        />
-                        <button
-                          onClick={handleApplyCode}
-                          disabled={!codeInput.trim() || codeStatus === "loading"}
-                          className="flex items-center gap-1.5 bg-[#FF7D29] hover:bg-[#e96e1b] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold px-4 py-2 rounded-lg transition"
-                        >
-                          {codeStatus === "loading" ? (
-                            <Loader2 size={14} className="animate-spin" />
-                          ) : (
-                            "Apply"
-                          )}
-                        </button>
-                      </div>
-                      {codeStatus === "error" && (
-                        <p className="text-xs text-red-400 mt-1.5 ml-1">{codeError}</p>
-                      )}
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between mt-6">
-                    <button
-                      onClick={() => setStep("payment")}
-                      className="text-sm text-gray-400 hover:text-white transition"
-                    >
-                      Skip
-                    </button>
-                    <button
-                      onClick={() => setStep("payment")}
-                      className="flex items-center gap-2 bg-[#FF7D29] hover:bg-[#e96e1b] text-white text-sm font-bold px-5 py-2.5 rounded-lg transition"
-                    >
-                      Continue <ArrowRight size={15} />
-                    </button>
-                  </div>
-                </motion.div>
-              ) : (
                 <motion.div
                   key="payment"
                   initial={{ opacity: 0, x: 20 }}
@@ -191,14 +117,50 @@ export default function PaymentPopup({
                     Secure and fast transactions
                   </p>
 
-                  {appliedCode && (
-                    <div className="flex items-center gap-2 bg-[#2d2d2d] rounded-lg px-4 py-2.5 w-fit mx-auto mb-5">
-                      <CheckCircle2 size={15} className="text-green-400 shrink-0" />
-                      <span className="text-sm text-gray-300">
-                        Referred by{" "}
-                        <span className="font-bold text-white">{appliedCode}</span>
-                      </span>
-                    </div>
+                  {user && (
+                    appliedCode ? (
+                      <div className="flex items-center gap-2 bg-[#2d2d2d] rounded-lg px-4 py-2.5 w-fit mx-auto mb-5">
+                        <CheckCircle2 size={15} className="text-green-400 shrink-0" />
+                        <span className="text-sm text-gray-300">
+                          Referred by{" "}
+                          <span className="font-bold text-white">{appliedCode}</span>
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="mb-5">
+                        <p className="text-xs text-gray-400 mb-1.5 ml-1">
+                          Have a creator code? Support your favorite creator.
+                        </p>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Enter creator code"
+                            value={codeInput}
+                            onChange={(e) => {
+                              setCodeInput(e.target.value);
+                              setCodeStatus("idle");
+                              setCodeError("");
+                            }}
+                            onKeyDown={(e) => e.key === "Enter" && handleApplyCode()}
+                            className="flex-1 bg-[#2d2d2d] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#FF7D29] transition"
+                          />
+                          <button
+                            onClick={handleApplyCode}
+                            disabled={!codeInput.trim() || codeStatus === "loading"}
+                            className="flex items-center gap-1.5 bg-[#FF7D29] hover:bg-[#e96e1b] disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold px-4 py-2 rounded-lg transition"
+                          >
+                            {codeStatus === "loading" ? (
+                              <Loader2 size={14} className="animate-spin" />
+                            ) : (
+                              "Apply"
+                            )}
+                          </button>
+                        </div>
+                        {codeStatus === "error" && (
+                          <p className="text-xs text-red-400 mt-1.5 ml-1">{codeError}</p>
+                        )}
+                      </div>
+                    )
                   )}
 
                   {onCryptoSelect && (
@@ -255,7 +217,7 @@ export default function PaymentPopup({
                   )}
 
                   {onCryptoSelect && (
-                    <div className="mb-4 flex items-center gap-3">
+                    <div className="hidden mb-4 items-center gap-3">
                       <div className="h-px flex-1 bg-white/10" />
                       <span className="text-[11px] uppercase tracking-widest text-gray-500">
                         or pay another way
@@ -264,22 +226,23 @@ export default function PaymentPopup({
                     </div>
                   )}
 
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  <div className="hidden grid-cols-2 sm:grid-cols-3 gap-4">
                     {paymentMethods.map((method) => (
                       <div
                         key={method}
-                        className="bg-[#2d2d2d] rounded-lg p-4 flex flex-col items-center gap-3"
+                        className="bg-[#2d2d2d] rounded-lg p-4 flex flex-col items-center gap-3 opacity-50"
                       >
                         <Image
                           src={`/images/payments/${method}.png`}
                           alt={method}
                           width={80}
                           height={40}
-                          className="h-10 w-auto object-contain"
+                          className="h-10 w-auto object-contain grayscale"
                         />
                         <button
                           onClick={() => onSelect(method)}
-                          className="bg-[#FF7D29] hover:bg-[#e96e1b] text-white text-xs font-bold py-2 px-4 rounded"
+                          disabled
+                          className="bg-[#FF7D29] text-white text-xs font-bold py-2 px-4 rounded cursor-not-allowed"
                         >
                           Select
                         </button>
@@ -287,7 +250,6 @@ export default function PaymentPopup({
                     ))}
                   </div>
                 </motion.div>
-              )}
             </AnimatePresence>
           </div>
         </motion.div>
