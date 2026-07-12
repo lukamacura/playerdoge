@@ -4,8 +4,9 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { adminDb } from "@/lib/firebaseAdmin";
-import { creditPurchase } from "@/lib/creditPurchase";
+import { creditPurchase, AlreadyCreditedError } from "@/lib/creditPurchase";
 import { verifyHmac, verifyPayment, OrderStatus, findSignatureHeader, computeHmac } from "@/lib/paymento";
+import { mapOrderStatusCode } from "@/lib/paymentStatus";
 
 interface CallbackBody {
   Token?: string;
@@ -79,36 +80,44 @@ export async function POST(request: Request) {
     const verified = await verifyPayment(token);
     if (!verified) {
       await pendingRef.update({
+        status: "verify_failed",
         statusLog: FieldValue.arrayUnion({ ...logEntry, note: "verify failed" }),
       });
       return NextResponse.json({ success: false, error: "verify failed" }, { status: 200 });
     }
 
     try {
+      // Credits coins and marks the pending doc "credited" in one transaction.
       await creditPurchase({
         uid: pending.uid,
         coinAmount: pending.coinAmount,
         usdValue: pending.usdValue,
         game: "Coin Purchase",
         paymentMethod: "crypto",
+        pendingPaymentToken: token,
+        creditedBy: "webhook",
+        orderStatusCode: status,
       });
     } catch (e) {
+      if (e instanceof AlreadyCreditedError) {
+        return NextResponse.json({ success: true, note: "already credited" });
+      }
       const message = e instanceof Error ? e.message : "credit failed";
       await pendingRef.update({
+        status: "credit_failed",
         statusLog: FieldValue.arrayUnion({ ...logEntry, note: `credit failed: ${message}` }),
       });
       return NextResponse.json({ success: false, error: message }, { status: 200 });
     }
 
-    await pendingRef.update({
-      status: "credited",
-      creditedAt: FieldValue.serverTimestamp(),
-      statusLog: FieldValue.arrayUnion(logEntry),
-    });
-
     return NextResponse.json({ success: true });
   }
 
-  await pendingRef.update({ statusLog: FieldValue.arrayUnion(logEntry) });
+  const mapped = mapOrderStatusCode(status);
+  const update: Record<string, unknown> = { statusLog: FieldValue.arrayUnion(logEntry) };
+  if (mapped && (pending.status === "initialized" || pending.status === "processing")) {
+    update.status = mapped;
+  }
+  await pendingRef.update(update);
   return NextResponse.json({ success: true });
 }

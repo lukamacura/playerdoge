@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Listbox } from "@headlessui/react";
@@ -27,6 +27,62 @@ interface PackEntry {
   value: string;
   packId?: string;
 }
+
+const howToSteps: { title: string; items: ReactNode[] }[] = [
+  {
+    title: "1. Install Phantom wallet",
+    items: [
+      <>
+        Download Phantom from the{" "}
+        <a
+          href="https://apps.apple.com/us/app/phantom-trade-markets/id1598432977"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline font-semibold hover:text-[#FF7D29]"
+        >
+          App Store
+        </a>{" "}
+        or{" "}
+        <a
+          href="https://play.google.com/store/apps/details?id=app.phantom"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline font-semibold hover:text-[#FF7D29]"
+        >
+          Google Play
+        </a>
+        .
+      </>,
+      "Open the app and tap “Create New Wallet”, or continue with Google or Apple.",
+    ],
+  },
+  {
+    title: "2. Buy USDC in Phantom (Solana Network)",
+    items: [
+      'In Phantom, tap the "+" button in the lower-right corner and select "Buy".',
+      'Under "Get started", choose the recommended USDC token next to SOL.',
+      "Enter the amount you want to purchase.",
+      "Complete the payment using PayPal, Google Pay, or a debit/credit card.",
+    ],
+  },
+  {
+    title: "3. Fees",
+    items: [
+      "Payments made through Phantom use the Solana network. Transaction fees are paid in SOL and are typically close to zero.",
+      "After buying USDC, you should also purchase and keep about $1 worth of SOL in your wallet to cover any transaction fees.",
+    ],
+  },
+  {
+    title: "4. Pay on Kinged",
+    items: [
+      "Return to the Kinged.gg website.",
+      "Select the amount of Kinged coins you want to buy.",
+      'Click "Buy".',
+      "You will be redirected to the checkout page.",
+      "Follow the on-screen instructions to complete your payment using your Phantom wallet.",
+    ],
+  },
+];
 
 export default function BuyCoinsPage() {
   const [currency, setCurrency] = useState<Currency>("USD");
@@ -360,59 +416,52 @@ export default function BuyCoinsPage() {
                 </motion.div>
               ))}
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
-              viewport={{ once: true }}
-            >
-              <h2 className="mt-10 mb-4 text-xl font-extrabold font-montserrat text-[#1D1D1D]">
-                Secure payment
-              </h2>
-              <div className="bg-[#FFEFC4] rounded-lg p-4 grid grid-cols-4 gap-4 place-items-center">
-                {[
-                  "paypal",
-                  "wise",
-                  "paysend",
-                  "remitly",
-                  "zelle",
-                  "visa",
-                  "mastercard",
-                  "moneygram",
-                ].map((method) => (
-                  <Image
-                    key={method}
-                    src={`/images/payments/${method}.png`}
-                    alt={method}
-                    width={100}
-                    height={40}
-                    className="h-10 md:h-14 w-auto object-contain"
-                  />
-                ))}
-              </div>
-            </motion.div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            viewport={{ once: true }}
-            className="flex flex-col items-center md:items-start gap-8"
-          >
-            <Image
-              src="/images/buycoins.png"
-              alt="Treasure chest with coins"
-              width={500}
-              height={500}
-              className="w-full h-auto max-w-xs md:max-w-md"
-              priority
-            />
-            <p className="text-lg md:text-2xl font-bold text-[#1D1D1D] text-center md:text-left max-w-lg">
-              Our service is available worldwide. To maintain a standardized payment process, we currently accept payments in USD and EUR. However, most major payment methods support automatic currency conversion, allowing you to pay conveniently in your local currency.
-            </p>
-          </motion.div>
+          <div className="flex flex-col gap-5">
+            <motion.h2
+              initial={{ opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-xl md:text-2xl font-extrabold font-montserrat text-[#1D1D1D]"
+            >
+              How to pay on Kinged with Near-Zero fees
+            </motion.h2>
+
+            {howToSteps.map((step, i) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
+                viewport={{ once: true }}
+                className="bg-[#FFEFC4] rounded-xl p-5"
+              >
+                <h3 className="text-[#FF7D29] font-bold font-montserrat text-lg mb-2">
+                  {step.title}
+                </h3>
+                <ul className="space-y-1.5 text-sm text-[#1D1D1D]">
+                  {step.items.map((item, idx) => (
+                    <li key={idx} className="flex gap-2">
+                      <span className="text-[#FF7D29] mt-0.5 shrink-0">•</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: howToSteps.length * 0.15, duration: 0.5, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="text-sm text-[#1D1D1D]"
+            >
+              If you have any questions or run into any issues, the Kinged support team is always available through live chat and ready to assist you.
+            </motion.p>
+          </div>
         </div>
       </main>
 

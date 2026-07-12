@@ -10,6 +10,7 @@ export async function GET() {
     uid: doc.id,
     email: doc.data().email,
     coins: doc.data().coins,
+    creatorCode: doc.data().creatorCode ?? null,
   }));
   return NextResponse.json(users);
 }

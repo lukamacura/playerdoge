@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Input } from "@/components/ui/input";
+import { ADMIN_EMAILS } from "@/lib/adminEmails";
+import { statusLabel, type PendingPaymentStatus } from "@/lib/paymentStatus";
 import {
   ShieldCheck,
   Users,
@@ -27,7 +29,44 @@ interface UserData {
   uid: string;
   email: string;
   coins: number;
+  creatorCode?: string | null;
 }
+
+interface OrderData {
+  token: string;
+  uid: string;
+  userEmail: string;
+  orderId: string;
+  packId: string;
+  coinAmount: number;
+  usdValue: number;
+  status: PendingPaymentStatus;
+  rawStatus: string;
+  createdAtMs: number | null;
+  creditedAtMs: number | null;
+  creditedBy: string | null;
+  statusLog: { code: number | null; atMs: number | null; note: string | null }[];
+}
+
+type OrderFilter = "all" | "attention" | "pending" | "credited" | "dead";
+
+const ORDER_FILTER_STATUSES: Record<Exclude<OrderFilter, "all">, PendingPaymentStatus[]> = {
+  attention: ["verify_failed", "credit_failed"],
+  pending: ["initialized", "processing"],
+  credited: ["credited"],
+  dead: ["expired", "canceled", "rejected"],
+};
+
+const ORDER_STATUS_CLS: Record<PendingPaymentStatus, string> = {
+  initialized: "bg-amber-100 text-amber-700",
+  processing: "bg-blue-100 text-blue-700",
+  credited: "bg-green-100 text-green-700",
+  expired: "bg-gray-200 text-gray-600",
+  canceled: "bg-gray-200 text-gray-600",
+  rejected: "bg-gray-200 text-gray-600",
+  verify_failed: "bg-red-100 text-red-700",
+  credit_failed: "bg-red-100 text-red-700",
+};
 
 interface TransactionData {
   userEmail: string;
@@ -60,13 +99,20 @@ export default function AdminPage() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [authorized, setAuthorized] = useState<boolean | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"users" | "transactions" | "creators">("users");
+  const [activeTab, setActiveTab] = useState<"users" | "transactions" | "creators" | "orders">("users");
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [txLoading, setTxLoading] = useState(false);
   const [txMethodFilter, setTxMethodFilter] = useState<"all" | "crypto" | "manual">("all");
   const [creators, setCreators] = useState<CreatorData[]>([]);
   const [creatorsLoading, setCreatorsLoading] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [orders, setOrders] = useState<OrderData[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersError, setOrdersError] = useState("");
+  const [orderFilter, setOrderFilter] = useState<OrderFilter>("all");
+  const [confirmCredit, setConfirmCredit] = useState<string | null>(null);
+  const [creditingToken, setCreditingToken] = useState<string | null>(null);
+  const [expandedLog, setExpandedLog] = useState<string | null>(null);
 
   // Confirm Purchase modal state
   const [confirmPurchase, setConfirmPurchase] = useState<ConfirmPurchaseState | null>(null);
@@ -76,10 +122,9 @@ export default function AdminPage() {
   const [cpError, setCpError] = useState("");
 
   useEffect(() => {
-    const allowedAdmins = ["luka.xzy@gmail.com", "ivan.emi010@gmail.com"];
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && allowedAdmins.includes(user.email || "")) {
+      if (user && ADMIN_EMAILS.includes(user.email || "")) {
         setAuthorized(true);
         fetch("/api/admin/users")
           .then((res) => res.json())
@@ -126,7 +171,7 @@ export default function AdminPage() {
     setConfirmDelete(null);
   };
 
-  const handleTabChange = (tab: "users" | "transactions" | "creators") => {
+  const handleTabChange = (tab: "users" | "transactions" | "creators" | "orders") => {
     setActiveTab(tab);
     if (tab === "transactions" && transactions.length === 0) {
       setTxLoading(true);
@@ -145,6 +190,62 @@ export default function AdminPage() {
           setCreators(Array.isArray(data) ? data : []);
           setCreatorsLoading(false);
         });
+    }
+    if (tab === "orders" && orders.length === 0) {
+      loadOrders();
+    }
+  };
+
+  const loadOrders = async () => {
+    setOrdersLoading(true);
+    setOrdersError("");
+    try {
+      const idToken = await getAuth().currentUser?.getIdToken();
+      const res = await fetch("/api/admin/orders", {
+        headers: { Authorization: `Bearer ${idToken}` },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setOrdersError(data.error ?? "Failed to load orders");
+      } else {
+        setOrders(Array.isArray(data.orders) ? data.orders : []);
+      }
+    } catch {
+      setOrdersError("Failed to load orders");
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
+  const creditOrder = async (token: string) => {
+    setCreditingToken(token);
+    setOrdersError("");
+    try {
+      const idToken = await getAuth().currentUser?.getIdToken();
+      const res = await fetch("/api/admin/orders/credit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({ token }),
+      });
+      if (res.ok || res.status === 409) {
+        // 409 means it was already credited — reflect that either way.
+        setOrders((prev) =>
+          prev.map((o) =>
+            o.token === token ? { ...o, status: "credited", creditedBy: "admin" } : o
+          )
+        );
+      } else {
+        const d = await res.json().catch(() => ({}));
+        setOrdersError(d.error ?? "Failed to credit order");
+      }
+    } catch {
+      setOrdersError("Failed to credit order");
+    } finally {
+      setCreditingToken(null);
+      setConfirmCredit(null);
     }
   };
 
@@ -229,10 +330,10 @@ export default function AdminPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Tabs */}
         <div className="flex gap-1 mb-6 bg-[#1d1d1d]/10 p-1 rounded-xl w-fit">
-          {(["users", "transactions", "creators"] as const).map((tab) => {
-            const icons = { users: <Users size={15} />, transactions: <Receipt size={15} />, creators: <Tag size={15} /> };
-            const labels = { users: "Users", transactions: "Transactions", creators: "Creators" };
-            const badge = tab === "users" ? users.length : tab === "transactions" && transactions.length > 0 ? transactions.length : tab === "creators" && creators.length > 0 ? creators.length : null;
+          {(["users", "orders", "transactions", "creators"] as const).map((tab) => {
+            const icons = { users: <Users size={15} />, orders: <Wallet size={15} />, transactions: <Receipt size={15} />, creators: <Tag size={15} /> };
+            const labels = { users: "Users", orders: "Orders", transactions: "Transactions", creators: "Creators" };
+            const badge = tab === "users" ? users.length : tab === "orders" && orders.length > 0 ? orders.length : tab === "transactions" && transactions.length > 0 ? transactions.length : tab === "creators" && creators.length > 0 ? creators.length : null;
             return (
               <button
                 key={tab}
@@ -284,9 +385,17 @@ export default function AdminPage() {
                     <div className="w-9 h-9 rounded-full bg-[#FFEFC4] border border-[#1d1d1d]/20 flex items-center justify-center text-sm font-bold text-[#1d1d1d] shrink-0">
                       {getInitial(user.email)}
                     </div>
-                    <p className="text-sm font-medium text-[#1d1d1d] break-all leading-snug">
-                      {user.email}
-                    </p>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-[#1d1d1d] break-all leading-snug">
+                        {user.email}
+                      </p>
+                      {user.creatorCode && (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#1d1d1d]/60 mt-0.5">
+                          <Tag size={11} className="text-[#1d1d1d]/40" />
+                          Referred by <span className="font-mono font-bold">{user.creatorCode}</span>
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
@@ -343,6 +452,178 @@ export default function AdminPage() {
                 </div>
               )}
             </div>
+          </div>
+        )}
+
+        {/* Orders Tab */}
+        {activeTab === "orders" && (
+          <div>
+            {ordersLoading ? (
+              <div className="flex flex-col items-center justify-center py-24 gap-3 text-[#1d1d1d]/40">
+                <Loader2 size={32} className="animate-spin" />
+                <p className="text-sm">Loading orders...</p>
+              </div>
+            ) : orders.length === 0 ? (
+              <div className="text-center py-16 text-[#1d1d1d]/40">
+                <Wallet size={36} className="mx-auto mb-3 opacity-30" />
+                <p className="text-sm">No payment orders found.</p>
+                {ordersError && <p className="text-xs text-red-500 mt-2">{ordersError}</p>}
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center gap-1 mb-4 bg-[#1d1d1d]/10 p-1 rounded-lg w-fit flex-wrap">
+                  {(["all", "attention", "pending", "credited", "dead"] as const).map((f) => {
+                    const count =
+                      f === "all"
+                        ? orders.length
+                        : orders.filter((o) => ORDER_FILTER_STATUSES[f].includes(o.status)).length;
+                    const labels: Record<OrderFilter, string> = {
+                      all: "All",
+                      attention: "Needs attention",
+                      pending: "Pending",
+                      credited: "Credited",
+                      dead: "Expired/Canceled",
+                    };
+                    return (
+                      <button
+                        key={f}
+                        onClick={() => setOrderFilter(f)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${
+                          orderFilter === f
+                            ? "bg-[#1d1d1d] text-[#FFEFC4] shadow"
+                            : "text-[#1d1d1d]/60 hover:text-[#1d1d1d]"
+                        }`}
+                      >
+                        {labels[f]}
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+                            f === "attention" && count > 0
+                              ? "bg-red-100 text-red-700"
+                              : orderFilter === f
+                                ? "bg-[#FFEFC4]/20 text-[#FFEFC4]"
+                                : "bg-[#1d1d1d]/10 text-[#1d1d1d]/50"
+                          }`}
+                        >
+                          {count}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {ordersError && <p className="text-xs text-red-500 mb-3">{ordersError}</p>}
+
+                <div className="space-y-2">
+                  {orders
+                    .filter(
+                      (o) =>
+                        orderFilter === "all" ||
+                        ORDER_FILTER_STATUSES[orderFilter].includes(o.status)
+                    )
+                    .map((order) => (
+                      <div
+                        key={order.token}
+                        className="bg-white border border-[#1d1d1d]/15 rounded-xl px-4 py-3"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                          <div className="flex items-center gap-3 flex-1 min-w-0">
+                            <div className="w-8 h-8 rounded-full bg-[#FFEFC4] border border-[#1d1d1d]/20 flex items-center justify-center text-xs font-bold text-[#1d1d1d] shrink-0">
+                              {getInitial(order.userEmail || "?")}
+                            </div>
+                            <p className="text-sm font-medium text-[#1d1d1d] break-all leading-snug">
+                              {order.userEmail}
+                            </p>
+                          </div>
+
+                          <div className="flex items-center gap-1 shrink-0 text-sm">
+                            <Coins size={14} className="text-amber-500" />
+                            <span className="font-bold text-[#1d1d1d]">
+                              {order.coinAmount.toLocaleString()}
+                            </span>
+                            <span className="text-xs text-[#1d1d1d]/45 ml-1">
+                              ${order.usdValue.toFixed(2)}
+                            </span>
+                          </div>
+
+                          <span
+                            className={`text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0 w-fit ${ORDER_STATUS_CLS[order.status]}`}
+                          >
+                            {statusLabel(order.status)}
+                            {order.status === "credited" && order.creditedBy === "admin" && " (admin)"}
+                          </span>
+
+                          <div className="flex items-center gap-1.5 text-xs text-[#1d1d1d]/45 shrink-0">
+                            <CalendarClock size={13} />
+                            {order.createdAtMs ? new Date(order.createdAtMs).toLocaleString() : "—"}
+                          </div>
+
+                          {order.status !== "credited" &&
+                            (confirmCredit === order.token ? (
+                              <div className="flex items-center gap-2 shrink-0">
+                                <span className="text-xs text-[#1d1d1d]/60">Credit {order.coinAmount.toLocaleString()} coins?</span>
+                                <button
+                                  onClick={() => creditOrder(order.token)}
+                                  disabled={creditingToken === order.token}
+                                  className="flex items-center gap-1 text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 disabled:opacity-50 transition-colors"
+                                >
+                                  {creditingToken === order.token ? (
+                                    <Loader2 size={12} className="animate-spin" />
+                                  ) : (
+                                    <CheckCircle2 size={12} />
+                                  )}
+                                  Yes, credit
+                                </button>
+                                <button
+                                  onClick={() => setConfirmCredit(null)}
+                                  className="text-xs px-3 py-1.5 bg-[#1d1d1d]/10 text-[#1d1d1d] rounded-lg font-semibold hover:bg-[#1d1d1d]/20 transition-colors"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => setConfirmCredit(order.token)}
+                                className="flex items-center gap-1.5 text-xs px-3 py-1.5 border border-green-300 text-green-700 rounded-lg hover:bg-green-50 transition-colors shrink-0"
+                              >
+                                <HandCoins size={13} />
+                                Credit now
+                              </button>
+                            ))}
+
+                          <button
+                            onClick={() =>
+                              setExpandedLog(expandedLog === order.token ? null : order.token)
+                            }
+                            className="text-xs px-2 py-1.5 text-[#1d1d1d]/40 hover:text-[#1d1d1d] transition-colors shrink-0"
+                          >
+                            {expandedLog === order.token ? "Hide log" : "Log"}
+                            {order.statusLog.length > 0 && ` (${order.statusLog.length})`}
+                          </button>
+                        </div>
+
+                        {expandedLog === order.token && (
+                          <div className="mt-3 pt-3 border-t border-[#1d1d1d]/10 text-xs text-[#1d1d1d]/60 space-y-1">
+                            <p className="font-mono text-[10px] text-[#1d1d1d]/40 break-all">
+                              order {order.orderId} · pack {order.packId} · raw status: {order.rawStatus}
+                            </p>
+                            {order.statusLog.length === 0 ? (
+                              <p className="italic">No webhook callbacks received for this order.</p>
+                            ) : (
+                              order.statusLog.map((entry, i) => (
+                                <p key={i} className="font-mono text-[11px]">
+                                  {entry.atMs ? new Date(entry.atMs).toLocaleString() : "—"}
+                                  {entry.code !== null && ` · code ${entry.code}`}
+                                  {entry.note && ` · ${entry.note}`}
+                                </p>
+                              ))
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
           </div>
         )}
 

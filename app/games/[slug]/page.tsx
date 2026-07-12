@@ -166,6 +166,7 @@ export default function GameDetailPage() {
   const [isCredentialsChecked, setIsCredentialsChecked] = useState(false);
   const [isScreenshotChecked, setIsScreenshotChecked] = useState(false);
   const [isCodeRequiredChecked, setIsCodeRequiredChecked] = useState(false);
+  const [isLiveChatPrivateChecked, setIsLiveChatPrivateChecked] = useState(false);
 
 
 
@@ -440,9 +441,18 @@ export default function GameDetailPage() {
                   checked={isCredentialsChecked}
                   onChange={(e) => setIsCredentialsChecked(e.target.checked)}
                 />
-                Account login details are required to complete the top-up.
+                Kinged support must access my in-game account using my login details in order to purchase and deliver the selected package(s).
               </label>
-              <label className="block text-xs">
+              <label className="block mb-2 text-xs">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={isCodeRequiredChecked}
+                  onChange={(e) => setIsCodeRequiredChecked(e.target.checked)}
+                />
+                A one-time login code sent to my email is required to allow Kinged to access my account and complete the service.
+              </label>
+              <label className="block mb-2 text-xs">
                 <input
                   type="checkbox"
                   className="mr-2"
@@ -451,15 +461,15 @@ export default function GameDetailPage() {
                 />
                 Clear screenshot(s) of the desired package(s) will be sent via live chat.
               </label>
-                          <label className="block text-xs">
-              <input
-                type="checkbox"
-                className="mr-2"
-                checked={isCodeRequiredChecked}
-                onChange={(e) => setIsCodeRequiredChecked(e.target.checked)}
-              />
-              One-time login code may be required to complete the service.
-            </label>
+              <label className="block text-xs">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={isLiveChatPrivateChecked}
+                  onChange={(e) => setIsLiveChatPrivateChecked(e.target.checked)}
+                />
+                The live chat is accessible only to me and Kinged support staff.
+              </label>
 
             </div>
 
@@ -491,8 +501,13 @@ export default function GameDetailPage() {
       return;
     }
 
-    if (!isCredentialsChecked || !isScreenshotChecked) {
-      setErrorMessage("Please make sure you checked both boxes.");
+    if (
+      !isCredentialsChecked ||
+      !isCodeRequiredChecked ||
+      !isScreenshotChecked ||
+      !isLiveChatPrivateChecked
+    ) {
+      setErrorMessage("Please make sure you checked all boxes.");
       return;
     }
 

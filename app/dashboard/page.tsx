@@ -18,6 +18,8 @@ import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { motion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
+import type { PendingPaymentStatus } from "@/lib/paymentStatus";
 
 type Purchase = {
   game: string;
@@ -27,10 +29,30 @@ type Purchase = {
   paymentMethod: "crypto" | "manual";
 };
 
+type PendingOrder = {
+  token: string;
+  packId: string;
+  coinAmount: number;
+  usdValue: number;
+  status: PendingPaymentStatus;
+  createdAtMs: number | null;
+};
+
+const ORDER_PILL: Record<string, { label: string; cls: string }> = {
+  initialized: { label: "Awaiting payment", cls: "bg-amber-100 text-amber-700" },
+  processing: { label: "Processing", cls: "bg-blue-100 text-blue-700" },
+  verify_failed: { label: "Processing — contact support", cls: "bg-orange-100 text-orange-700" },
+  credit_failed: { label: "Processing — contact support", cls: "bg-orange-100 text-orange-700" },
+  expired: { label: "Expired", cls: "bg-gray-200 text-gray-600" },
+  canceled: { label: "Canceled", cls: "bg-gray-200 text-gray-600" },
+  rejected: { label: "Rejected", cls: "bg-gray-200 text-gray-600" },
+};
+
 export default function Dashboard() {
-  const { user, loading } = useAuth();
+  const { user, userData, loading } = useAuth();
   const [coins, setCoins] = useState<number | null>(null);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [pendingOrders, setPendingOrders] = useState<PendingOrder[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +91,20 @@ const list: Purchase[] = snap.docs.map((doc) => {
 
 
       setPurchases(list);
+
+      try {
+        const idToken = await user.getIdToken();
+        const res = await fetch("/api/payment/orders", {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const orders: PendingOrder[] = Array.isArray(data.orders) ? data.orders : [];
+          setPendingOrders(orders.filter((o) => o.status !== "credited"));
+        }
+      } catch {
+        // Order status is supplementary; ignore fetch failures.
+      }
     };
 
     fetchData();
@@ -146,6 +182,14 @@ const list: Purchase[] = snap.docs.map((doc) => {
                 <div className="text-5xl font-extrabold font-montserrat">
                   {coins !== null ? coins.toLocaleString() : "..."}
                 </div>
+                {userData?.creatorCode && (
+                  <div className="mt-2 flex items-center gap-1.5 bg-white/20 rounded-full px-3 py-1 w-fit">
+                    <CheckCircle2 size={13} className="shrink-0" />
+                    <span className="text-xs font-semibold">
+                      Referred by <span className="font-bold">{userData.creatorCode}</span>
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <div className="mt-6 md:mt-0 flex flex-col gap-3 items-center">
@@ -177,6 +221,40 @@ const list: Purchase[] = snap.docs.map((doc) => {
             <h3 className="text-lg font-extrabold font-montserrat text-[#1D1D1D] mb-4">
               Recent Purchases
             </h3>
+
+            {pendingOrders.length > 0 && (
+              <ul className="space-y-3 mb-5">
+                {pendingOrders.map((order) => {
+                  const pill = ORDER_PILL[order.status] ?? ORDER_PILL.initialized;
+                  return (
+                    <li
+                      key={order.token}
+                      className="flex items-center justify-between gap-4 bg-white/60 rounded-lg px-3 py-2.5"
+                    >
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="flex items-center gap-1 text-xs md:text-base font-bold font-montserrat text-[#1D1D1D]">
+                          {order.coinAmount.toLocaleString()}
+                          <Image
+                            src="/images/coin.png"
+                            alt="Kinged Coin"
+                            width={20}
+                            height={20}
+                          />
+                        </p>
+                        <span className="text-xs text-[#888]">
+                          ${order.usdValue.toFixed(2)}
+                        </span>
+                      </div>
+                      <span
+                        className={`text-[10px] md:text-xs px-2 py-0.5 rounded-full font-bold ${pill.cls}`}
+                      >
+                        {pill.label}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
 
             {purchases.length === 0 ? (
               <p className="text-[#888] italic text-sm">
@@ -219,6 +297,9 @@ const list: Purchase[] = snap.docs.map((doc) => {
                               Crypto
                             </span>
                           )}
+                          <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold">
+                            Delivered
+                          </span>
                         </div>
                         <p className="text-sm text-[#888]">{item.time}</p>
                       </div>

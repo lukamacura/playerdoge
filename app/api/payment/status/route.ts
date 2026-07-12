@@ -35,7 +35,7 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.json({
-    status: data.status as "initialized" | "credited" | "failed",
+    status: (data.status ?? "initialized") as string,
     coinAmount: data.coinAmount as number,
     usdValue: data.usdValue as number,
     packId: data.packId as string,

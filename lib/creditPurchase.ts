@@ -1,7 +1,16 @@
 import { adminDb } from "@/lib/firebaseAdmin";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 
 export type PaymentMethod = "crypto" | "manual";
+
+export const REFERRAL_BONUS_COINS = 100;
+
+export class AlreadyCreditedError extends Error {
+  constructor() {
+    super("Order already credited");
+    this.name = "AlreadyCreditedError";
+  }
+}
 
 export interface CreditPurchaseInput {
   uid: string;
@@ -9,6 +18,11 @@ export interface CreditPurchaseInput {
   usdValue?: number;
   game?: string;
   paymentMethod?: PaymentMethod;
+  // When set, the pendingPayments/{token} doc is marked credited inside the
+  // same transaction; throws AlreadyCreditedError if it already was.
+  pendingPaymentToken?: string;
+  creditedBy?: "webhook" | "admin";
+  orderStatusCode?: number;
 }
 
 export async function creditPurchase({
@@ -17,15 +31,28 @@ export async function creditPurchase({
   usdValue = 0,
   game = "Coin Purchase",
   paymentMethod = "manual",
+  pendingPaymentToken,
+  creditedBy,
+  orderStatusCode,
 }: CreditPurchaseInput): Promise<void> {
   if (!uid || !coinAmount || coinAmount <= 0) {
     throw new Error("creditPurchase: uid and positive coinAmount required");
   }
 
+  const pendingRef = pendingPaymentToken
+    ? adminDb.collection("pendingPayments").doc(pendingPaymentToken)
+    : null;
+
   await adminDb.runTransaction(async (tx) => {
     const userRef = adminDb.collection("users").doc(uid);
     const userDoc = await tx.get(userRef);
     if (!userDoc.exists) throw new Error("User not found");
+
+    if (pendingRef) {
+      const pendingDoc = await tx.get(pendingRef);
+      if (!pendingDoc.exists) throw new Error("Pending payment not found");
+      if (pendingDoc.data()?.status === "credited") throw new AlreadyCreditedError();
+    }
 
     const data = userDoc.data()!;
     const creatorCode: string | null = data.creatorCode ?? null;
@@ -51,7 +78,7 @@ export async function creditPurchase({
     });
 
     const userUpdate: Record<string, FieldValue | string | number | boolean | null> = {
-      coins: FieldValue.increment(grantBonus ? coinAmount + 500 : coinAmount),
+      coins: FieldValue.increment(grantBonus ? coinAmount + REFERRAL_BONUS_COINS : coinAmount),
     };
     if (!data.firstPurchaseAt) {
       userUpdate.firstPurchaseAt = FieldValue.serverTimestamp();
@@ -69,7 +96,7 @@ export async function creditPurchase({
         const bonusRef = userRef.collection("purchases").doc();
         tx.set(bonusRef, {
           game: "Referral Bonus",
-          amount: 500,
+          amount: REFERRAL_BONUS_COINS,
           image: "",
           timestamp: FieldValue.serverTimestamp(),
           creatorCode,
@@ -87,6 +114,19 @@ export async function creditPurchase({
       if (Object.keys(creatorUpdate).length > 0) {
         tx.update(codeRef, creatorUpdate);
       }
+    }
+
+    if (pendingRef) {
+      tx.update(pendingRef, {
+        status: "credited",
+        creditedAt: FieldValue.serverTimestamp(),
+        creditedBy: creditedBy ?? "webhook",
+        statusLog: FieldValue.arrayUnion({
+          code: orderStatusCode ?? null,
+          at: Timestamp.now(),
+          note: creditedBy === "admin" ? "credited manually by admin" : "credited",
+        }),
+      });
     }
   });
 }

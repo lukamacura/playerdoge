@@ -5,6 +5,14 @@ import Image from "next/image";
 
 const faqs = [
   {
+    question: "Where the price advantage actually comes from?",
+    answer: `You’ve probably seen warnings like “Using third‑party services will result in a ban.” Most of the risk comes down to where the price advantage is created. Some services rely on stolen credit cards or refund abuse to offer aggressive pricing. When those blow up, the original cardholders get their money back, developers lose, and game companies start banning anything that looks similar. Kinged does the opposite. We acquire large quantities of official Google Play and Apple gift cards from vetted suppliers. Much like any bulk purchase, buying at scale lets us secure better economics on our side. That lets us build a pricing edge for high‑spending players while developers still receive their full listed price. It’s a smarter way to route your existing spend: the game gets paid in full, you get a more efficient structure, and there’s no financial incentive for developers to target our users. That’s why developers still receive full price on every purchase – there’s no financial incentive for them to target Kinged users.`
+  },
+  {
+    question: "Account sharing is bannable?",
+    answer: `You’ve also heard that account sharing is bannable. In practice, that’s when accounts are shared for misuse: bots, hacks, reselling, and other abuse that clearly hurts the game. Kinged uses buyer agents who are real, live humans purchasing the same packs you would, on your behalf. Every supported game goes through an extensive vetting process. We only accept an order if we’re 100% confident we can deliver the packs while keeping your account secure and behavior looking normal.`
+  },
+  {
     question: "Why does Kinged ask for my personal information?",
     answer: `We need your personal information to purchase bundles on your behalf. We understand that this may raise concerns, so we take this matter seriously.\n\nTo remain authorized, we access your account to buy bundles for you while respecting the rules established by Google and the Apple Store.`,
   },

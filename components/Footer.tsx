@@ -40,9 +40,9 @@ export default function Footer() {
                 href: "mailto:support@kinged.gg",
               },
               {
-                icon: "/icons/discord.png",
+                icon: "/icons/instagram.png",
                 label: "Kinged",
-                href: "https://discord.gg/ntgxjAhtUQ",
+                href: "https://www.instagram.com/kinged.gg",
               },
 
             ].map((contact) => (
@@ -73,14 +73,9 @@ export default function Footer() {
           {/* Payment icons */}
           <div className="grid grid-cols-4 md:flex md:flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
             {[
-                "paypal",
-                "wise",
-                "paysend",
-                "remitly",
-                "zelle",
-                "visa",
-                "mastercard",
-                "moneygram",
+                "tether",
+                "usd-coin",
+                "solana",
             ].map((name) => (
               <div key={name} className="flex justify-center md:justify-end">
                 <Image

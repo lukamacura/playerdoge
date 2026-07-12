@@ -5,10 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Loader2, Sparkles, ArrowRight, Hourglass } from "lucide-react";
+import { CheckCircle2, Loader2, Sparkles, ArrowRight, Hourglass, XCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
-type Status = "initialized" | "credited" | "failed" | "timeout" | "unknown";
+type Status = string;
+
+const DEAD_STATUSES = ["canceled", "rejected", "expired"];
 
 function SuccessContent() {
   const params = useSearchParams();
@@ -36,7 +38,7 @@ function SuccessContent() {
         if (cancelled) return;
         setCoinAmount(data.coinAmount ?? null);
         setStatus(data.status as Status);
-        if (data.status !== "credited") {
+        if (data.status !== "credited" && !DEAD_STATUSES.includes(data.status)) {
           timeoutRef.current = setTimeout(poll, 3000);
         }
       } catch {
@@ -58,6 +60,7 @@ function SuccessContent() {
   }, [user, token]);
 
   const credited = status === "credited";
+  const dead = DEAD_STATUSES.includes(status);
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-[#FEFFD2] font-inter pt-28 pb-20 px-4">
@@ -100,6 +103,15 @@ function SuccessContent() {
                     className="flex h-24 w-24 items-center justify-center rounded-full bg-[#FF7D29] shadow-[0_10px_40px_-8px_rgba(255,125,41,0.6)]"
                   >
                     <CheckCircle2 size={52} className="text-white" strokeWidth={2.5} />
+                  </motion.div>
+                ) : dead ? (
+                  <motion.div
+                    key="dead"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="flex h-24 w-24 items-center justify-center rounded-full bg-[#1D1D1D]"
+                  >
+                    <XCircle size={44} className="text-[#FEFFD2]" />
                   </motion.div>
                 ) : status === "timeout" ? (
                   <motion.div
@@ -158,9 +170,11 @@ function SuccessContent() {
           >
             {credited
               ? "Payment confirmed"
-              : status === "timeout"
-                ? "Still confirming..."
-                : "Waiting for blockchain"}
+              : dead
+                ? "Payment not completed"
+                : status === "timeout"
+                  ? "Still confirming..."
+                  : "Waiting for blockchain"}
           </motion.h1>
 
           <motion.p
@@ -171,9 +185,11 @@ function SuccessContent() {
           >
             {credited && coinAmount
               ? "Your coins have just landed in your account."
-              : status === "timeout"
-                ? "Your payment is taking longer than usual. It will still be credited automatically — check your dashboard shortly."
-                : "We're watching the network. This usually takes just a minute or two."}
+              : dead
+                ? "This payment was canceled or expired before completing, so no coins were credited. You can start a new purchase anytime."
+                : status === "timeout"
+                  ? "Your payment is taking longer than usual. It will still be credited automatically — check your dashboard shortly."
+                  : "We're watching the network. This usually takes just a minute or two."}
           </motion.p>
 
           {credited && coinAmount && (
@@ -224,7 +240,7 @@ function SuccessContent() {
             </Link>
           </motion.div>
 
-          {!credited && (
+          {!credited && !dead && (
             <p className="mt-6 text-center text-xs text-[#1D1D1D]/50">
               You can safely leave this page — coins will appear on your dashboard as soon
               as the transaction confirms.
