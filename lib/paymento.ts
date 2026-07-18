@@ -84,6 +84,44 @@ export interface VerifyPaymentResult {
   additionalData?: AdditionalDataEntry[];
 }
 
+export interface PaymentInquiry {
+  // Paymento sets success=true only when the payment completed.
+  success: boolean;
+  // Present even when success=false (e.g. 0=Initialize, 4=Timeout, 5=UserCanceled).
+  orderStatus: number | null;
+}
+
+/**
+ * Ask Paymento for an order's current state via the verify endpoint. Unlike
+ * verifyPayment this also surfaces the orderStatus of unpaid orders, so
+ * callers can tell "canceled/expired" apart from "network error" (null).
+ */
+export async function inquirePayment(token: string): Promise<PaymentInquiry | null> {
+  const res = await fetch(`${API_BASE}/payment/verify`, {
+    method: "POST",
+    headers: {
+      "Api-Key": apiKey(),
+      "Content-Type": "application/json",
+      Accept: "text/plain",
+    },
+    body: JSON.stringify({ token }),
+  });
+
+  const text = await res.text();
+  if (!res.ok) return null;
+
+  try {
+    const parsed = JSON.parse(text) as PaymentoEnvelope<{ orderStatus?: number }>;
+    return {
+      success: parsed.success === true,
+      orderStatus:
+        typeof parsed.body?.orderStatus === "number" ? parsed.body.orderStatus : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function verifyPayment(token: string): Promise<VerifyPaymentResult | null> {
   const res = await fetch(`${API_BASE}/payment/verify`, {
     method: "POST",

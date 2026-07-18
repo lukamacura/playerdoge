@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
 import { deriveDisplayStatus } from "@/lib/paymentStatus";
+import { reconcileMany } from "@/lib/reconcilePayment";
 
 // Dead orders (expired/canceled/rejected) disappear from the dashboard after this.
 const HIDE_DEAD_AFTER_MS = 24 * 60 * 60 * 1000;
@@ -29,10 +30,23 @@ export async function GET(request: Request) {
     .limit(50)
     .get();
 
+  // The Paymento webhook is unreliable — check open orders against Paymento
+  // so paid ones get credited even if the callback never arrived.
+  const changedTokens = await reconcileMany(
+    snap.docs.map((doc) => ({ token: doc.id, data: doc.data() }))
+  );
+  const freshById = new Map<string, FirebaseFirestore.DocumentData>();
+  if (changedTokens.length) {
+    const fresh = await adminDb.getAll(
+      ...changedTokens.map((t) => adminDb.collection("pendingPayments").doc(t))
+    );
+    for (const d of fresh) if (d.exists) freshById.set(d.id, d.data()!);
+  }
+
   const now = Date.now();
   const orders = snap.docs
     .map((doc) => {
-      const d = doc.data();
+      const d = freshById.get(doc.id) ?? doc.data();
       const createdAtMs = d.createdAt?.toMillis?.() ?? null;
       return {
         token: doc.id,

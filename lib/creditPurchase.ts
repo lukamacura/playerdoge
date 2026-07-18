@@ -21,7 +21,7 @@ export interface CreditPurchaseInput {
   // When set, the pendingPayments/{token} doc is marked credited inside the
   // same transaction; throws AlreadyCreditedError if it already was.
   pendingPaymentToken?: string;
-  creditedBy?: "webhook" | "admin";
+  creditedBy?: "webhook" | "admin" | "reconcile";
   orderStatusCode?: number;
 }
 
@@ -124,7 +124,12 @@ export async function creditPurchase({
         statusLog: FieldValue.arrayUnion({
           code: orderStatusCode ?? null,
           at: Timestamp.now(),
-          note: creditedBy === "admin" ? "credited manually by admin" : "credited",
+          note:
+            creditedBy === "admin"
+              ? "credited manually by admin"
+              : creditedBy === "reconcile"
+                ? "credited via Paymento reconciliation"
+                : "credited",
         }),
       });
     }

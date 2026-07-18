@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/lib/firebaseAdmin";
+import { reconcilePendingPayment } from "@/lib/reconcilePayment";
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get("Authorization");
@@ -34,8 +35,12 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
+  // The Paymento webhook is unreliable; check with Paymento directly so the
+  // success page can credit paid orders while the user watches.
+  const status = await reconcilePendingPayment(token, data, { force: true });
+
   return NextResponse.json({
-    status: (data.status ?? "initialized") as string,
+    status,
     coinAmount: data.coinAmount as number,
     usdValue: data.usdValue as number,
     packId: data.packId as string,

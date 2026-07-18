@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { adminDb } from "@/lib/firebaseAdmin";
 import { requireAdmin } from "@/lib/adminAuth";
 import { deriveDisplayStatus } from "@/lib/paymentStatus";
+import { reconcileMany } from "@/lib/reconcilePayment";
 
 interface RawLogEntry {
   code?: number | null;
@@ -22,6 +23,19 @@ export async function GET(request: Request) {
     .limit(200)
     .get();
 
+  // The Paymento webhook is unreliable — check open orders against Paymento
+  // so paid ones show as credited here without waiting for the callback.
+  const changedTokens = await reconcileMany(
+    snap.docs.map((doc) => ({ token: doc.id, data: doc.data() }))
+  );
+  const freshById = new Map<string, FirebaseFirestore.DocumentData>();
+  if (changedTokens.length) {
+    const fresh = await adminDb.getAll(
+      ...changedTokens.map((t) => adminDb.collection("pendingPayments").doc(t))
+    );
+    for (const d of fresh) if (d.exists) freshById.set(d.id, d.data()!);
+  }
+
   const uids = Array.from(
     new Set(snap.docs.map((d) => d.data().uid as string).filter(Boolean))
   );
@@ -32,7 +46,7 @@ export async function GET(request: Request) {
 
   const now = Date.now();
   const orders = snap.docs.map((doc) => {
-    const d = doc.data();
+    const d = freshById.get(doc.id) ?? doc.data();
     const createdAtMs = d.createdAt?.toMillis?.() ?? null;
     return {
       token: doc.id,
