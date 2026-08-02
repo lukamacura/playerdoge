@@ -29,16 +29,16 @@ export default function Team() {
             role: "Founder",
             image: "/images/ivan.png",
             bio: `Born in 2003, Ivan is a certified computer hardware specialist with three years of hands-on experience in the IT sector. After building a strong reputation in the digital asset trading space, particularly within CS2, he decided to apply that drive and experience to building something of his own. That’s how Kinged was born, a project shaped by his vision, focus, and deep understanding of the gaming world.`,
-            link: "mailto:ivan.emi010@gmail.com",
-            handle: "ivan.emi010@gmail.com",
+            mailUser: "ivan.emi010",
+            mailDomain: "gmail.com",
           },
           {
             name: "Luka Macura",
             role: "Developer",
             image: "/images/luka.png",
             bio: `Luka was born in 2006 and is currently studying at the Faculty of Technical Sciences in Novi Sad, Serbia. As a certified web developer with solid full-stack experience, he combines technical precision with creative problem-solving. Fully dedicated to every project, Luka approaches his work with clear structure and a strong focus on delivering real results. He values discipline, persistence and continuous learning.`,
-            link: "mailto:luka.xzy@gmail.com",
-            handle: "luka.xzy@gmail.com",
+            mailUser: "luka.xzy",
+            mailDomain: "gmail.com",
           },
         ].map((member, i) => (
           <motion.div
@@ -75,14 +75,17 @@ export default function Team() {
             <p className="text-gray-800 font-inter text-sm leading-relaxed">
               {member.bio}
             </p>
-            <a
-              href={member.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#FF7D29] font-semibold text-sm mt-2 hover:underline"
+            <motion.button
+              type="button"
+              onClick={() => {
+                window.location.href = `mailto:${member.mailUser}@${member.mailDomain}`;
+              }}
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="mt-5 bg-[#FF7D29] text-white font-semibold font-inter text-sm px-6 py-2 rounded-full shadow-md hover:bg-[#e86e1f] transition-colors"
             >
-              {member.handle}
-            </a>
+              Contact
+            </motion.button>
           </motion.div>
         ))}
       </div>
