@@ -71,7 +71,7 @@ export default function Footer() {
           </div>
 
           {/* Payment icons */}
-          <div className="grid grid-cols-4 md:flex md:flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 mt-4 w-full">
             {[
                 "tether",
                 "usd-coin",

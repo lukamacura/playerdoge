@@ -262,7 +262,7 @@ export default function PrivacyPage() {
       <p className="mb-4 font-inter text-sm text-gray-600">
         Registered Address: Kinged LLC, Georgia, United States
       </p>
-      <p className="font-inter text-sm text-gray-500">&copy; 2025 Kinged. All rights reserved.</p>
+      <p className="font-inter text-sm text-gray-500">&copy; 2026 Kinged. All rights reserved.</p>
     </main>
   );
 }
