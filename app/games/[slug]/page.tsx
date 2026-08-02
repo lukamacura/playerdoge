@@ -11,15 +11,7 @@ import { Listbox } from "@headlessui/react";
 import clsx from "clsx";
 import { useTidio } from "@/lib/useTidio";
 import Faq from "@/components/Faq";
-import {
-  doc,
-  updateDoc,
-  increment,
-  collection,
-  addDoc,
-  serverTimestamp,
-} from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { GAME_PACK_COINS } from "@/lib/gamePacks";
 
 type Country =
   | "usa"
@@ -39,6 +31,7 @@ export const dynamic = "force-dynamic";
 
 export default function GameDetailPage() {
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { user, userData } = useAuth();
   const router = useRouter();
   const countryLabel = (country: Country) => {
@@ -74,14 +67,7 @@ export default function GameDetailPage() {
   const { openChatWithMessage } = useTidio();
 
 
-  const universalPacks = [
-    { label: "Any pack", coins: 100 },
-    { label: "Any pack", coins: 500 },
-    { label: "Any pack", coins: 1000 },
-    { label: "Any pack", coins: 2000 },
-    { label: "Any pack", coins: 5000 },
-    { label: "Any pack", coins: 10000 },
-  ];
+  const universalPacks = GAME_PACK_COINS;
 
   const countryPrices: Record<Country, number[]> = {
     usa: [0.99, 4.99, 9.99, 19.99, 49.99, 99.99],
@@ -141,7 +127,7 @@ export default function GameDetailPage() {
   const currentPrices = countryPrices[selectedCountry];
 
   const handleBuyClick = (index: number) => {
-    const neededCoins = universalPacks[index].coins;
+    const neededCoins = universalPacks[index];
 
     if (!user) {
       router.push("/login");
@@ -267,7 +253,7 @@ export default function GameDetailPage() {
                     onClick={() => handleBuyClick(i)}
                     className="mt-2 bg-[#FF7D29] hover:bg-[#e96e1b] text-white text-sm font-montserrat font-bold px-6 py-2 rounded-md shadow flex items-center justify-center gap-2"
                   >
-                    Buy for {pack.coins}
+                    Buy for {pack}
                     <Image
                       src="/images/coin.png"
                       alt="Kinged Coin"
@@ -301,7 +287,7 @@ export default function GameDetailPage() {
             <p className="text-sm mb-4 flex items-center gap-1">
               Selected:{" "}
               <strong>
-                {universalPacks[selectedPackIndex].coins} coins
+                {universalPacks[selectedPackIndex]} coins
               </strong>
               <Image
                 src="/images/coin.png"
@@ -382,7 +368,7 @@ export default function GameDetailPage() {
             <p className="text-md mb-4 font-semibold flex items-center gap-1">
               Total:
               <span className="text-[#FF7D29] font-bold flex items-center gap-1">
-                {universalPacks[selectedPackIndex].coins * quantity}
+                {universalPacks[selectedPackIndex] * quantity}
                 <Image
                   src="/images/coin.png"
                   alt="coin"
@@ -440,8 +426,10 @@ export default function GameDetailPage() {
         <p className="text-red-600 text-sm mt-2 font-semibold">{errorMessage}</p>
       )}
         <button
-          className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md"
+          disabled={isSubmitting}
+          className="w-full bg-[#FF7D29] hover:bg-[#e96e1b] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-3 rounded-lg font-montserrat mt-4 shadow-md"
           onClick={async () => {
+    if (isSubmitting) return;
     setErrorMessage("");
 
     // Ako nije ulogovan
@@ -451,7 +439,7 @@ export default function GameDetailPage() {
     }
 
     // Ako nema dovoljno coinsa
-    const neededCoins = universalPacks[selectedPackIndex].coins * quantity;
+    const neededCoins = universalPacks[selectedPackIndex] * quantity;
     if (!userData || userData.coins < neededCoins) {
       router.push("/buycoins");
       return;
@@ -477,28 +465,48 @@ export default function GameDetailPage() {
     const message =
       `New purchase request:\n\n` +
       `Game: ${game.name}\n` +
-      `Pack: ${universalPacks[selectedPackIndex].coins} coins\n` +
+      `Pack: ${universalPacks[selectedPackIndex]} coins\n` +
       `Quantity: ${quantity}\n` +
       `Account Info: ${accountInfo || "N/A"}\n` +
       `Notes: ${notes || "N/A"}\n` +
       `Country: ${countryLabel(selectedCountry)}\n` +
       `Screenshot: Please send the screenshot in this chat.`;
 
-    // Update Firestore: deduct coins and log purchase
-    const totalCoins = universalPacks[selectedPackIndex].coins * quantity;
-    if (user) {
-      try {
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, { coins: increment(-totalCoins) });
-        await addDoc(collection(db, "users", user.uid, "purchases"), {
-          game: game.name,
-          amount: totalCoins,
-          image: game.image,
-          timestamp: serverTimestamp(),
-        });
-      } catch (err) {
-        console.error("Failed to record purchase", err);
+    // The order is charged and logged server-side (admin SDK, single
+    // transaction) so the coins and the purchase record can never diverge.
+    setIsSubmitting(true);
+    try {
+      const idToken = await user.getIdToken();
+      const res = await fetch("/api/purchase", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+        body: JSON.stringify({
+          slug,
+          packIndex: selectedPackIndex,
+          quantity,
+          notes,
+          country: selectedCountry,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (res.status === 409) {
+          router.push("/buycoins");
+          return;
+        }
+        setErrorMessage(data.error ?? "Could not place the order. Please try again.");
+        return;
       }
+    } catch {
+      setErrorMessage("Could not place the order. Please check your connection and try again.");
+      return;
+    } finally {
+      setIsSubmitting(false);
     }
 
     openChatWithMessage(message);
@@ -508,7 +516,7 @@ export default function GameDetailPage() {
 
         >
           
-          Complete purchase
+          {isSubmitting ? "Placing order..." : "Complete purchase"}
         </button>
 
       

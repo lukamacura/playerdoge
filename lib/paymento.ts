@@ -66,6 +66,15 @@ export async function createPaymentRequest(input: CreatePaymentInput): Promise<s
     parsed = text;
   }
 
+  // Paymento answers business errors with HTTP 200 + {success:false, message}.
+  // Without this check the real reason (bad return URL, bad amount, ...) is lost
+  // and the caller only sees an empty token.
+  if (typeof parsed !== "string" && parsed.success === false) {
+    throw new Error(
+      `Paymento rejected the payment request: ${parsed.message || "no message"}`
+    );
+  }
+
   const rawToken =
     typeof parsed === "string"
       ? parsed

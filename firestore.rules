@@ -9,18 +9,19 @@ service cloud.firestore {
       // User can create their own doc at registration
       allow create: if request.auth != null && request.auth.uid == uid;
 
-      // User can update their own doc but cannot touch referral fields
-      // (those are written server-side via admin SDK which bypasses these rules)
+      // User can update their own doc but cannot touch balance or referral
+      // fields (those are written server-side via admin SDK, which bypasses
+      // these rules — see /api/purchase and lib/creditPurchase.ts)
       allow update: if request.auth != null
         && request.auth.uid == uid
         && !request.resource.data.diff(resource.data).affectedKeys()
-            .hasAny(['creatorCode', 'creatorCodeAppliedAt', 'freePackageStatus', 'firstPurchaseAt']);
+            .hasAny(['coins', 'creatorCode', 'creatorCodeAppliedAt', 'freePackageStatus', 'firstPurchaseAt']);
 
       match /purchases/{purchaseId} {
         allow read: if request.auth != null && request.auth.uid == uid;
-        // Game purchases written by client; admin-confirmed purchases use admin SDK
-        allow create: if request.auth != null && request.auth.uid == uid
-          && request.resource.data.isFreeBonus == false;
+        // Every purchase — coin top-ups and game orders alike — is written
+        // server-side with the admin SDK, so clients never write here.
+        allow write: if false;
       }
     }
 
